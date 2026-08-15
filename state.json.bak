@@ -1,2264 +1,1126 @@
 {
   "schema_version": 3,
   "meta": {
-    "question": "Under what input distributions and sizes does a hybrid merge/insertion sorting strategy outperform predefined baselines without violating correctness, and what insertion cutoff is optimal per regime?",
-    "domain": "algobench",
+    "question": "Which single-source shortest-path method wins on which graph topology at the tested sizes, does the machine-independent relaxation count agree with the wall-clock ranking, and where is the BFS candidate actually correct?",
+    "domain": "graphbench",
     "domain_config": {
       "sizes": [
-        256,
-        1024,
-        4096
+        128,
+        512
       ],
-      "trials": 7,
-      "seed": 20260809,
+      "trials": 5,
+      "seed": 4242,
       "regimes": [
-        "random",
-        "nearly_sorted",
-        "reversed",
-        "few_unique"
+        "sparse_random",
+        "dense_random",
+        "grid_2d",
+        "unit_weight"
       ],
-      "timeout_s": 600,
-      "sweep": true,
-      "cutoffs": [
-        8,
-        16,
-        32,
-        64
-      ]
+      "timeout_s": 600
     },
-    "profile": "flagship",
+    "profile": "graph_standard",
     "phase": "CRITICIZING",
-    "created_at": 1786391465.5401185,
+    "created_at": 1786627400.6714277,
     "origin_version": "1.0.0",
     "brain": "mock"
   },
   "budget": {
-    "experiments_total": 100,
-    "experiments_used": 13,
-    "compute_seconds_total": 3600.0,
-    "compute_seconds_used": 244.09258443500008,
+    "experiments_total": 40,
+    "experiments_used": 6,
+    "compute_seconds_total": 1800.0,
+    "compute_seconds_used": 14.826693667999962,
     "searches_total": 0,
     "searches_used": 0,
     "elapsed_seconds_total": 0.0,
-    "elapsed_seconds_used": 244.1746208667755,
+    "elapsed_seconds_used": 14.868866205215454,
     "provider_calls_total": 20,
     "provider_calls_used": 0,
     "retries_total": 8,
     "retries_used": 0
   },
   "plan": {
-    "question": "Under what input distributions and sizes does a hybrid merge/insertion sorting strategy outperform predefined baselines without violating correctness, and what insertion cutoff is optimal per regime?",
-    "branches": {
-      "input_regimes": [
-        "random",
-        "nearly_sorted",
-        "reversed",
-        "few_unique"
-      ],
-      "metrics": {
-        "wall_time": "measured in v0.1",
-        "memory": "gap (untested)",
-        "comparison_count": "gap (untested)"
+    "question": "Which single-source shortest-path method wins on which graph topology at the tested sizes, does the machine-independent relaxation count agree with the wall-clock ranking, and where is the BFS candidate actually correct?",
+    "subquestions": [
+      {
+        "id": "q1",
+        "text": "Which shortest-path method is fastest on each graph topology at the tested sizes?"
       },
-      "candidates": {
-        "base": [
-          "insertion_sort",
-          "merge_sort",
-          "quick_sort",
-          "heap_sort",
-          "shell_sort"
-        ],
-        "generated": "to be synthesized from evidence"
+      {
+        "id": "q2",
+        "text": "Do the machine-independent relaxation counts agree with the wall-clock ranking?"
       },
-      "scales": {
-        "tested": [
-          256,
-          1024,
-          4096
-        ],
-        "large_n": "gap (untested)"
+      {
+        "id": "q3",
+        "text": "Under what precondition is the BFS candidate correct, and is it detected?"
       }
-    }
+    ],
+    "regimes": [
+      "sparse_random",
+      "dense_random",
+      "grid_2d",
+      "unit_weight"
+    ],
+    "sizes": [
+      128,
+      512
+    ]
   },
   "sources": {
-    "src_4c8df7ee3c": {
-      "id": "src_4c8df7ee3c",
+    "src_fbc182a1d2": {
+      "id": "src_fbc182a1d2",
       "kind": "prior_knowledge",
-      "title": "Standard algorithm-analysis results (seeded; Phase 2 replaces with live source acquisition)",
-      "locator": "",
+      "title": "Standard shortest-path complexity results",
+      "locator": "textbook",
       "reliability": 0.95,
-      "added_at": 1786391465.6624413
+      "added_at": 1786627400.8232691,
+      "canonical_url": "",
+      "requested_url": "",
+      "final_url": "",
+      "author": "",
+      "published": "",
+      "retrieved_at": 0.0,
+      "content_type": "",
+      "http_status": 0,
+      "content_hash": "",
+      "cache_ref": "",
+      "extraction_method": "",
+      "provider": "",
+      "redirect_chain": [],
+      "reliability_basis": [],
+      "license_note": "",
+      "retrieval_notes": "",
+      "robots_status": "",
+      "pinned_address": ""
     }
   },
   "claims": {
-    "clm_bbc4b6ecee": {
-      "id": "clm_bbc4b6ecee",
-      "text": "Any comparison sort requires Omega(n log n) comparisons in the worst case.",
+    "clm_7535f3ac78": {
+      "id": "clm_7535f3ac78",
+      "text": "Dijkstra with a binary heap runs in O((V+E) log V) on graphs with non-negative weights.",
       "status": "fact",
-      "confidence": 0.97,
+      "confidence": 0.95,
       "source_ids": [
-        "src_4c8df7ee3c"
+        "src_fbc182a1d2"
       ],
-      "notes": "",
-      "created_at": 1786391465.6624563
+      "notes": "asymptotic result; says nothing about constant factors at the tested sizes",
+      "created_at": 1786627400.8232956,
+      "passage": "",
+      "passage_offset": -1,
+      "extraction_method": "",
+      "extracted_at": 0.0,
+      "claim_type": "",
+      "limitations": ""
     },
-    "clm_2a22e5624c": {
-      "id": "clm_2a22e5624c",
-      "text": "Insertion sort runs in O(n + inversions); it is linear on nearly-sorted input.",
+    "clm_97597f457d": {
+      "id": "clm_97597f457d",
+      "text": "Bellman-Ford runs in O(V*E) and tolerates negative weights, which are not present in this benchmark.",
       "status": "fact",
-      "confidence": 0.97,
+      "confidence": 0.95,
       "source_ids": [
-        "src_4c8df7ee3c"
+        "src_fbc182a1d2"
       ],
-      "notes": "",
-      "created_at": 1786391465.6624653
+      "notes": "asymptotic result; says nothing about constant factors at the tested sizes",
+      "created_at": 1786627400.8233054,
+      "passage": "",
+      "passage_offset": -1,
+      "extraction_method": "",
+      "extracted_at": 0.0,
+      "claim_type": "",
+      "limitations": ""
     },
-    "clm_6241b012d7": {
-      "id": "clm_6241b012d7",
-      "text": "Quicksort's worst case is O(n^2), but median-of-three pivoting avoids it on sorted/reversed inputs.",
+    "clm_268917d5f1": {
+      "id": "clm_268917d5f1",
+      "text": "Breadth-first search computes shortest paths only when every edge weight is equal.",
       "status": "fact",
-      "confidence": 0.97,
+      "confidence": 0.95,
       "source_ids": [
-        "src_4c8df7ee3c"
+        "src_fbc182a1d2"
       ],
-      "notes": "",
-      "created_at": 1786391465.6624715
+      "notes": "asymptotic result; says nothing about constant factors at the tested sizes",
+      "created_at": 1786627400.8233109,
+      "passage": "",
+      "passage_offset": -1,
+      "extraction_method": "",
+      "extracted_at": 0.0,
+      "claim_type": "",
+      "limitations": ""
     },
-    "clm_7060fe4c45": {
-      "id": "clm_7060fe4c45",
-      "text": "Hybrid insertion-cutoff optima at n=4096 (7 trials, CPython 3.12.3 on Linux/x86_64): random=16 (indistinguishable from [8, 32]), nearly_sorted=64 (indistinguishable from [32]), reversed=8 (indistinguishable from [16]), few_unique=16 (indistinguishable from [8, 32])",
+    "clm_25a6c3a5f4": {
+      "id": "clm_25a6c3a5f4",
+      "text": "Fewest edge relaxations at n=512 by topology: sparse_random=dijkstra_heap, dense_random=dijkstra_heap, grid_2d=dijkstra_heap, unit_weight=dijkstra_heap (machine-independent count; measured on CPython 3.12.3)",
       "status": "experimental_result",
       "confidence": 0.6,
       "source_ids": [],
       "notes": "",
-      "created_at": 1786391490.8288174
+      "created_at": 1786627404.608763,
+      "passage": "",
+      "passage_offset": -1,
+      "extraction_method": "",
+      "extracted_at": 0.0,
+      "claim_type": "",
+      "limitations": ""
     }
   },
   "hypotheses": {
-    "hyp_dbe5f386a7": {
-      "id": "hyp_dbe5f386a7",
-      "statement": "Insertion sort is the fastest candidate on nearly-sorted input, and the slowest on random input, at the tested sizes.",
-      "rationale": "Adaptive O(n + inversions) behavior dominates on low-inversion input; O(n^2) dominates on random input.",
-      "status": "accepted_with_scope",
+    "hyp_f3a5a9f693": {
+      "id": "hyp_f3a5a9f693",
+      "statement": "Dijkstra with a binary heap is fastest on sparse random graphs at the tested sizes.",
+      "rationale": "Heap ordering avoids the O(V^2) scan that dominates the array variant when the graph is sparse.",
+      "status": "weakened",
       "predictions": [
         {
-          "id": "pred_e7dbfa8e5d",
-          "text": "insertion_sort is fastest on nearly_sorted",
+          "id": "pred_90e5b058b0",
+          "text": "dijkstra_heap is fastest on sparse_random",
           "check": {
             "type": "fastest_on",
-            "algorithm": "insertion_sort",
-            "regime": "nearly_sorted"
+            "algorithm": "dijkstra_heap",
+            "regime": "sparse_random"
           },
-          "outcome": "confirmed",
-          "detail": "fastest_on on 'nearly_sorted' is insertion_sort (0.5 ms, margin 704% over shell_sort, separation 3.45 ms > required 0.07 ms) [n=4096, 7 trials]"
-        },
-        {
-          "id": "pred_d981d439fc",
-          "text": "insertion_sort is slowest on random",
-          "check": {
-            "type": "slowest_on",
-            "algorithm": "insertion_sort",
-            "regime": "random"
-          },
-          "outcome": "confirmed",
-          "detail": "slowest_on on 'random' is insertion_sort (375.7 ms, margin 1802% over shell_sort, separation 355.94 ms > required 9.65 ms) [n=4096, 7 trials]"
-        }
-      ],
-      "supporting_evidence": [
-        "evd_6632bf5051",
-        "evd_694edfaf72",
-        "evd_4ac9395f7d",
-        "evd_533eb22ed5"
-      ],
-      "contradicting_evidence": [],
-      "importance": 1.0,
-      "cost_estimate": 1.0,
-      "tags": [
-        "base",
-        "counterargued",
-        "replicated",
-        "falsification_done",
-        "falsification_survived"
-      ],
-      "tested_in": [
-        "exp_c512323528",
-        "exp_dac3afe6aa"
-      ],
-      "assumptions": [],
-      "scope": "holds at n<=2x tested sizes on its original regime(s); does NOT extend to ['organ_pipe', 'sawtooth']",
-      "revisions": [
-        {
-          "ts": 1786391477.6906478,
-          "from": "under_test",
-          "to": "provisionally_supported",
-          "reason": "all predictions confirmed in exp_c512323528"
-        },
-        {
-          "ts": 1786391709.9254131,
-          "from": "provisionally_supported",
-          "to": "accepted_with_scope",
-          "reason": "replicated + survived falsification; scope: holds at n<=2x tested sizes on its original regime(s); does NOT extend to ['organ_pipe', 'sawtooth']"
-        }
-      ],
-      "created_at": 1786391465.6649683,
-      "updated_at": 1786391709.925424
-    },
-    "hyp_fa035de7df": {
-      "id": "hyp_fa035de7df",
-      "statement": "Merge sort is the fastest pure-Python candidate on random input.",
-      "rationale": "Guaranteed n log n with sequential memory access; no pathological cases.",
-      "status": "rejected",
-      "predictions": [
-        {
-          "id": "pred_d17f90bac8",
-          "text": "merge_sort is fastest on random",
-          "check": {
-            "type": "fastest_on",
-            "algorithm": "merge_sort",
-            "regime": "random"
-          },
-          "outcome": "refuted",
-          "detail": "fastest_on on 'random' is quick_sort, not merge_sort (71% apart, decisive) [n=4096, 7 trials]"
+          "outcome": "inconclusive",
+          "detail": "spfa leads on 'sparse_random' but is not decisively separated from dijkstra_heap: uncertainty_overlap (gap 0.114 ms <= 3x combined SEM 0.128 ms) [n=512, 5 trials]"
         }
       ],
       "supporting_evidence": [],
-      "contradicting_evidence": [
-        "evd_8154955858"
-      ],
-      "importance": 1.0,
+      "contradicting_evidence": [],
+      "importance": 0.8,
       "cost_estimate": 1.0,
       "tags": [
-        "base"
+        "counterargued"
       ],
       "tested_in": [
-        "exp_c512323528"
+        "exp_de9672a659"
       ],
       "assumptions": [],
       "scope": "",
       "revisions": [
         {
-          "ts": 1786391477.6909256,
+          "ts": 1786627404.608437,
           "from": "under_test",
-          "to": "rejected",
-          "reason": "all predictions refuted in exp_c512323528"
+          "to": "weakened",
+          "reason": "predictions not resolvable at 5 trials in exp_de9672a659"
         }
       ],
-      "created_at": 1786391465.664981,
-      "updated_at": 1786391477.6909301
+      "created_at": 1786627400.8323603,
+      "updated_at": 1786627404.6084547
     },
-    "hyp_cae1c60f85": {
-      "id": "hyp_cae1c60f85",
-      "statement": "Quick sort (median-of-three, Hoare) stays within 25% of the best candidate on random input and does not collapse on reversed input.",
-      "rationale": "MO3 pivoting neutralizes ordered-input pathologies; constant factors are low.",
-      "status": "accepted_with_scope",
+    "hyp_6076ea0451": {
+      "id": "hyp_6076ea0451",
+      "statement": "The array-scan Dijkstra beats the heap variant on dense graphs, where the scan cost is amortised.",
+      "rationale": "With E ~ V^2/8 the heap's per-edge push cost outweighs the array's per-vertex scan.",
+      "status": "weakened",
       "predictions": [
         {
-          "id": "pred_8163f1d024",
-          "text": "quick_sort within 25% of best on random",
+          "id": "pred_38906d1143",
+          "text": "dijkstra_array beats dijkstra_heap on dense_random",
           "check": {
-            "type": "within_pct_of_best",
-            "algorithm": "quick_sort",
-            "regime": "random",
-            "pct": 25
+            "type": "beats",
+            "algorithm": "dijkstra_array",
+            "than": "dijkstra_heap",
+            "regime": "dense_random",
+            "min_pct": 0.0
           },
-          "outcome": "confirmed",
-          "detail": "quick_sort is 0% off best on 'random' (limit 25%, uncertainty \u00b124%) [n=4096, 7 trials]"
-        },
+          "outcome": "inconclusive",
+          "detail": "dijkstra_array vs dijkstra_heap on 'dense_random': -31% but not decisive (uncertainty_overlap (gap 7.621 ms <= 3x combined SEM 14.590 ms)) [n=512, 5 trials]"
+        }
+      ],
+      "supporting_evidence": [],
+      "contradicting_evidence": [],
+      "importance": 0.75,
+      "cost_estimate": 1.0,
+      "tags": [],
+      "tested_in": [
+        "exp_de9672a659"
+      ],
+      "assumptions": [],
+      "scope": "",
+      "revisions": [
         {
-          "id": "pred_f4764deabd",
-          "text": "quick_sort within 200% of best on reversed",
+          "ts": 1786627404.6086164,
+          "from": "under_test",
+          "to": "weakened",
+          "reason": "predictions not resolvable at 5 trials in exp_de9672a659"
+        }
+      ],
+      "created_at": 1786627400.8323715,
+      "updated_at": 1786627404.6086214
+    },
+    "hyp_96edc044f0": {
+      "id": "hyp_96edc044f0",
+      "statement": "Bellman-Ford performs the most edge relaxations of any candidate on every tested topology.",
+      "rationale": "It relaxes every edge on every pass rather than settling vertices once.",
+      "status": "provisionally_supported",
+      "predictions": [
+        {
+          "id": "pred_c725f15fde",
+          "text": "bellman_ford has the highest relaxation count",
           "check": {
-            "type": "within_pct_of_best",
-            "algorithm": "quick_sort",
-            "regime": "reversed",
-            "pct": 200
+            "type": "most_relaxations",
+            "algorithm": "bellman_ford"
           },
           "outcome": "confirmed",
-          "detail": "quick_sort is 0% off best on 'reversed' (limit 200%, uncertainty \u00b14%) [n=4096, 7 trials]"
+          "detail": "highest relaxation count by topology: {'sparse_random': 'bellman_ford', 'dense_random': 'bellman_ford', 'grid_2d': 'bellman_ford', 'unit_weight': 'bellman_ford'} [n=512]"
         }
       ],
       "supporting_evidence": [
-        "evd_ad2d195f35",
-        "evd_e61be393e9",
-        "evd_fb8bcda184",
-        "evd_5e7a292654"
+        "evd_86e7ec091a",
+        "evd_d9dd10d694"
+      ],
+      "contradicting_evidence": [],
+      "importance": 0.7,
+      "cost_estimate": 1.0,
+      "tags": [
+        "replicated",
+        "falsification_done"
+      ],
+      "tested_in": [
+        "exp_de9672a659",
+        "exp_80c64940b6"
+      ],
+      "assumptions": [],
+      "scope": "",
+      "revisions": [
+        {
+          "ts": 1786627404.6086726,
+          "from": "under_test",
+          "to": "provisionally_supported",
+          "reason": "all predictions confirmed in exp_de9672a659"
+        }
+      ],
+      "created_at": 1786627400.8323832,
+      "updated_at": 1786627407.575657
+    },
+    "hyp_e6bc85dbcd": {
+      "id": "hyp_e6bc85dbcd",
+      "statement": "SPFA performs fewer relaxations than Bellman-Ford on sparse random graphs.",
+      "rationale": "Queue-driven relaxation revisits only vertices whose distance improved.",
+      "status": "accepted_with_scope",
+      "predictions": [
+        {
+          "id": "pred_b76f766e0b",
+          "text": "spfa uses fewer relaxations than bellman_ford on sparse_random",
+          "check": {
+            "type": "fewer_relaxations",
+            "algorithm": "spfa",
+            "than": "bellman_ford",
+            "regime": "sparse_random"
+          },
+          "outcome": "confirmed",
+          "detail": "spfa performed 4,907 relaxations vs bellman_ford 21,476 on 'sparse_random' (+77%); exact counts, machine-independent [n=512]"
+        }
+      ],
+      "supporting_evidence": [
+        "evd_dbc7dc2c6f",
+        "evd_14634d9b08"
+      ],
+      "contradicting_evidence": [],
+      "importance": 0.7,
+      "cost_estimate": 1.0,
+      "tags": [
+        "replicated",
+        "falsification_done",
+        "falsification_survived"
+      ],
+      "tested_in": [
+        "exp_de9672a659",
+        "exp_3079fc8021"
+      ],
+      "assumptions": [],
+      "scope": "holds at n<=2x tested sizes on its original topology; extends to ['long_chain', 'scale_free']",
+      "revisions": [
+        {
+          "ts": 1786627404.6086993,
+          "from": "under_test",
+          "to": "provisionally_supported",
+          "reason": "all predictions confirmed in exp_de9672a659"
+        },
+        {
+          "ts": 1786627415.7722516,
+          "from": "provisionally_supported",
+          "to": "accepted_with_scope",
+          "reason": "replicated + survived falsification; scope: holds at n<=2x tested sizes on its original topology; extends to ['long_chain', 'scale_free']"
+        }
+      ],
+      "created_at": 1786627400.8323913,
+      "updated_at": 1786627415.7722623
+    },
+    "hyp_0eae29898f": {
+      "id": "hyp_0eae29898f",
+      "statement": "The BFS candidate returns correct distances on unit-weight graphs and incorrect distances on every weighted topology.",
+      "rationale": "BFS assumes uniform edge cost; the benchmark should detect the boundary rather than assume it.",
+      "status": "accepted_with_scope",
+      "predictions": [
+        {
+          "id": "pred_614fed1209",
+          "text": "bfs_unit is correct on unit_weight",
+          "check": {
+            "type": "correct_on",
+            "algorithm": "bfs_unit",
+            "regime": "unit_weight"
+          },
+          "outcome": "confirmed",
+          "detail": "bfs_unit on 'unit_weight' returned correct distances [n=512, 5 trials]"
+        },
+        {
+          "id": "pred_fdab97b162",
+          "text": "bfs_unit is incorrect on sparse_random",
+          "check": {
+            "type": "incorrect_on",
+            "algorithm": "bfs_unit",
+            "regime": "sparse_random"
+          },
+          "outcome": "confirmed",
+          "detail": "bfs_unit on 'sparse_random' returned INCORRECT distances [n=512, 5 trials]"
+        }
+      ],
+      "supporting_evidence": [
+        "evd_21694ffc12",
+        "evd_3060dc0ef9",
+        "evd_5fbccff0e1",
+        "evd_7aefddd33b"
       ],
       "contradicting_evidence": [],
       "importance": 0.9,
       "cost_estimate": 1.0,
       "tags": [
-        "base",
+        "correctness_boundary",
         "replicated",
         "falsification_done",
         "falsification_survived"
       ],
       "tested_in": [
-        "exp_c512323528",
-        "exp_ac020259d2"
+        "exp_de9672a659",
+        "exp_6bd2d789f8"
       ],
       "assumptions": [],
-      "scope": "holds at n<=2x tested sizes on its original regime(s); extends to ['organ_pipe', 'sawtooth']",
+      "scope": "holds at n<=2x tested sizes on its original topology; does NOT extend to ['long_chain', 'scale_free']",
       "revisions": [
         {
-          "ts": 1786391477.6912518,
+          "ts": 1786627404.6087258,
           "from": "under_test",
           "to": "provisionally_supported",
-          "reason": "all predictions confirmed in exp_c512323528"
+          "reason": "all predictions confirmed in exp_de9672a659"
         },
         {
-          "ts": 1786391709.9255471,
+          "ts": 1786627415.772398,
           "from": "provisionally_supported",
           "to": "accepted_with_scope",
-          "reason": "replicated + survived falsification; scope: holds at n<=2x tested sizes on its original regime(s); extends to ['organ_pipe', 'sawtooth']"
+          "reason": "replicated + survived falsification; scope: holds at n<=2x tested sizes on its original topology; does NOT extend to ['long_chain', 'scale_free']"
         }
       ],
-      "created_at": 1786391465.664995,
-      "updated_at": 1786391709.925549
-    },
-    "hyp_ad33a3dcb5": {
-      "id": "hyp_ad33a3dcb5",
-      "statement": "Heap sort is the most consistent candidate (lowest relative timing variance across regimes) but is never the fastest in any regime.",
-      "rationale": "Input-oblivious n log n behavior; poor cache locality keeps constants high.",
-      "status": "weakened",
-      "predictions": [
-        {
-          "id": "pred_cec482fccc",
-          "text": "heap_sort has lowest mean relative stdev",
-          "check": {
-            "type": "lowest_mean_rel_stdev",
-            "algorithm": "heap_sort"
-          },
-          "outcome": "refuted",
-          "detail": "lowest mean relative stdev: merge_sort (0.050); next is quick_sort (0.063) [n=4096, 7 trials]"
-        },
-        {
-          "id": "pred_10295982c3",
-          "text": "heap_sort is never fastest in any regime",
-          "check": {
-            "type": "never_fastest",
-            "algorithm": "heap_sort"
-          },
-          "outcome": "confirmed",
-          "detail": "regime winners: ['insertion_sort', 'quick_sort'] (decisively separated in: ['few_unique', 'nearly_sorted', 'random', 'reversed']) [n=4096, 7 trials]"
-        }
-      ],
-      "supporting_evidence": [
-        "evd_1fc89d1194"
-      ],
-      "contradicting_evidence": [
-        "evd_9becf00f24"
-      ],
-      "importance": 0.8,
-      "cost_estimate": 1.0,
-      "tags": [
-        "base"
-      ],
-      "tested_in": [
-        "exp_c512323528"
-      ],
-      "assumptions": [],
-      "scope": "",
-      "revisions": [
-        {
-          "ts": 1786391477.6913326,
-          "from": "under_test",
-          "to": "weakened",
-          "reason": "mixed prediction outcomes in exp_c512323528"
-        }
-      ],
-      "created_at": 1786391465.6650069,
-      "updated_at": 1786391477.6913354
-    },
-    "hyp_40df9834c7": {
-      "id": "hyp_40df9834c7",
-      "statement": "Shell sort beats insertion sort on random input but not on nearly-sorted input at the tested sizes.",
-      "rationale": "[mock proposal prop_92794c6d1c] Gap sequences reduce long-distance disorder faster than adjacent swaps; on nearly-sorted data insertion sort's adaptivity should dominate.",
-      "status": "accepted_with_scope",
-      "predictions": [
-        {
-          "id": "pred_30014e51bc",
-          "text": "Shell sort beats insertion sort on random input but not on nearly-sorted input at the tested sizes.",
-          "check": {
-            "type": "beats",
-            "algorithm": "shell_sort",
-            "than": "insertion_sort",
-            "regime": "random",
-            "min_pct": 0.0
-          },
-          "outcome": "confirmed",
-          "detail": "shell_sort vs insertion_sort on 'random': +739% (needs >= 0.0%, decisive: gap 19.45 ms > required 1.39 ms) [n=1024, 7 trials]"
-        }
-      ],
-      "supporting_evidence": [
-        "evd_1bbf2017f2",
-        "evd_2718a24c25"
-      ],
-      "contradicting_evidence": [],
-      "importance": 0.6,
-      "cost_estimate": 1.0,
-      "tags": [
-        "llm_proposed",
-        "replicated",
-        "falsification_done",
-        "falsification_survived"
-      ],
-      "tested_in": [
-        "exp_2593d8e300",
-        "exp_13f5f8410a"
-      ],
-      "assumptions": [
-        "pure-Python implementations",
-        "wall-clock time is the metric"
-      ],
-      "scope": "holds at n<=2x tested sizes on its original regime(s); extends to ['organ_pipe', 'sawtooth']",
-      "revisions": [
-        {
-          "ts": 1786391491.208577,
-          "from": "under_test",
-          "to": "provisionally_supported",
-          "reason": "all predictions confirmed in exp_2593d8e300"
-        },
-        {
-          "ts": 1786391709.9256172,
-          "from": "provisionally_supported",
-          "to": "accepted_with_scope",
-          "reason": "replicated + survived falsification; scope: holds at n<=2x tested sizes on its original regime(s); extends to ['organ_pipe', 'sawtooth']"
-        }
-      ],
-      "created_at": 1786391465.6657376,
-      "updated_at": 1786391709.9256184
-    },
-    "hyp_f1699d47b3": {
-      "id": "hyp_f1699d47b3",
-      "statement": "Heap sort beats shell sort on reversed input at the tested sizes.",
-      "rationale": "[mock proposal prop_b8a25c4aab] Reversed input is adversarial for gap/insertion strategies while heap construction cost is input-independent.",
-      "status": "rejected",
-      "predictions": [
-        {
-          "id": "pred_cd548b69f5",
-          "text": "Heap sort beats shell sort on reversed input at the tested sizes.",
-          "check": {
-            "type": "beats",
-            "algorithm": "heap_sort",
-            "than": "shell_sort",
-            "regime": "reversed",
-            "min_pct": 0.0
-          },
-          "outcome": "refuted",
-          "detail": "heap_sort is decisively SLOWER than shell_sort on 'reversed' (-30%) [n=4096, 7 trials]"
-        }
-      ],
-      "supporting_evidence": [],
-      "contradicting_evidence": [
-        "evd_4137776c99"
-      ],
-      "importance": 0.45,
-      "cost_estimate": 1.0,
-      "tags": [
-        "llm_proposed"
-      ],
-      "tested_in": [
-        "exp_409be65fa9"
-      ],
-      "assumptions": [
-        "reversed inputs are fully descending"
-      ],
-      "scope": "",
-      "revisions": [
-        {
-          "ts": 1786391503.3501797,
-          "from": "under_test",
-          "to": "rejected",
-          "reason": "all predictions refuted in exp_409be65fa9"
-        }
-      ],
-      "created_at": 1786391465.6664128,
-      "updated_at": 1786391503.3501947
-    },
-    "hyp_38e7e1fe16": {
-      "id": "hyp_38e7e1fe16",
-      "statement": "A hybrid algorithm (merge sort with insertion-sort cutoff <= 32) beats plain merge sort on random AND nearly-sorted input at the tested sizes.",
-      "rationale": "Round-1 evidence: 'insertion_sort' won nearly_sorted and 'quick_sort' won random. Combining merge structure with insertion's strength on short/ordered runs should reduce recursion overhead without losing n log n guarantees. Derived from experiment exp_c512323528.",
-      "status": "accepted_with_scope",
-      "predictions": [
-        {
-          "id": "pred_f9b7737084",
-          "text": "hybrid_sort beats merge_sort on random by >= 5%",
-          "check": {
-            "type": "beats",
-            "algorithm": "hybrid_sort",
-            "than": "merge_sort",
-            "regime": "random",
-            "min_pct": 5
-          },
-          "outcome": "confirmed",
-          "detail": "hybrid_sort vs merge_sort on 'random': +53% (needs >= 5%, decisive: gap 3.24 ms > required 0.62 ms) [n=4096, 7 trials]"
-        },
-        {
-          "id": "pred_ee29fd4040",
-          "text": "hybrid_sort beats merge_sort on nearly_sorted",
-          "check": {
-            "type": "beats",
-            "algorithm": "hybrid_sort",
-            "than": "merge_sort",
-            "regime": "nearly_sorted",
-            "min_pct": 0
-          },
-          "outcome": "confirmed",
-          "detail": "hybrid_sort vs merge_sort on 'nearly_sorted': +182% (needs >= 0%, decisive: gap 4.41 ms > required 0.93 ms) [n=4096, 7 trials]"
-        }
-      ],
-      "supporting_evidence": [
-        "evd_29dc192093",
-        "evd_9126722f3b",
-        "evd_009948521d",
-        "evd_0f71b453e4"
-      ],
-      "contradicting_evidence": [],
-      "importance": 1.2,
-      "cost_estimate": 1.2,
-      "tags": [
-        "generated",
-        "replicated",
-        "falsification_done",
-        "falsification_survived"
-      ],
-      "tested_in": [
-        "exp_48613ed686",
-        "exp_1351d074bc"
-      ],
-      "assumptions": [],
-      "scope": "holds at n<=2x tested sizes on its original regime(s); extends to ['organ_pipe', 'sawtooth']",
-      "revisions": [
-        {
-          "ts": 1786391490.011822,
-          "from": "under_test",
-          "to": "provisionally_supported",
-          "reason": "all predictions confirmed in exp_48613ed686"
-        },
-        {
-          "ts": 1786391709.9257238,
-          "from": "provisionally_supported",
-          "to": "accepted_with_scope",
-          "reason": "replicated + survived falsification; scope: holds at n<=2x tested sizes on its original regime(s); extends to ['organ_pipe', 'sawtooth']"
-        }
-      ],
-      "created_at": 1786391477.691476,
-      "updated_at": 1786391709.9257257
-    },
-    "hyp_bf17e1f36c": {
-      "id": "hyp_bf17e1f36c",
-      "statement": "The hybrid's optimal insertion cutoff on random input lies in [16, 64], and the optimal cutoff on nearly-sorted input is >= the optimum on random input.",
-      "rationale": "Python call overhead favors moderate cutoffs; insertion sort's adaptivity should tolerate larger segments on nearly-sorted data. Pre-registered before any sweep ran.",
-      "status": "weakened",
-      "predictions": [
-        {
-          "id": "pred_e0238b01ef",
-          "text": "optimal cutoff on random in [16, 64]",
-          "check": {
-            "type": "sweep_optimum_in",
-            "regime": "random",
-            "lo": 16,
-            "hi": 64
-          },
-          "outcome": "inconclusive",
-          "detail": "best cutoff on random = 16 (inside [16,64]) but cutoffs [8] are statistically indistinguishable from it at 7 trials \u2014 the optimum is not resolvable to that interval"
-        },
-        {
-          "id": "pred_dc32d5732d",
-          "text": "optimal cutoff on nearly_sorted >= optimal on random",
-          "check": {
-            "type": "sweep_optimum_ge",
-            "regime_a": "nearly_sorted",
-            "regime_b": "random"
-          },
-          "outcome": "inconclusive",
-          "detail": "optimum nearly_sorted=64 vs random=16, but the optima are not uniquely identified (indistinguishable sets: nearly_sorted=[32, 64], random=[8, 16, 32])"
-        }
-      ],
-      "supporting_evidence": [],
-      "contradicting_evidence": [],
-      "importance": 0.95,
-      "cost_estimate": 0.8,
-      "tags": [
-        "generated",
-        "sweep"
-      ],
-      "tested_in": [
-        "exp_42d46105c8"
-      ],
-      "assumptions": [],
-      "scope": "",
-      "revisions": [
-        {
-          "ts": 1786391490.8287709,
-          "from": "under_test",
-          "to": "weakened",
-          "reason": "sweep mixed outcomes in exp_42d46105c8"
-        }
-      ],
-      "created_at": 1786391490.011936,
-      "updated_at": 1786391490.8287866
+      "created_at": 1786627400.8324044,
+      "updated_at": 1786627415.7723997
     }
   },
   "evidence": {
-    "evd_6632bf5051": {
-      "id": "evd_6632bf5051",
-      "target_id": "hyp_dbe5f386a7",
-      "direction": "supports",
-      "strength": 0.85,
-      "kind": "experiment",
-      "summary": "[test] insertion_sort is fastest on nearly_sorted: confirmed (fastest_on on 'nearly_sorted' is insertion_sort (0.5 ms, margin 704% over shell_sort, separation 3.45 ms > required 0.07 ms) [n=4096, 7 trials])",
-      "experiment_id": "exp_c512323528",
-      "source_id": "",
-      "payload": {
-        "margin": 7.0448
-      },
-      "created_at": 1786391477.6904814
-    },
-    "evd_694edfaf72": {
-      "id": "evd_694edfaf72",
-      "target_id": "hyp_dbe5f386a7",
-      "direction": "supports",
-      "strength": 0.85,
-      "kind": "experiment",
-      "summary": "[test] insertion_sort is slowest on random: confirmed (slowest_on on 'random' is insertion_sort (375.7 ms, margin 1802% over shell_sort, separation 355.94 ms > required 9.65 ms) [n=4096, 7 trials])",
-      "experiment_id": "exp_c512323528",
-      "source_id": "",
-      "payload": {
-        "margin": 18.0224
-      },
-      "created_at": 1786391477.6906345
-    },
-    "evd_8154955858": {
-      "id": "evd_8154955858",
-      "target_id": "hyp_fa035de7df",
-      "direction": "contradicts",
-      "strength": 0.85,
-      "kind": "experiment",
-      "summary": "[test] merge_sort is fastest on random: refuted (fastest_on on 'random' is quick_sort, not merge_sort (71% apart, decisive) [n=4096, 7 trials])",
-      "experiment_id": "exp_c512323528",
-      "source_id": "",
-      "payload": {
-        "margin": 0.7075
-      },
-      "created_at": 1786391477.6909149
-    },
-    "evd_ad2d195f35": {
-      "id": "evd_ad2d195f35",
-      "target_id": "hyp_cae1c60f85",
-      "direction": "supports",
-      "strength": 0.6,
-      "kind": "experiment",
-      "summary": "[test] quick_sort within 25% of best on random: confirmed (quick_sort is 0% off best on 'random' (limit 25%, uncertainty \u00b124%) [n=4096, 7 trials])",
-      "experiment_id": "exp_c512323528",
-      "source_id": "",
-      "payload": {
-        "margin": 0.25
-      },
-      "created_at": 1786391477.691134
-    },
-    "evd_e61be393e9": {
-      "id": "evd_e61be393e9",
-      "target_id": "hyp_cae1c60f85",
-      "direction": "supports",
-      "strength": 0.85,
-      "kind": "experiment",
-      "summary": "[test] quick_sort within 200% of best on reversed: confirmed (quick_sort is 0% off best on 'reversed' (limit 200%, uncertainty \u00b14%) [n=4096, 7 trials])",
-      "experiment_id": "exp_c512323528",
-      "source_id": "",
-      "payload": {
-        "margin": 2.0
-      },
-      "created_at": 1786391477.691245
-    },
-    "evd_9becf00f24": {
-      "id": "evd_9becf00f24",
-      "target_id": "hyp_ad33a3dcb5",
-      "direction": "contradicts",
-      "strength": 0.45,
-      "kind": "experiment",
-      "summary": "[test] heap_sort has lowest mean relative stdev: refuted (lowest mean relative stdev: merge_sort (0.050); next is quick_sort (0.063) [n=4096, 7 trials])",
-      "experiment_id": "exp_c512323528",
-      "source_id": "",
-      "payload": {
-        "margin": 0.1
-      },
-      "created_at": 1786391477.691297
-    },
-    "evd_1fc89d1194": {
-      "id": "evd_1fc89d1194",
-      "target_id": "hyp_ad33a3dcb5",
-      "direction": "supports",
-      "strength": 0.45,
-      "kind": "experiment",
-      "summary": "[test] heap_sort is never fastest in any regime: confirmed (regime winners: ['insertion_sort', 'quick_sort'] (decisively separated in: ['few_unique', 'nearly_sorted', 'random', 'reversed']) [n=4096, 7 trials])",
-      "experiment_id": "exp_c512323528",
-      "source_id": "",
-      "payload": {
-        "margin": 0.1
-      },
-      "created_at": 1786391477.6913264
-    },
-    "evd_29dc192093": {
-      "id": "evd_29dc192093",
-      "target_id": "hyp_38e7e1fe16",
-      "direction": "supports",
-      "strength": 0.85,
-      "kind": "experiment",
-      "summary": "[test] hybrid_sort beats merge_sort on random by >= 5%: confirmed (hybrid_sort vs merge_sort on 'random': +53% (needs >= 5%, decisive: gap 3.24 ms > required 0.62 ms) [n=4096, 7 trials])",
-      "experiment_id": "exp_48613ed686",
-      "source_id": "",
-      "payload": {
-        "margin": 0.5309
-      },
-      "created_at": 1786391490.011549
-    },
-    "evd_9126722f3b": {
-      "id": "evd_9126722f3b",
-      "target_id": "hyp_38e7e1fe16",
-      "direction": "supports",
-      "strength": 0.85,
-      "kind": "experiment",
-      "summary": "[test] hybrid_sort beats merge_sort on nearly_sorted: confirmed (hybrid_sort vs merge_sort on 'nearly_sorted': +182% (needs >= 0%, decisive: gap 4.41 ms > required 0.93 ms) [n=4096, 7 trials])",
-      "experiment_id": "exp_48613ed686",
-      "source_id": "",
-      "payload": {
-        "margin": 1.8245
-      },
-      "created_at": 1786391490.0118046
-    },
-    "evd_efc4635af1": {
-      "id": "evd_efc4635af1",
-      "target_id": "hyp_bf17e1f36c",
+    "evd_9a35cf1280": {
+      "id": "evd_9a35cf1280",
+      "target_id": "hyp_f3a5a9f693",
       "direction": "inconclusive",
-      "strength": 0.15,
+      "strength": 0.125,
       "kind": "experiment",
-      "summary": "[sweep] optimal cutoff on random in [16, 64]: inconclusive (best cutoff on random = 16 (inside [16,64]) but cutoffs [8] are statistically indistinguishable from it at 7 trials \u2014 the optimum is not resolvable to that interval)",
-      "experiment_id": "exp_42d46105c8",
+      "summary": "[round 1] dijkstra_heap is fastest on sparse_random: inconclusive (spfa leads on 'sparse_random' but is not decisively separated from dijkstra_heap: uncertainty_overlap (gap 0.114 ms <= 3x combined SEM 0.128 ms) [n=512, 5 trials])",
+      "experiment_id": "exp_de9672a659",
       "source_id": "",
-      "payload": {
-        "optima": {
-          "random": 16,
-          "nearly_sorted": 64,
-          "reversed": 8,
-          "few_unique": 16
-        }
-      },
-      "created_at": 1786391490.8287313
+      "payload": {},
+      "created_at": 1786627404.6084173
     },
-    "evd_4516f42392": {
-      "id": "evd_4516f42392",
-      "target_id": "hyp_bf17e1f36c",
+    "evd_93b8ede2da": {
+      "id": "evd_93b8ede2da",
+      "target_id": "hyp_6076ea0451",
       "direction": "inconclusive",
-      "strength": 0.15,
+      "strength": 0.153,
       "kind": "experiment",
-      "summary": "[sweep] optimal cutoff on nearly_sorted >= optimal on random: inconclusive (optimum nearly_sorted=64 vs random=16, but the optima are not uniquely identified (indistinguishable sets: nearly_sorted=[32, 64], random=[8, 16, 32]))",
-      "experiment_id": "exp_42d46105c8",
+      "summary": "[round 1] dijkstra_array beats dijkstra_heap on dense_random: inconclusive (dijkstra_array vs dijkstra_heap on 'dense_random': -31% but not decisive (uncertainty_overlap (gap 7.621 ms <= 3x combined SEM 14.590 ms)) [n=512, 5 trials])",
+      "experiment_id": "exp_de9672a659",
       "source_id": "",
-      "payload": {
-        "optima": {
-          "random": 16,
-          "nearly_sorted": 64,
-          "reversed": 8,
-          "few_unique": 16
-        }
-      },
-      "created_at": 1786391490.82876
+      "payload": {},
+      "created_at": 1786627404.6086085
     },
-    "evd_1bbf2017f2": {
-      "id": "evd_1bbf2017f2",
-      "target_id": "hyp_40df9834c7",
+    "evd_86e7ec091a": {
+      "id": "evd_86e7ec091a",
+      "target_id": "hyp_96edc044f0",
       "direction": "supports",
-      "strength": 0.85,
+      "strength": 0.7,
       "kind": "experiment",
-      "summary": "[test] Shell sort beats insertion sort on random input but not on nearly-sorted input at the tested sizes.: confirmed (shell_sort vs insertion_sort on 'random': +739% (needs >= 0.0%, decisive: gap 19.45 ms > required 1.39 ms) [n=1024, 7 trials])",
-      "experiment_id": "exp_2593d8e300",
+      "summary": "[round 1] bellman_ford has the highest relaxation count: confirmed (highest relaxation count by topology: {'sparse_random': 'bellman_ford', 'dense_random': 'bellman_ford', 'grid_2d': 'bellman_ford', 'unit_weight': 'bellman_ford'} [n=512])",
+      "experiment_id": "exp_de9672a659",
       "source_id": "",
-      "payload": {
-        "margin": 7.3872
-      },
-      "created_at": 1786391491.2085621
+      "payload": {},
+      "created_at": 1786627404.608668
     },
-    "evd_4137776c99": {
-      "id": "evd_4137776c99",
-      "target_id": "hyp_f1699d47b3",
-      "direction": "contradicts",
-      "strength": 0.654,
-      "kind": "experiment",
-      "summary": "[test] Heap sort beats shell sort on reversed input at the tested sizes.: refuted (heap_sort is decisively SLOWER than shell_sort on 'reversed' (-30%) [n=4096, 7 trials])",
-      "experiment_id": "exp_409be65fa9",
-      "source_id": "",
-      "payload": {
-        "margin": 0.3038
-      },
-      "created_at": 1786391503.3501594
-    },
-    "evd_4ac9395f7d": {
-      "id": "evd_4ac9395f7d",
-      "target_id": "hyp_dbe5f386a7",
+    "evd_dbc7dc2c6f": {
+      "id": "evd_dbc7dc2c6f",
+      "target_id": "hyp_e6bc85dbcd",
       "direction": "supports",
-      "strength": 0.85,
+      "strength": 0.772,
       "kind": "experiment",
-      "summary": "[replication] insertion_sort is fastest on nearly_sorted: confirmed (fastest_on on 'nearly_sorted' is insertion_sort (0.5 ms, margin 714% over quick_sort, separation 3.63 ms > required 0.13 ms) [n=4096, 7 trials])",
-      "experiment_id": "exp_dac3afe6aa",
+      "summary": "[round 1] spfa uses fewer relaxations than bellman_ford on sparse_random: confirmed (spfa performed 4,907 relaxations vs bellman_ford 21,476 on 'sparse_random' (+77%); exact counts, machine-independent [n=512])",
+      "experiment_id": "exp_de9672a659",
       "source_id": "",
-      "payload": {
-        "margin": 7.1398
-      },
-      "created_at": 1786391515.0054646
+      "payload": {},
+      "created_at": 1786627404.6086965
     },
-    "evd_533eb22ed5": {
-      "id": "evd_533eb22ed5",
-      "target_id": "hyp_dbe5f386a7",
+    "evd_21694ffc12": {
+      "id": "evd_21694ffc12",
+      "target_id": "hyp_0eae29898f",
       "direction": "supports",
-      "strength": 0.85,
+      "strength": 0.9,
       "kind": "experiment",
-      "summary": "[replication] insertion_sort is slowest on random: confirmed (slowest_on on 'random' is insertion_sort (388.9 ms, margin 2006% over shell_sort, separation 370.39 ms > required 5.24 ms) [n=4096, 7 trials])",
-      "experiment_id": "exp_dac3afe6aa",
+      "summary": "[round 1] bfs_unit is correct on unit_weight: confirmed (bfs_unit on 'unit_weight' returned correct distances [n=512, 5 trials])",
+      "experiment_id": "exp_de9672a659",
       "source_id": "",
-      "payload": {
-        "margin": 20.056
-      },
-      "created_at": 1786391515.0055847
+      "payload": {},
+      "created_at": 1786627404.6087134
     },
-    "evd_fb8bcda184": {
-      "id": "evd_fb8bcda184",
-      "target_id": "hyp_cae1c60f85",
+    "evd_3060dc0ef9": {
+      "id": "evd_3060dc0ef9",
+      "target_id": "hyp_0eae29898f",
       "direction": "supports",
-      "strength": 0.6,
+      "strength": 0.9,
       "kind": "experiment",
-      "summary": "[replication] quick_sort within 25% of best on random: confirmed (quick_sort is 0% off best on 'random' (limit 25%, uncertainty \u00b11%) [n=4096, 7 trials])",
-      "experiment_id": "exp_ac020259d2",
+      "summary": "[round 1] bfs_unit is incorrect on sparse_random: confirmed (bfs_unit on 'sparse_random' returned INCORRECT distances [n=512, 5 trials])",
+      "experiment_id": "exp_de9672a659",
       "source_id": "",
-      "payload": {
-        "margin": 0.25
-      },
-      "created_at": 1786391526.098749
+      "payload": {},
+      "created_at": 1786627404.6087234
     },
-    "evd_5e7a292654": {
-      "id": "evd_5e7a292654",
-      "target_id": "hyp_cae1c60f85",
+    "evd_d9dd10d694": {
+      "id": "evd_d9dd10d694",
+      "target_id": "hyp_96edc044f0",
       "direction": "supports",
-      "strength": 0.85,
+      "strength": 0.7,
       "kind": "experiment",
-      "summary": "[replication] quick_sort within 200% of best on reversed: confirmed (quick_sort is 0% off best on 'reversed' (limit 200%, uncertainty \u00b136%) [n=4096, 7 trials])",
-      "experiment_id": "exp_ac020259d2",
+      "summary": "[replication] bellman_ford has the highest relaxation count: confirmed (highest relaxation count by topology: {'sparse_random': 'bellman_ford', 'dense_random': 'bellman_ford', 'grid_2d': 'bellman_ford', 'unit_weight': 'bellman_ford'} [n=512])",
+      "experiment_id": "exp_80c64940b6",
       "source_id": "",
-      "payload": {
-        "margin": 2.0
-      },
-      "created_at": 1786391526.0989017
+      "payload": {},
+      "created_at": 1786627407.5754619
     },
-    "evd_2718a24c25": {
-      "id": "evd_2718a24c25",
-      "target_id": "hyp_40df9834c7",
+    "evd_14634d9b08": {
+      "id": "evd_14634d9b08",
+      "target_id": "hyp_e6bc85dbcd",
       "direction": "supports",
-      "strength": 0.85,
+      "strength": 0.741,
       "kind": "experiment",
-      "summary": "[replication] Shell sort beats insertion sort on random input but not on nearly-sorted input at the tested sizes.: confirmed (shell_sort vs insertion_sort on 'random': +1976% (needs >= 0.0%, decisive: gap 358.80 ms > required 5.66 ms) [n=4096, 7 trials])",
-      "experiment_id": "exp_13f5f8410a",
+      "summary": "[replication] spfa uses fewer relaxations than bellman_ford on sparse_random: confirmed (spfa performed 4,763 relaxations vs bellman_ford 18,396 on 'sparse_random' (+74%); exact counts, machine-independent [n=512])",
+      "experiment_id": "exp_3079fc8021",
       "source_id": "",
-      "payload": {
-        "margin": 19.7594
-      },
-      "created_at": 1786391537.5056922
+      "payload": {},
+      "created_at": 1786627410.5828662
     },
-    "evd_009948521d": {
-      "id": "evd_009948521d",
-      "target_id": "hyp_38e7e1fe16",
+    "evd_5fbccff0e1": {
+      "id": "evd_5fbccff0e1",
+      "target_id": "hyp_0eae29898f",
       "direction": "supports",
-      "strength": 0.85,
+      "strength": 0.9,
       "kind": "experiment",
-      "summary": "[replication] hybrid_sort beats merge_sort on random by >= 5%: confirmed (hybrid_sort vs merge_sort on 'random': +53% (needs >= 5%, decisive: gap 3.25 ms > required 0.62 ms) [n=4096, 7 trials])",
-      "experiment_id": "exp_1351d074bc",
+      "summary": "[replication] bfs_unit is correct on unit_weight: confirmed (bfs_unit on 'unit_weight' returned correct distances [n=512, 5 trials])",
+      "experiment_id": "exp_6bd2d789f8",
       "source_id": "",
-      "payload": {
-        "margin": 0.5254
-      },
-      "created_at": 1786391548.907914
+      "payload": {},
+      "created_at": 1786627413.670945
     },
-    "evd_0f71b453e4": {
-      "id": "evd_0f71b453e4",
-      "target_id": "hyp_38e7e1fe16",
+    "evd_7aefddd33b": {
+      "id": "evd_7aefddd33b",
+      "target_id": "hyp_0eae29898f",
       "direction": "supports",
-      "strength": 0.51,
+      "strength": 0.9,
       "kind": "experiment",
-      "summary": "[replication] hybrid_sort beats merge_sort on nearly_sorted: confirmed (hybrid_sort vs merge_sort on 'nearly_sorted': +174% (needs >= 0%, decisive: gap 4.17 ms > required 0.24 ms) [n=4096, 7 trials])",
-      "experiment_id": "exp_1351d074bc",
+      "summary": "[replication] bfs_unit is incorrect on sparse_random: confirmed (bfs_unit on 'sparse_random' returned INCORRECT distances [n=512, 5 trials])",
+      "experiment_id": "exp_6bd2d789f8",
       "source_id": "",
-      "payload": {
-        "margin": 1.7403
-      },
-      "created_at": 1786391548.9080555
+      "payload": {},
+      "created_at": 1786627413.6709666
     }
   },
   "experiments": {
-    "exp_c512323528": {
-      "id": "exp_c512323528",
-      "title": "Benchmark round 1 covering 4 hypothesis(es)",
+    "exp_de9672a659": {
+      "id": "exp_de9672a659",
+      "title": "Benchmark round 1 covering 5 hypothesis(es)",
       "hypothesis_ids": [
-        "hyp_dbe5f386a7",
-        "hyp_fa035de7df",
-        "hyp_cae1c60f85",
-        "hyp_ad33a3dcb5"
+        "hyp_f3a5a9f693",
+        "hyp_6076ea0451",
+        "hyp_96edc044f0",
+        "hyp_e6bc85dbcd",
+        "hyp_0eae29898f"
       ],
       "design": {
         "kind": "benchmark",
         "round": 1,
         "algorithms": [
-          "insertion_sort",
-          "merge_sort",
-          "quick_sort",
-          "heap_sort",
-          "shell_sort"
+          "dijkstra_heap",
+          "dijkstra_array",
+          "bellman_ford",
+          "spfa",
+          "bfs_unit"
         ],
         "regimes": [
-          "random",
-          "nearly_sorted",
-          "reversed",
-          "few_unique"
+          "sparse_random",
+          "dense_random",
+          "grid_2d",
+          "unit_weight"
         ],
         "sizes": [
-          256,
-          1024,
-          4096
+          128,
+          512
         ],
-        "trials": 7,
-        "seed": 20260809,
+        "trials": 5,
+        "seed": 4242,
         "timeout_s": 600,
         "hypothesis_ids": [
-          "hyp_dbe5f386a7",
-          "hyp_fa035de7df",
-          "hyp_cae1c60f85",
-          "hyp_ad33a3dcb5"
+          "hyp_f3a5a9f693",
+          "hyp_6076ea0451",
+          "hyp_96edc044f0",
+          "hyp_e6bc85dbcd",
+          "hyp_0eae29898f"
         ]
       },
       "status": "completed",
-      "dir": "experiments/exp_c512323528",
-      "duration_s": 12.013857384999994,
+      "dir": "experiments/exp_de9672a659",
+      "duration_s": 3.7557627449999984,
       "summary": {
-        "measurements": 60
+        "measurements": 40
       },
       "error": "",
-      "created_at": 1786391465.6705348,
-      "finished_at": 1786391477.688034
+      "created_at": 1786627400.8390727,
+      "finished_at": 1786627404.6063144
     },
-    "exp_48613ed686": {
-      "id": "exp_48613ed686",
-      "title": "Benchmark round 2 covering 1 hypothesis(es)",
+    "exp_80c64940b6": {
+      "id": "exp_80c64940b6",
+      "title": "Replication of hyp_96edc044f0",
       "hypothesis_ids": [
-        "hyp_38e7e1fe16"
+        "hyp_96edc044f0"
       ],
       "design": {
         "kind": "benchmark",
         "round": 2,
         "algorithms": [
-          "insertion_sort",
-          "merge_sort",
-          "quick_sort",
-          "heap_sort",
-          "shell_sort",
-          "hybrid_sort"
+          "dijkstra_heap",
+          "dijkstra_array",
+          "bellman_ford",
+          "spfa",
+          "bfs_unit"
         ],
         "regimes": [
-          "random",
-          "nearly_sorted",
-          "reversed",
-          "few_unique"
+          "sparse_random",
+          "dense_random",
+          "grid_2d",
+          "unit_weight"
         ],
         "sizes": [
-          256,
-          1024,
-          4096
+          512
         ],
-        "trials": 7,
-        "seed": 20260809,
+        "trials": 5,
+        "seed": 5242,
         "timeout_s": 600,
         "hypothesis_ids": [
-          "hyp_38e7e1fe16"
+          "hyp_96edc044f0"
         ]
       },
       "status": "completed",
-      "dir": "experiments/exp_48613ed686",
-      "duration_s": 12.307914178000004,
+      "dir": "experiments/exp_80c64940b6",
+      "duration_s": 2.946184303999985,
       "summary": {
-        "measurements": 72
+        "measurements": 20
       },
       "error": "",
-      "created_at": 1786391477.6965694,
-      "finished_at": 1786391490.0085838
+      "created_at": 1786627404.624191,
+      "finished_at": 1786627407.5739236
     },
-    "exp_42d46105c8": {
-      "id": "exp_42d46105c8",
-      "title": "Benchmark round 3 covering 1 hypothesis(es)",
+    "exp_3079fc8021": {
+      "id": "exp_3079fc8021",
+      "title": "Replication of hyp_e6bc85dbcd",
       "hypothesis_ids": [
-        "hyp_bf17e1f36c"
-      ],
-      "design": {
-        "kind": "sweep",
-        "round": 3,
-        "algorithms": [
-          "hybrid_c8",
-          "hybrid_c16",
-          "hybrid_c32",
-          "hybrid_c64"
-        ],
-        "regimes": [
-          "random",
-          "nearly_sorted",
-          "reversed",
-          "few_unique"
-        ],
-        "sizes": [
-          4096
-        ],
-        "trials": 7,
-        "seed": 20260809,
-        "timeout_s": 600,
-        "hypothesis_ids": [
-          "hyp_bf17e1f36c"
-        ]
-      },
-      "status": "completed",
-      "dir": "experiments/exp_42d46105c8",
-      "duration_s": 0.8071633440000028,
-      "summary": {
-        "measurements": 16
-      },
-      "error": "",
-      "created_at": 1786391490.0176175,
-      "finished_at": 1786391490.827052
-    },
-    "exp_2593d8e300": {
-      "id": "exp_2593d8e300",
-      "title": "Benchmark round 5 covering 1 hypothesis(es)",
-      "hypothesis_ids": [
-        "hyp_40df9834c7"
+        "hyp_e6bc85dbcd"
       ],
       "design": {
         "kind": "benchmark",
-        "round": 5,
+        "round": 2,
         "algorithms": [
-          "insertion_sort",
-          "merge_sort",
-          "quick_sort",
-          "heap_sort",
-          "shell_sort"
+          "dijkstra_heap",
+          "dijkstra_array",
+          "bellman_ford",
+          "spfa",
+          "bfs_unit"
         ],
         "regimes": [
-          "random",
-          "nearly_sorted"
+          "sparse_random",
+          "dense_random",
+          "grid_2d",
+          "unit_weight"
         ],
         "sizes": [
-          256,
+          512
+        ],
+        "trials": 5,
+        "seed": 5242,
+        "timeout_s": 600,
+        "hypothesis_ids": [
+          "hyp_e6bc85dbcd"
+        ]
+      },
+      "status": "completed",
+      "dir": "experiments/exp_3079fc8021",
+      "duration_s": 2.9950952399999835,
+      "summary": {
+        "measurements": 20
+      },
+      "error": "",
+      "created_at": 1786627407.58308,
+      "finished_at": 1786627410.5816395
+    },
+    "exp_6bd2d789f8": {
+      "id": "exp_6bd2d789f8",
+      "title": "Replication of hyp_0eae29898f",
+      "hypothesis_ids": [
+        "hyp_0eae29898f"
+      ],
+      "design": {
+        "kind": "benchmark",
+        "round": 2,
+        "algorithms": [
+          "dijkstra_heap",
+          "dijkstra_array",
+          "bellman_ford",
+          "spfa",
+          "bfs_unit"
+        ],
+        "regimes": [
+          "sparse_random",
+          "dense_random",
+          "grid_2d",
+          "unit_weight"
+        ],
+        "sizes": [
+          512
+        ],
+        "trials": 5,
+        "seed": 5242,
+        "timeout_s": 600,
+        "hypothesis_ids": [
+          "hyp_0eae29898f"
+        ]
+      },
+      "status": "completed",
+      "dir": "experiments/exp_6bd2d789f8",
+      "duration_s": 3.074719651999999,
+      "summary": {
+        "measurements": 20
+      },
+      "error": "",
+      "created_at": 1786627410.5915163,
+      "finished_at": 1786627413.6695993
+    },
+    "exp_42efd0db8f": {
+      "id": "exp_42efd0db8f",
+      "title": "Falsification probe of hyp_e6bc85dbcd",
+      "hypothesis_ids": [
+        "hyp_e6bc85dbcd"
+      ],
+      "design": {
+        "kind": "falsification",
+        "round": 9,
+        "algorithms": [
+          "dijkstra_heap",
+          "dijkstra_array",
+          "bellman_ford",
+          "spfa",
+          "bfs_unit"
+        ],
+        "regimes": [
+          "long_chain",
+          "scale_free",
+          "sparse_random"
+        ],
+        "sizes": [
           1024
         ],
-        "trials": 7,
-        "seed": 20260809,
+        "trials": 5,
+        "seed": 12019,
         "timeout_s": 600,
         "hypothesis_ids": [
-          "hyp_40df9834c7"
-        ]
-      },
-      "status": "completed",
-      "dir": "experiments/exp_2593d8e300",
-      "duration_s": 0.3698055320000009,
-      "summary": {
-        "measurements": 20
-      },
-      "error": "",
-      "created_at": 1786391490.8343344,
-      "finished_at": 1786391491.207098
-    },
-    "exp_409be65fa9": {
-      "id": "exp_409be65fa9",
-      "title": "Benchmark round 1 covering 1 hypothesis(es)",
-      "hypothesis_ids": [
-        "hyp_f1699d47b3"
-      ],
-      "design": {
-        "kind": "benchmark",
-        "round": 1,
-        "algorithms": [
-          "insertion_sort",
-          "merge_sort",
-          "quick_sort",
-          "heap_sort",
-          "shell_sort"
-        ],
-        "regimes": [
-          "random",
-          "nearly_sorted",
-          "reversed",
-          "few_unique"
-        ],
-        "sizes": [
-          256,
-          1024,
-          4096
-        ],
-        "trials": 7,
-        "seed": 20260809,
-        "timeout_s": 600,
-        "hypothesis_ids": [
-          "hyp_f1699d47b3"
-        ]
-      },
-      "status": "completed",
-      "dir": "experiments/exp_409be65fa9",
-      "duration_s": 12.129897559,
-      "summary": {
-        "measurements": 60
-      },
-      "error": "",
-      "created_at": 1786391491.2144196,
-      "finished_at": 1786391503.3478963
-    },
-    "exp_dac3afe6aa": {
-      "id": "exp_dac3afe6aa",
-      "title": "Replication of hyp_dbe5f386a7",
-      "hypothesis_ids": [
-        "hyp_dbe5f386a7"
-      ],
-      "design": {
-        "kind": "replication",
-        "round": 0,
-        "algorithms": [
-          "insertion_sort",
-          "merge_sort",
-          "quick_sort",
-          "heap_sort",
-          "shell_sort"
-        ],
-        "regimes": [
-          "random",
-          "nearly_sorted",
-          "reversed",
-          "few_unique"
-        ],
-        "sizes": [
-          4096
-        ],
-        "trials": 7,
-        "seed": 20261809,
-        "timeout_s": 600,
-        "hypothesis_ids": [
-          "hyp_dbe5f386a7"
-        ]
-      },
-      "status": "completed",
-      "dir": "experiments/exp_dac3afe6aa",
-      "duration_s": 11.63968151200001,
-      "summary": {
-        "measurements": 20
-      },
-      "error": "",
-      "created_at": 1786391503.3611174,
-      "finished_at": 1786391515.0036576
-    },
-    "exp_ac020259d2": {
-      "id": "exp_ac020259d2",
-      "title": "Replication of hyp_cae1c60f85",
-      "hypothesis_ids": [
-        "hyp_cae1c60f85"
-      ],
-      "design": {
-        "kind": "replication",
-        "round": 0,
-        "algorithms": [
-          "insertion_sort",
-          "merge_sort",
-          "quick_sort",
-          "heap_sort",
-          "shell_sort"
-        ],
-        "regimes": [
-          "random",
-          "nearly_sorted",
-          "reversed",
-          "few_unique"
-        ],
-        "sizes": [
-          4096
-        ],
-        "trials": 7,
-        "seed": 20261809,
-        "timeout_s": 600,
-        "hypothesis_ids": [
-          "hyp_cae1c60f85"
-        ]
-      },
-      "status": "completed",
-      "dir": "experiments/exp_ac020259d2",
-      "duration_s": 11.08219334799999,
-      "summary": {
-        "measurements": 20
-      },
-      "error": "",
-      "created_at": 1786391515.0119762,
-      "finished_at": 1786391526.096881
-    },
-    "exp_13f5f8410a": {
-      "id": "exp_13f5f8410a",
-      "title": "Replication of hyp_40df9834c7",
-      "hypothesis_ids": [
-        "hyp_40df9834c7"
-      ],
-      "design": {
-        "kind": "replication",
-        "round": 0,
-        "algorithms": [
-          "insertion_sort",
-          "merge_sort",
-          "quick_sort",
-          "heap_sort",
-          "shell_sort"
-        ],
-        "regimes": [
-          "random",
-          "nearly_sorted",
-          "reversed",
-          "few_unique"
-        ],
-        "sizes": [
-          4096
-        ],
-        "trials": 7,
-        "seed": 20261809,
-        "timeout_s": 600,
-        "hypothesis_ids": [
-          "hyp_40df9834c7"
-        ]
-      },
-      "status": "completed",
-      "dir": "experiments/exp_13f5f8410a",
-      "duration_s": 11.395172479000024,
-      "summary": {
-        "measurements": 20
-      },
-      "error": "",
-      "created_at": 1786391526.1055799,
-      "finished_at": 1786391537.503906
-    },
-    "exp_1351d074bc": {
-      "id": "exp_1351d074bc",
-      "title": "Replication of hyp_38e7e1fe16",
-      "hypothesis_ids": [
-        "hyp_38e7e1fe16"
-      ],
-      "design": {
-        "kind": "replication",
-        "round": 0,
-        "algorithms": [
-          "insertion_sort",
-          "merge_sort",
-          "quick_sort",
-          "heap_sort",
-          "shell_sort",
-          "hybrid_sort"
-        ],
-        "regimes": [
-          "random",
-          "nearly_sorted",
-          "reversed",
-          "few_unique"
-        ],
-        "sizes": [
-          4096
-        ],
-        "trials": 7,
-        "seed": 20261809,
-        "timeout_s": 600,
-        "hypothesis_ids": [
-          "hyp_38e7e1fe16"
-        ]
-      },
-      "status": "completed",
-      "dir": "experiments/exp_1351d074bc",
-      "duration_s": 11.389490926999997,
-      "summary": {
-        "measurements": 24
-      },
-      "error": "",
-      "created_at": 1786391537.5131633,
-      "finished_at": 1786391548.905799
-    },
-    "exp_9c23de511f": {
-      "id": "exp_9c23de511f",
-      "title": "Falsification probe of hyp_dbe5f386a7",
-      "hypothesis_ids": [
-        "hyp_dbe5f386a7"
-      ],
-      "design": {
-        "kind": "falsification",
-        "round": 9,
-        "algorithms": [
-          "insertion_sort",
-          "merge_sort",
-          "quick_sort",
-          "heap_sort",
-          "shell_sort"
-        ],
-        "regimes": [
-          "nearly_sorted",
-          "organ_pipe",
-          "random",
-          "sawtooth"
-        ],
-        "sizes": [
-          8192
-        ],
-        "trials": 7,
-        "seed": 20268586,
-        "timeout_s": 600,
-        "hypothesis_ids": [
-          "hyp_dbe5f386a7"
+          "hyp_e6bc85dbcd"
         ],
         "probe_checks": [
           {
-            "label": "boundary:nearly_sorted",
+            "label": "boundary:sparse_random",
             "check": {
-              "type": "fastest_on",
-              "algorithm": "insertion_sort",
-              "regime": "nearly_sorted"
+              "type": "fewer_relaxations",
+              "algorithm": "spfa",
+              "than": "bellman_ford",
+              "regime": "sparse_random"
             },
             "role": "boundary"
           },
           {
-            "label": "scope:sawtooth",
+            "label": "scope:long_chain",
             "check": {
-              "type": "fastest_on",
-              "algorithm": "insertion_sort",
-              "regime": "sawtooth"
+              "type": "fewer_relaxations",
+              "algorithm": "spfa",
+              "than": "bellman_ford",
+              "regime": "long_chain"
             },
             "role": "scope"
           },
           {
-            "label": "scope:organ_pipe",
+            "label": "scope:scale_free",
             "check": {
-              "type": "fastest_on",
-              "algorithm": "insertion_sort",
-              "regime": "organ_pipe"
-            },
-            "role": "scope"
-          },
-          {
-            "label": "boundary:random",
-            "check": {
-              "type": "slowest_on",
-              "algorithm": "insertion_sort",
-              "regime": "random"
-            },
-            "role": "boundary"
-          },
-          {
-            "label": "scope:sawtooth",
-            "check": {
-              "type": "slowest_on",
-              "algorithm": "insertion_sort",
-              "regime": "sawtooth"
-            },
-            "role": "scope"
-          },
-          {
-            "label": "scope:organ_pipe",
-            "check": {
-              "type": "slowest_on",
-              "algorithm": "insertion_sort",
-              "regime": "organ_pipe"
+              "type": "fewer_relaxations",
+              "algorithm": "spfa",
+              "than": "bellman_ford",
+              "regime": "scale_free"
             },
             "role": "scope"
           }
         ]
       },
       "status": "completed",
-      "dir": "experiments/exp_9c23de511f",
-      "duration_s": 34.72614417300002,
-      "summary": {
-        "measurements": 20
-      },
-      "error": "",
-      "created_at": 1786391548.914795,
-      "finished_at": 1786391583.6442354
-    },
-    "exp_98238f5fae": {
-      "id": "exp_98238f5fae",
-      "title": "Falsification probe of hyp_cae1c60f85",
-      "hypothesis_ids": [
-        "hyp_cae1c60f85"
-      ],
-      "design": {
-        "kind": "falsification",
-        "round": 9,
-        "algorithms": [
-          "insertion_sort",
-          "merge_sort",
-          "quick_sort",
-          "heap_sort",
-          "shell_sort"
-        ],
-        "regimes": [
-          "organ_pipe",
-          "random",
-          "reversed",
-          "sawtooth"
-        ],
-        "sizes": [
-          8192
-        ],
-        "trials": 7,
-        "seed": 20268586,
-        "timeout_s": 600,
-        "hypothesis_ids": [
-          "hyp_cae1c60f85"
-        ],
-        "probe_checks": [
-          {
-            "label": "boundary:random",
-            "check": {
-              "type": "within_pct_of_best",
-              "algorithm": "quick_sort",
-              "regime": "random",
-              "pct": 25
-            },
-            "role": "boundary"
-          },
-          {
-            "label": "scope:sawtooth",
-            "check": {
-              "type": "within_pct_of_best",
-              "algorithm": "quick_sort",
-              "regime": "sawtooth",
-              "pct": 25
-            },
-            "role": "scope"
-          },
-          {
-            "label": "scope:organ_pipe",
-            "check": {
-              "type": "within_pct_of_best",
-              "algorithm": "quick_sort",
-              "regime": "organ_pipe",
-              "pct": 25
-            },
-            "role": "scope"
-          },
-          {
-            "label": "boundary:reversed",
-            "check": {
-              "type": "within_pct_of_best",
-              "algorithm": "quick_sort",
-              "regime": "reversed",
-              "pct": 200
-            },
-            "role": "boundary"
-          },
-          {
-            "label": "scope:sawtooth",
-            "check": {
-              "type": "within_pct_of_best",
-              "algorithm": "quick_sort",
-              "regime": "sawtooth",
-              "pct": 200
-            },
-            "role": "scope"
-          },
-          {
-            "label": "scope:organ_pipe",
-            "check": {
-              "type": "within_pct_of_best",
-              "algorithm": "quick_sort",
-              "regime": "organ_pipe",
-              "pct": 200
-            },
-            "role": "scope"
-          }
-        ]
-      },
-      "status": "completed",
-      "dir": "experiments/exp_98238f5fae",
-      "duration_s": 56.287834868999994,
-      "summary": {
-        "measurements": 20
-      },
-      "error": "",
-      "created_at": 1786391583.6537929,
-      "finished_at": 1786391639.9455419
-    },
-    "exp_6590a2f6db": {
-      "id": "exp_6590a2f6db",
-      "title": "Falsification probe of hyp_40df9834c7",
-      "hypothesis_ids": [
-        "hyp_40df9834c7"
-      ],
-      "design": {
-        "kind": "falsification",
-        "round": 9,
-        "algorithms": [
-          "insertion_sort",
-          "merge_sort",
-          "quick_sort",
-          "heap_sort",
-          "shell_sort"
-        ],
-        "regimes": [
-          "organ_pipe",
-          "random",
-          "sawtooth"
-        ],
-        "sizes": [
-          8192
-        ],
-        "trials": 7,
-        "seed": 20268586,
-        "timeout_s": 600,
-        "hypothesis_ids": [
-          "hyp_40df9834c7"
-        ],
-        "probe_checks": [
-          {
-            "label": "boundary:random",
-            "check": {
-              "type": "beats",
-              "algorithm": "shell_sort",
-              "than": "insertion_sort",
-              "regime": "random",
-              "min_pct": 0.0
-            },
-            "role": "boundary"
-          },
-          {
-            "label": "scope:sawtooth",
-            "check": {
-              "type": "beats",
-              "algorithm": "shell_sort",
-              "than": "insertion_sort",
-              "regime": "sawtooth",
-              "min_pct": 0.0
-            },
-            "role": "scope"
-          },
-          {
-            "label": "scope:organ_pipe",
-            "check": {
-              "type": "beats",
-              "algorithm": "shell_sort",
-              "than": "insertion_sort",
-              "regime": "organ_pipe",
-              "min_pct": 0.0
-            },
-            "role": "scope"
-          }
-        ]
-      },
-      "status": "completed",
-      "dir": "experiments/exp_6590a2f6db",
-      "duration_s": 34.710108374000015,
+      "dir": "experiments/exp_42efd0db8f",
+      "duration_s": 1.081210040000002,
       "summary": {
         "measurements": 15
       },
       "error": "",
-      "created_at": 1786391639.954745,
-      "finished_at": 1786391674.668155
+      "created_at": 1786627413.6877563,
+      "finished_at": 1786627414.7720768
     },
-    "exp_20b306145c": {
-      "id": "exp_20b306145c",
-      "title": "Falsification probe of hyp_38e7e1fe16",
+    "exp_31f8e1690f": {
+      "id": "exp_31f8e1690f",
+      "title": "Falsification probe of hyp_0eae29898f",
       "hypothesis_ids": [
-        "hyp_38e7e1fe16"
+        "hyp_0eae29898f"
       ],
       "design": {
         "kind": "falsification",
         "round": 9,
         "algorithms": [
-          "insertion_sort",
-          "merge_sort",
-          "quick_sort",
-          "heap_sort",
-          "shell_sort",
-          "hybrid_sort"
+          "dijkstra_heap",
+          "dijkstra_array",
+          "bellman_ford",
+          "spfa",
+          "bfs_unit"
         ],
         "regimes": [
-          "nearly_sorted",
-          "organ_pipe",
-          "random",
-          "sawtooth"
+          "long_chain",
+          "scale_free",
+          "unit_weight"
         ],
         "sizes": [
-          8192
+          1024
         ],
-        "trials": 7,
-        "seed": 20268586,
+        "trials": 5,
+        "seed": 12019,
         "timeout_s": 600,
         "hypothesis_ids": [
-          "hyp_38e7e1fe16"
+          "hyp_0eae29898f"
         ],
         "probe_checks": [
           {
-            "label": "boundary:random",
+            "label": "boundary:unit_weight",
             "check": {
-              "type": "beats",
-              "algorithm": "hybrid_sort",
-              "than": "merge_sort",
-              "regime": "random",
-              "min_pct": 5
+              "type": "correct_on",
+              "algorithm": "bfs_unit",
+              "regime": "unit_weight"
             },
             "role": "boundary"
           },
           {
-            "label": "scope:sawtooth",
+            "label": "scope:long_chain",
             "check": {
-              "type": "beats",
-              "algorithm": "hybrid_sort",
-              "than": "merge_sort",
-              "regime": "sawtooth",
-              "min_pct": 5
+              "type": "correct_on",
+              "algorithm": "bfs_unit",
+              "regime": "long_chain"
             },
             "role": "scope"
           },
           {
-            "label": "scope:organ_pipe",
+            "label": "scope:scale_free",
             "check": {
-              "type": "beats",
-              "algorithm": "hybrid_sort",
-              "than": "merge_sort",
-              "regime": "organ_pipe",
-              "min_pct": 5
-            },
-            "role": "scope"
-          },
-          {
-            "label": "boundary:nearly_sorted",
-            "check": {
-              "type": "beats",
-              "algorithm": "hybrid_sort",
-              "than": "merge_sort",
-              "regime": "nearly_sorted",
-              "min_pct": 0
-            },
-            "role": "boundary"
-          },
-          {
-            "label": "scope:sawtooth",
-            "check": {
-              "type": "beats",
-              "algorithm": "hybrid_sort",
-              "than": "merge_sort",
-              "regime": "sawtooth",
-              "min_pct": 0
-            },
-            "role": "scope"
-          },
-          {
-            "label": "scope:organ_pipe",
-            "check": {
-              "type": "beats",
-              "algorithm": "hybrid_sort",
-              "than": "merge_sort",
-              "regime": "organ_pipe",
-              "min_pct": 0
+              "type": "correct_on",
+              "algorithm": "bfs_unit",
+              "regime": "scale_free"
             },
             "role": "scope"
           }
         ]
       },
       "status": "completed",
-      "dir": "experiments/exp_20b306145c",
-      "duration_s": 35.23332075500002,
+      "dir": "experiments/exp_31f8e1690f",
+      "duration_s": 0.9737216869999941,
       "summary": {
-        "measurements": 24
+        "measurements": 15
       },
       "error": "",
-      "created_at": 1786391674.6783757,
-      "finished_at": 1786391709.915607
+      "created_at": 1786627414.784229,
+      "finished_at": 1786627415.7617817
     }
   },
   "decisions": [
     {
-      "id": "dec_4df4558dd8",
-      "step": 3,
+      "id": "dec_1b5016b056",
+      "step": 0,
       "context": "select_investigation",
       "options": [
         {
-          "label": "hyp_dbe5f386a7",
-          "score": 1.0,
-          "reason": "importance 1.0, evidence 0, cost 1.0"
-        },
-        {
-          "label": "hyp_fa035de7df",
-          "score": 1.0,
-          "reason": "importance 1.0, evidence 0, cost 1.0"
-        },
-        {
-          "label": "hyp_cae1c60f85",
+          "label": "hyp_0eae29898f",
           "score": 0.9,
           "reason": "importance 0.9, evidence 0, cost 1.0"
         },
         {
-          "label": "hyp_ad33a3dcb5",
+          "label": "hyp_f3a5a9f693",
           "score": 0.8,
           "reason": "importance 0.8, evidence 0, cost 1.0"
         },
         {
-          "label": "hyp_40df9834c7",
-          "score": 0.6,
-          "reason": "importance 0.6, evidence 0, cost 1.0"
+          "label": "hyp_6076ea0451",
+          "score": 0.75,
+          "reason": "importance 0.75, evidence 0, cost 1.0"
         },
         {
-          "label": "hyp_f1699d47b3",
-          "score": 0.45,
-          "reason": "importance 0.45, evidence 0, cost 1.0"
+          "label": "hyp_96edc044f0",
+          "score": 0.7,
+          "reason": "importance 0.7, evidence 0, cost 1.0"
+        },
+        {
+          "label": "hyp_e6bc85dbcd",
+          "score": 0.7,
+          "reason": "importance 0.7, evidence 0, cost 1.0"
         }
       ],
-      "chosen": "hyp_dbe5f386a7",
-      "reason": "highest expected information gain per unit cost; experiment co-tests 4 hypothesis(es)",
-      "ts": 1786391465.6703813
+      "chosen": "hyp_0eae29898f",
+      "reason": "highest expected information gain per unit cost; experiment co-tests 5 hypothesis(es)",
+      "ts": 1786627400.8389466
     },
     {
-      "id": "dec_5f5ca9a147",
+      "id": "dec_c845daf9ca",
+      "step": 2,
+      "context": "critic_replication",
+      "options": [
+        {
+          "label": "hyp_96edc044f0",
+          "score": 1.0,
+          "reason": "supported by a single experiment only"
+        }
+      ],
+      "chosen": "hyp_96edc044f0",
+      "reason": "critic refuses single-experiment support; independent replication with new seeds",
+      "ts": 1786627404.6240258
+    },
+    {
+      "id": "dec_0a660cc569",
+      "step": 3,
+      "context": "critic_replication",
+      "options": [
+        {
+          "label": "hyp_e6bc85dbcd",
+          "score": 1.0,
+          "reason": "supported by a single experiment only"
+        }
+      ],
+      "chosen": "hyp_e6bc85dbcd",
+      "reason": "critic refuses single-experiment support; independent replication with new seeds",
+      "ts": 1786627407.582921
+    },
+    {
+      "id": "dec_3027f006a7",
       "step": 4,
-      "context": "select_investigation",
+      "context": "critic_replication",
       "options": [
         {
-          "label": "hyp_38e7e1fe16",
+          "label": "hyp_0eae29898f",
           "score": 1.0,
-          "reason": "importance 1.2, evidence 0, cost 1.2"
-        },
-        {
-          "label": "hyp_40df9834c7",
-          "score": 0.6,
-          "reason": "importance 0.6, evidence 0, cost 1.0"
-        },
-        {
-          "label": "hyp_f1699d47b3",
-          "score": 0.45,
-          "reason": "importance 0.45, evidence 0, cost 1.0"
+          "reason": "supported by a single experiment only"
         }
       ],
-      "chosen": "hyp_38e7e1fe16",
-      "reason": "highest expected information gain per unit cost; experiment co-tests 1 hypothesis(es)",
-      "ts": 1786391477.6964126
+      "chosen": "hyp_0eae29898f",
+      "reason": "critic refuses single-experiment support; independent replication with new seeds",
+      "ts": 1786627410.5912945
     },
     {
-      "id": "dec_ff4dff5756",
-      "step": 5,
-      "context": "select_investigation",
-      "options": [
-        {
-          "label": "hyp_bf17e1f36c",
-          "score": 1.187,
-          "reason": "importance 0.95, evidence 0, cost 0.8"
-        },
-        {
-          "label": "hyp_40df9834c7",
-          "score": 0.6,
-          "reason": "importance 0.6, evidence 0, cost 1.0"
-        },
-        {
-          "label": "hyp_f1699d47b3",
-          "score": 0.45,
-          "reason": "importance 0.45, evidence 0, cost 1.0"
-        }
-      ],
-      "chosen": "hyp_bf17e1f36c",
-      "reason": "highest expected information gain per unit cost; experiment co-tests 1 hypothesis(es)",
-      "ts": 1786391490.017457
-    },
-    {
-      "id": "dec_08756668a2",
+      "id": "dec_7e72e54e06",
       "step": 6,
-      "context": "select_investigation",
+      "context": "critic_falsification",
       "options": [
         {
-          "label": "hyp_40df9834c7",
-          "score": 0.6,
-          "reason": "importance 0.6, evidence 0, cost 1.0"
-        },
-        {
-          "label": "hyp_f1699d47b3",
-          "score": 0.45,
-          "reason": "importance 0.45, evidence 0, cost 1.0"
+          "label": "hyp_e6bc85dbcd",
+          "score": 1.0,
+          "reason": "replicated conclusion must survive boundary + unseen-regime probes"
         }
       ],
-      "chosen": "hyp_40df9834c7",
-      "reason": "highest expected information gain per unit cost; experiment co-tests 1 hypothesis(es)",
-      "ts": 1786391490.834191
+      "chosen": "hyp_e6bc85dbcd",
+      "reason": "falsification probes: boundary:sparse_random, scope:long_chain, scope:scale_free",
+      "ts": 1786627413.6875815
     },
     {
-      "id": "dec_1ad65f04dd",
+      "id": "dec_f07ea02b70",
       "step": 7,
-      "context": "select_investigation",
-      "options": [
-        {
-          "label": "hyp_f1699d47b3",
-          "score": 0.45,
-          "reason": "importance 0.45, evidence 0, cost 1.0"
-        }
-      ],
-      "chosen": "hyp_f1699d47b3",
-      "reason": "highest expected information gain per unit cost; experiment co-tests 1 hypothesis(es)",
-      "ts": 1786391491.214269
-    },
-    {
-      "id": "dec_e6c431c729",
-      "step": 9,
-      "context": "critic_replication",
-      "options": [
-        {
-          "label": "hyp_dbe5f386a7",
-          "score": 1.0,
-          "reason": "supported by a single experiment only"
-        }
-      ],
-      "chosen": "hyp_dbe5f386a7",
-      "reason": "critic refuses single-experiment support; independent replication with new seeds",
-      "ts": 1786391503.3608744
-    },
-    {
-      "id": "dec_ad70fbced8",
-      "step": 10,
-      "context": "critic_replication",
-      "options": [
-        {
-          "label": "hyp_cae1c60f85",
-          "score": 1.0,
-          "reason": "supported by a single experiment only"
-        }
-      ],
-      "chosen": "hyp_cae1c60f85",
-      "reason": "critic refuses single-experiment support; independent replication with new seeds",
-      "ts": 1786391515.0117714
-    },
-    {
-      "id": "dec_049a98894b",
-      "step": 11,
-      "context": "critic_replication",
-      "options": [
-        {
-          "label": "hyp_40df9834c7",
-          "score": 1.0,
-          "reason": "supported by a single experiment only"
-        }
-      ],
-      "chosen": "hyp_40df9834c7",
-      "reason": "critic refuses single-experiment support; independent replication with new seeds",
-      "ts": 1786391526.1053867
-    },
-    {
-      "id": "dec_b0f759da9e",
-      "step": 12,
-      "context": "critic_replication",
-      "options": [
-        {
-          "label": "hyp_38e7e1fe16",
-          "score": 1.0,
-          "reason": "supported by a single experiment only"
-        }
-      ],
-      "chosen": "hyp_38e7e1fe16",
-      "reason": "critic refuses single-experiment support; independent replication with new seeds",
-      "ts": 1786391537.512964
-    },
-    {
-      "id": "dec_e98a51738b",
-      "step": 13,
       "context": "critic_falsification",
       "options": [
         {
-          "label": "hyp_dbe5f386a7",
+          "label": "hyp_0eae29898f",
           "score": 1.0,
           "reason": "replicated conclusion must survive boundary + unseen-regime probes"
         }
       ],
-      "chosen": "hyp_dbe5f386a7",
-      "reason": "falsification probes: boundary:nearly_sorted, scope:sawtooth, scope:organ_pipe, boundary:random, scope:sawtooth, scope:organ_pipe",
-      "ts": 1786391548.9145293
-    },
-    {
-      "id": "dec_0848670097",
-      "step": 14,
-      "context": "critic_falsification",
-      "options": [
-        {
-          "label": "hyp_cae1c60f85",
-          "score": 1.0,
-          "reason": "replicated conclusion must survive boundary + unseen-regime probes"
-        }
-      ],
-      "chosen": "hyp_cae1c60f85",
-      "reason": "falsification probes: boundary:random, scope:sawtooth, scope:organ_pipe, boundary:reversed, scope:sawtooth, scope:organ_pipe",
-      "ts": 1786391583.65357
-    },
-    {
-      "id": "dec_9666121e95",
-      "step": 15,
-      "context": "critic_falsification",
-      "options": [
-        {
-          "label": "hyp_40df9834c7",
-          "score": 1.0,
-          "reason": "replicated conclusion must survive boundary + unseen-regime probes"
-        }
-      ],
-      "chosen": "hyp_40df9834c7",
-      "reason": "falsification probes: boundary:random, scope:sawtooth, scope:organ_pipe",
-      "ts": 1786391639.9545238
-    },
-    {
-      "id": "dec_730b51cc8d",
-      "step": 16,
-      "context": "critic_falsification",
-      "options": [
-        {
-          "label": "hyp_38e7e1fe16",
-          "score": 1.0,
-          "reason": "replicated conclusion must survive boundary + unseen-regime probes"
-        }
-      ],
-      "chosen": "hyp_38e7e1fe16",
-      "reason": "falsification probes: boundary:random, scope:sawtooth, scope:organ_pipe, boundary:nearly_sorted, scope:sawtooth, scope:organ_pipe",
-      "ts": 1786391674.6780627
+      "chosen": "hyp_0eae29898f",
+      "reason": "falsification probes: boundary:unit_weight, scope:long_chain, scope:scale_free",
+      "ts": 1786627414.784053
     }
   ],
   "graph": {
-    "entities": {
-      "ent_08844cbd09": {
-        "id": "ent_08844cbd09",
-        "name": "quick_sort",
-        "kind": "algorithm"
-      },
-      "ent_0578f1f635": {
-        "id": "ent_0578f1f635",
-        "name": "random",
-        "kind": "input_regime"
-      },
-      "ent_5f7e047abc": {
-        "id": "ent_5f7e047abc",
-        "name": "insertion_sort",
-        "kind": "algorithm"
-      },
-      "ent_60eca93785": {
-        "id": "ent_60eca93785",
-        "name": "nearly_sorted",
-        "kind": "input_regime"
-      },
-      "ent_767ab97ea5": {
-        "id": "ent_767ab97ea5",
-        "name": "reversed",
-        "kind": "input_regime"
-      },
-      "ent_2d967cbd3b": {
-        "id": "ent_2d967cbd3b",
-        "name": "few_unique",
-        "kind": "input_regime"
-      },
-      "ent_3e8f55a241": {
-        "id": "ent_3e8f55a241",
-        "name": "hybrid_sort",
-        "kind": "algorithm"
-      },
-      "ent_e210ff12cd": {
-        "id": "ent_e210ff12cd",
-        "name": "merge_sort",
-        "kind": "algorithm"
-      }
-    },
-    "relations": {
-      "rel_576203033a": {
-        "id": "rel_576203033a",
-        "subj": "ent_08844cbd09",
-        "pred": "fastest_on",
-        "obj": "ent_0578f1f635",
-        "confidence": 0.9,
-        "evidence_ids": [
-          "evd_6632bf5051",
-          "evd_694edfaf72",
-          "evd_8154955858",
-          "evd_29dc192093",
-          "evd_9126722f3b",
-          "evd_1bbf2017f2",
-          "evd_4137776c99",
-          "evd_4ac9395f7d",
-          "evd_533eb22ed5",
-          "evd_fb8bcda184",
-          "evd_5e7a292654",
-          "evd_2718a24c25",
-          "evd_009948521d",
-          "evd_0f71b453e4"
-        ],
-        "created_at": 1786391477.6913633
-      },
-      "rel_5c0d6c225a": {
-        "id": "rel_5c0d6c225a",
-        "subj": "ent_5f7e047abc",
-        "pred": "fastest_on",
-        "obj": "ent_60eca93785",
-        "confidence": 0.9,
-        "evidence_ids": [
-          "evd_6632bf5051",
-          "evd_694edfaf72",
-          "evd_8154955858",
-          "evd_29dc192093",
-          "evd_9126722f3b",
-          "evd_1bbf2017f2",
-          "evd_4137776c99",
-          "evd_4ac9395f7d",
-          "evd_533eb22ed5",
-          "evd_fb8bcda184",
-          "evd_5e7a292654",
-          "evd_2718a24c25",
-          "evd_009948521d",
-          "evd_0f71b453e4"
-        ],
-        "created_at": 1786391477.6913798
-      },
-      "rel_5498def184": {
-        "id": "rel_5498def184",
-        "subj": "ent_08844cbd09",
-        "pred": "fastest_on",
-        "obj": "ent_767ab97ea5",
-        "confidence": 0.9,
-        "evidence_ids": [
-          "evd_6632bf5051",
-          "evd_694edfaf72",
-          "evd_8154955858",
-          "evd_29dc192093",
-          "evd_9126722f3b",
-          "evd_4137776c99",
-          "evd_4ac9395f7d",
-          "evd_533eb22ed5",
-          "evd_fb8bcda184",
-          "evd_5e7a292654",
-          "evd_2718a24c25",
-          "evd_009948521d",
-          "evd_0f71b453e4"
-        ],
-        "created_at": 1786391477.6913908
-      },
-      "rel_6f65cc0183": {
-        "id": "rel_6f65cc0183",
-        "subj": "ent_08844cbd09",
-        "pred": "fastest_on",
-        "obj": "ent_2d967cbd3b",
-        "confidence": 0.9,
-        "evidence_ids": [
-          "evd_6632bf5051",
-          "evd_694edfaf72",
-          "evd_8154955858",
-          "evd_29dc192093",
-          "evd_9126722f3b",
-          "evd_4137776c99",
-          "evd_4ac9395f7d",
-          "evd_533eb22ed5",
-          "evd_fb8bcda184",
-          "evd_5e7a292654",
-          "evd_2718a24c25",
-          "evd_009948521d",
-          "evd_0f71b453e4"
-        ],
-        "created_at": 1786391477.6914012
-      },
-      "rel_0413448f20": {
-        "id": "rel_0413448f20",
-        "subj": "ent_3e8f55a241",
-        "pred": "derived_from",
-        "obj": "ent_e210ff12cd",
-        "confidence": 0.99,
-        "evidence_ids": [],
-        "created_at": 1786391477.6914968
-      },
-      "rel_aca565f8b3": {
-        "id": "rel_aca565f8b3",
-        "subj": "ent_3e8f55a241",
-        "pred": "derived_from",
-        "obj": "ent_5f7e047abc",
-        "confidence": 0.99,
-        "evidence_ids": [],
-        "created_at": 1786391477.6915064
-      }
-    },
+    "entities": {},
+    "relations": {},
     "contradictions": []
   },
   "assumptions": [
-    "Wall-clock time on a single machine/interpreter is an acceptable proxy for algorithmic cost at these sizes.",
-    "Pure-Python implementations are compared against each other only; C-accelerated builtins are out of scope for fairness.",
-    "The four tested input regimes are representative of the distributions of interest.",
+    "All graphs are connected and undirected with positive integer weights, so Dijkstra's preconditions hold.",
+    "Source vertex is always 0; results describe single-source shortest paths only.",
+    "Pure-Python implementations: constant factors dominate at these sizes and do not transfer to compiled implementations.",
+    "Edge relaxations are counted identically across candidates, so the count is comparable; wall-clock time is host-specific.",
     "All timings come from a single machine and interpreter; absolute numbers will not transfer, only rankings might.",
     "Conclusions hold only for the tested input regimes and sizes; extrapolation beyond them is speculation, not inference."
   ],
   "cautions": [
-    "[mock counterargument, unverified] Timing rankings at these sizes may be dominated by interpreter overhead rather than algorithmic behaviour. (targets hyp_dbe5f386a7)",
-    "High timing noise for winner in regime 'nearly_sorted' (stdev/mean = 0.30) in exp_1351d074bc; evidence strength capped."
+    "[mock counterargument, unverified] Timing rankings at these sizes may be dominated by interpreter overhead rather than algorithmic behaviour. (targets hyp_f3a5a9f693)",
+    "Topology 'sparse_random' at n=512 in exp_de9672a659: spfa has the lowest mean but is not separable from dijkstra_heap at 5 trials \u2014 no winner is claimed.",
+    "Topology 'dense_random' at n=512 in exp_de9672a659: dijkstra_heap has the lowest mean but is not separable from dijkstra_array, spfa at 5 trials \u2014 no winner is claimed.",
+    "Topology 'unit_weight' at n=512 in exp_de9672a659: spfa has the lowest mean but is not separable from bfs_unit at 5 trials \u2014 no winner is claimed.",
+    "hyp_f3a5a9f693: nothing resolvable at this trial count; treat as untested rather than disproved.",
+    "hyp_6076ea0451: nothing resolvable at this trial count; treat as untested rather than disproved.",
+    "Topology 'sparse_random' at n=512 in exp_80c64940b6: spfa has the lowest mean but is not separable from dijkstra_heap at 5 trials \u2014 no winner is claimed.",
+    "Topology 'dense_random' at n=512 in exp_80c64940b6: dijkstra_heap has the lowest mean but is not separable from spfa at 5 trials \u2014 no winner is claimed.",
+    "Topology 'grid_2d' at n=512 in exp_80c64940b6: dijkstra_heap has the lowest mean but is not separable from spfa at 5 trials \u2014 no winner is claimed.",
+    "Topology 'unit_weight' at n=512 in exp_80c64940b6: bfs_unit has the lowest mean but is not separable from spfa at 5 trials \u2014 no winner is claimed.",
+    "Topology 'dense_random' at n=512 in exp_3079fc8021: dijkstra_heap has the lowest mean but is not separable from spfa at 5 trials \u2014 no winner is claimed.",
+    "Topology 'grid_2d' at n=512 in exp_3079fc8021: spfa has the lowest mean but is not separable from dijkstra_heap at 5 trials \u2014 no winner is claimed.",
+    "Topology 'unit_weight' at n=512 in exp_3079fc8021: spfa has the lowest mean but is not separable from bfs_unit at 5 trials \u2014 no winner is claimed.",
+    "Topology 'sparse_random' at n=512 in exp_6bd2d789f8: spfa has the lowest mean but is not separable from dijkstra_heap at 5 trials \u2014 no winner is claimed.",
+    "Topology 'dense_random' at n=512 in exp_6bd2d789f8: dijkstra_heap has the lowest mean but is not separable from spfa at 5 trials \u2014 no winner is claimed.",
+    "Topology 'unit_weight' at n=512 in exp_6bd2d789f8: spfa has the lowest mean but is not separable from bfs_unit at 5 trials \u2014 no winner is claimed.",
+    "hyp_96edc044f0 could not be falsification-probed (prediction types not probeable); it remains provisionally supported, not accepted."
   ],
   "failures": [
     {
-      "experiment": "exp_c512323528",
-      "hypothesis": "hyp_fa035de7df",
-      "prediction": "merge_sort is fastest on random",
-      "expected": "merge_sort is fastest on random",
-      "observed": "fastest_on on 'random' is quick_sort, not merge_sort (71% apart, decisive) [n=4096, 7 trials]",
-      "action": "hypothesis status re-evaluated from evidence",
-      "ts": 1786391477.6909187
+      "experiment": "exp_de9672a659",
+      "hypothesis": "",
+      "kind": "incorrect_output",
+      "prediction": "(correctness)",
+      "expected": "distances equal to the reference",
+      "observed": "bfs_unit returned wrong distances on 'dense_random'",
+      "action": "candidate excluded from performance rankings on this topology",
+      "ts": 1786627404.607929
     },
     {
-      "experiment": "exp_c512323528",
-      "hypothesis": "hyp_ad33a3dcb5",
-      "prediction": "heap_sort has lowest mean relative stdev",
-      "expected": "heap_sort has lowest mean relative stdev",
-      "observed": "lowest mean relative stdev: merge_sort (0.050); next is quick_sort (0.063) [n=4096, 7 trials]",
-      "action": "hypothesis status re-evaluated from evidence",
-      "ts": 1786391477.691301
+      "experiment": "exp_de9672a659",
+      "hypothesis": "",
+      "kind": "incorrect_output",
+      "prediction": "(correctness)",
+      "expected": "distances equal to the reference",
+      "observed": "bfs_unit returned wrong distances on 'grid_2d'",
+      "action": "candidate excluded from performance rankings on this topology",
+      "ts": 1786627404.6080503
     },
     {
-      "experiment": "exp_409be65fa9",
-      "hypothesis": "hyp_f1699d47b3",
-      "prediction": "Heap sort beats shell sort on reversed input at the tested sizes.",
-      "expected": "Heap sort beats shell sort on reversed input at the tested sizes.",
-      "observed": "heap_sort is decisively SLOWER than shell_sort on 'reversed' (-30%) [n=4096, 7 trials]",
-      "action": "hypothesis status re-evaluated from evidence",
-      "ts": 1786391503.3501675
+      "experiment": "exp_de9672a659",
+      "hypothesis": "",
+      "kind": "incorrect_output",
+      "prediction": "(correctness)",
+      "expected": "distances equal to the reference",
+      "observed": "bfs_unit returned wrong distances on 'sparse_random'",
+      "action": "candidate excluded from performance rankings on this topology",
+      "ts": 1786627404.6081195
     }
   ],
   "falsifications": {
-    "fal_b906cdba93": {
-      "id": "fal_b906cdba93",
-      "hypothesis_id": "hyp_dbe5f386a7",
-      "experiment_id": "exp_9c23de511f",
-      "probe": "boundary:nearly_sorted, scope:sawtooth, scope:organ_pipe, boundary:random, scope:sawtooth, scope:organ_pipe",
-      "outcome": "survived",
-      "detail": "[boundary:nearly_sorted] confirmed: fastest_on on 'nearly_sorted' is insertion_sort (1.0 ms, margin 805% over quick_sort, separation 8.04 ms > required 1.07 ms) [n=8192, 7 trials] | [scope:sawtooth] refuted: fastest_on on 'sawtooth' is quick_sort, not insertion_sort (12945% apart, decisive) [n=8192, 7 trials] | [scope:organ_pipe] refuted: fastest_on on 'organ_pipe' is quick_sort, not insertion_sort (9380% apart, decisive) [n=8192, 7 trials] | [boundary:random] confirmed: slowest_on on 'random' is insertion_sort (1535.6 ms, margin 2749% over shell_sort, separation 1481.70 ms > required 35.63 ms) [n=8192, 7 trials] | [scope:sawtooth] confirmed: slowest_on on 'sawtooth' is insertion_sort (1462.1 ms, margin 2047% over shell_sort, separation 1393.96 ms > required 66.41 ms) [n=8192, 7 trials] | [scope:organ_pipe] confirmed: slowest_on on 'organ_pipe' is insertion_sort (1518.0 ms, margin 6277% over heap_sort, separation 1494.18 ms > required 35.71 ms) [n=8192, 7 trials]",
-      "ts": 1786391548.914493
+    "fal_4c2844c72c": {
+      "id": "fal_4c2844c72c",
+      "hypothesis_id": "hyp_96edc044f0",
+      "experiment_id": "",
+      "probe": "",
+      "outcome": "inconclusive",
+      "detail": "no probeable predictions for this hypothesis (its prediction types cannot be evaluated at boundary/unseen conditions)",
+      "ts": 1786627413.6801322
     },
-    "fal_f6910d0a1d": {
-      "id": "fal_f6910d0a1d",
-      "hypothesis_id": "hyp_cae1c60f85",
-      "experiment_id": "exp_98238f5fae",
-      "probe": "boundary:random, scope:sawtooth, scope:organ_pipe, boundary:reversed, scope:sawtooth, scope:organ_pipe",
+    "fal_f3ff9994cb": {
+      "id": "fal_f3ff9994cb",
+      "hypothesis_id": "hyp_e6bc85dbcd",
+      "experiment_id": "exp_42efd0db8f",
+      "probe": "boundary:sparse_random, scope:long_chain, scope:scale_free",
       "outcome": "survived",
-      "detail": "[boundary:random] confirmed: quick_sort is 0% off best on 'random' (limit 25%, uncertainty \u00b122%) [n=8192, 7 trials] | [scope:sawtooth] confirmed: quick_sort is 0% off best on 'sawtooth' (limit 25%, uncertainty \u00b18%) [n=8192, 7 trials] | [scope:organ_pipe] confirmed: quick_sort is 0% off best on 'organ_pipe' (limit 25%, uncertainty \u00b122%) [n=8192, 7 trials] | [boundary:reversed] confirmed: quick_sort is 0% off best on 'reversed' (limit 200%, uncertainty \u00b15%) [n=8192, 7 trials] | [scope:sawtooth] confirmed: quick_sort is 0% off best on 'sawtooth' (limit 200%, uncertainty \u00b18%) [n=8192, 7 trials] | [scope:organ_pipe] confirmed: quick_sort is 0% off best on 'organ_pipe' (limit 200%, uncertainty \u00b122%) [n=8192, 7 trials]",
-      "ts": 1786391583.6535444
+      "detail": "[boundary:sparse_random] confirmed: spfa performed 9,907 relaxations vs bellman_ford 42,980 on 'sparse_random' (+77%); exact counts, machine-independent [n=1024] | [scope:long_chain] confirmed: spfa performed 4,493 relaxations vs bellman_ford 150,360 on 'long_chain' (+97%); exact counts, machine-independent [n=1024] | [scope:scale_free] confirmed: spfa performed 5,410 relaxations vs bellman_ford 20,460 on 'scale_free' (+74%); exact counts, machine-independent [n=1024]",
+      "ts": 1786627413.687561
     },
-    "fal_2fff5113e5": {
-      "id": "fal_2fff5113e5",
-      "hypothesis_id": "hyp_40df9834c7",
-      "experiment_id": "exp_6590a2f6db",
-      "probe": "boundary:random, scope:sawtooth, scope:organ_pipe",
+    "fal_1325aa82ce": {
+      "id": "fal_1325aa82ce",
+      "hypothesis_id": "hyp_0eae29898f",
+      "experiment_id": "exp_31f8e1690f",
+      "probe": "boundary:unit_weight, scope:long_chain, scope:scale_free",
       "outcome": "survived",
-      "detail": "[boundary:random] confirmed: shell_sort vs insertion_sort on 'random': +2964% (needs >= 0.0%, decisive: gap 1526.07 ms > required 29.67 ms) [n=8192, 7 trials] | [scope:sawtooth] confirmed: shell_sort vs insertion_sort on 'sawtooth': +2231% (needs >= 0.0%, decisive: gap 1389.30 ms > required 43.08 ms) [n=8192, 7 trials] | [scope:organ_pipe] confirmed: shell_sort vs insertion_sort on 'organ_pipe': +7624% (needs >= 0.0%, decisive: gap 1544.09 ms > required 28.35 ms) [n=8192, 7 trials]",
-      "ts": 1786391639.9544933
-    },
-    "fal_bb2ac98787": {
-      "id": "fal_bb2ac98787",
-      "hypothesis_id": "hyp_38e7e1fe16",
-      "experiment_id": "exp_20b306145c",
-      "probe": "boundary:random, scope:sawtooth, scope:organ_pipe, boundary:nearly_sorted, scope:sawtooth, scope:organ_pipe",
-      "outcome": "survived",
-      "detail": "[boundary:random] confirmed: hybrid_sort vs merge_sort on 'random': +50% (needs >= 5%, decisive: gap 7.07 ms > required 1.59 ms) [n=8192, 7 trials] | [scope:sawtooth] confirmed: hybrid_sort vs merge_sort on 'sawtooth': +109% (needs >= 5%, decisive: gap 8.87 ms > required 1.23 ms) [n=8192, 7 trials] | [scope:organ_pipe] confirmed: hybrid_sort vs merge_sort on 'organ_pipe': +43% (needs >= 5%, decisive: gap 5.54 ms > required 2.27 ms) [n=8192, 7 trials] | [boundary:nearly_sorted] confirmed: hybrid_sort vs merge_sort on 'nearly_sorted': +164% (needs >= 0%, decisive: gap 9.35 ms > required 1.81 ms) [n=8192, 7 trials] | [scope:sawtooth] confirmed: hybrid_sort vs merge_sort on 'sawtooth': +109% (needs >= 0%, decisive: gap 8.87 ms > required 1.23 ms) [n=8192, 7 trials] | [scope:organ_pipe] confirmed: hybrid_sort vs merge_sort on 'organ_pipe': +43% (needs >= 0%, decisive: gap 5.54 ms > required 2.27 ms) [n=8192, 7 trials]",
-      "ts": 1786391674.6780396
+      "detail": "[boundary:unit_weight] confirmed: bfs_unit on 'unit_weight' returned correct distances [n=1024, 5 trials] | [scope:long_chain] refuted: bfs_unit on 'long_chain' returned INCORRECT distances [n=1024, 5 trials] | [scope:scale_free] refuted: bfs_unit on 'scale_free' returned INCORRECT distances [n=1024, 5 trials]",
+      "ts": 1786627414.7840285
     }
   },
   "confidence_history": [
     {
-      "ts": 1786391477.6906633,
+      "ts": 1786627404.6084528,
       "kind": "hypothesis",
-      "id": "hyp_dbe5f386a7",
-      "old": "under_test",
-      "new": "provisionally_supported",
-      "reason": "evidence from exp_c512323528"
-    },
-    {
-      "ts": 1786391477.6909297,
-      "kind": "hypothesis",
-      "id": "hyp_fa035de7df",
-      "old": "under_test",
-      "new": "rejected",
-      "reason": "evidence from exp_c512323528"
-    },
-    {
-      "ts": 1786391477.6912556,
-      "kind": "hypothesis",
-      "id": "hyp_cae1c60f85",
-      "old": "under_test",
-      "new": "provisionally_supported",
-      "reason": "evidence from exp_c512323528"
-    },
-    {
-      "ts": 1786391477.691335,
-      "kind": "hypothesis",
-      "id": "hyp_ad33a3dcb5",
+      "id": "hyp_f3a5a9f693",
       "old": "under_test",
       "new": "weakened",
-      "reason": "evidence from exp_c512323528"
+      "reason": "evidence from exp_de9672a659"
     },
     {
-      "ts": 1786391490.0118413,
+      "ts": 1786627404.6086206,
       "kind": "hypothesis",
-      "id": "hyp_38e7e1fe16",
-      "old": "under_test",
-      "new": "provisionally_supported",
-      "reason": "evidence from exp_48613ed686"
-    },
-    {
-      "ts": 1786391490.8287845,
-      "kind": "hypothesis",
-      "id": "hyp_bf17e1f36c",
+      "id": "hyp_6076ea0451",
       "old": "under_test",
       "new": "weakened",
-      "reason": "sweep exp_42d46105c8"
+      "reason": "evidence from exp_de9672a659"
     },
     {
-      "ts": 1786391490.8288207,
+      "ts": 1786627404.6086755,
+      "kind": "hypothesis",
+      "id": "hyp_96edc044f0",
+      "old": "under_test",
+      "new": "provisionally_supported",
+      "reason": "evidence from exp_de9672a659"
+    },
+    {
+      "ts": 1786627404.608702,
+      "kind": "hypothesis",
+      "id": "hyp_e6bc85dbcd",
+      "old": "under_test",
+      "new": "provisionally_supported",
+      "reason": "evidence from exp_de9672a659"
+    },
+    {
+      "ts": 1786627404.6087277,
+      "kind": "hypothesis",
+      "id": "hyp_0eae29898f",
+      "old": "under_test",
+      "new": "provisionally_supported",
+      "reason": "evidence from exp_de9672a659"
+    },
+    {
+      "ts": 1786627404.6087663,
       "kind": "claim",
-      "id": "clm_7060fe4c45",
+      "id": "clm_25a6c3a5f4",
       "old": null,
       "new": 0.6,
-      "reason": "measured in sweep exp_42d46105c8"
+      "reason": "measured in exp_de9672a659"
     },
     {
-      "ts": 1786391491.2085912,
+      "ts": 1786627415.7722638,
       "kind": "hypothesis",
-      "id": "hyp_40df9834c7",
-      "old": "under_test",
-      "new": "provisionally_supported",
-      "reason": "evidence from exp_2593d8e300"
-    },
-    {
-      "ts": 1786391503.350192,
-      "kind": "hypothesis",
-      "id": "hyp_f1699d47b3",
-      "old": "under_test",
-      "new": "rejected",
-      "reason": "evidence from exp_409be65fa9"
-    },
-    {
-      "ts": 1786391709.925426,
-      "kind": "hypothesis",
-      "id": "hyp_dbe5f386a7",
+      "id": "hyp_e6bc85dbcd",
       "old": "provisionally_supported",
       "new": "accepted_with_scope",
       "reason": "critic promotion after falsification"
     },
     {
-      "ts": 1786391709.9255502,
+      "ts": 1786627415.7724006,
       "kind": "hypothesis",
-      "id": "hyp_cae1c60f85",
-      "old": "provisionally_supported",
-      "new": "accepted_with_scope",
-      "reason": "critic promotion after falsification"
-    },
-    {
-      "ts": 1786391709.9256191,
-      "kind": "hypothesis",
-      "id": "hyp_40df9834c7",
-      "old": "provisionally_supported",
-      "new": "accepted_with_scope",
-      "reason": "critic promotion after falsification"
-    },
-    {
-      "ts": 1786391709.9257264,
-      "kind": "hypothesis",
-      "id": "hyp_38e7e1fe16",
+      "id": "hyp_0eae29898f",
       "old": "provisionally_supported",
       "new": "accepted_with_scope",
       "reason": "critic promotion after falsification"
@@ -2266,22 +1128,47 @@
   ],
   "recommendations": [
     "[mock knowledge gap] Comparison and move counts are not measured, so rankings cannot be separated from constant factors.",
-    "Investigate knowledge gap: Scaling behavior beyond n=4096 is untested (asymptotic crossovers may differ).",
-    "Investigate knowledge gap: Memory usage and comparison/move counts were not measured (wall time only).",
-    "Investigate knowledge gap: Adversarial input patterns (sawtooth, organ-pipe, quicksort-killer) are untested.",
-    "Investigate knowledge gap: Only one machine/interpreter was used; hardware sensitivity is unknown.",
-    "Investigate knowledge gap: Stability of the sorts (equal-key ordering) was not evaluated.",
-    "Revise or split hyp_ad33a3dcb5: mixed evidence (1 for / 1 against).",
-    "Revise or split hyp_bf17e1f36c: mixed evidence (0 for / 0 against)."
+    "Investigate knowledge gap: Directed graphs and negative edge weights are not benchmarked; Bellman-Ford's actual advantage is therefore untested here.",
+    "Investigate knowledge gap: Only single-source queries from vertex 0 are measured.",
+    "Investigate knowledge gap: Memory use and cache behaviour are not instrumented, so the dense/sparse crossover is explained only by relaxation counts and wall-clock time.",
+    "Revise or split hyp_f3a5a9f693: mixed evidence (0 for / 0 against).",
+    "Revise or split hyp_6076ea0451: mixed evidence (0 for / 0 against)."
   ],
   "flags": {
     "current": "Critic: final review of conclusions",
-    "base_hypotheses_done": true,
-    "proposed_designs": [],
-    "hybrid_proposed": true,
+    "graph_hypotheses_seeded": true,
+    "proposed_designs": [
+      {
+        "proposal_id": "prop_e31021938f",
+        "statement": "Re-measure the full roster on the two most discriminating regimes with extra trials.",
+        "algorithms": [
+          "dijkstra_heap",
+          "dijkstra_array",
+          "bellman_ford",
+          "spfa",
+          "bfs_unit"
+        ],
+        "regimes": [
+          "sparse_random",
+          "dense_random"
+        ],
+        "sizes": [
+          128,
+          512
+        ],
+        "trials": 7
+      }
+    ],
+    "incorrect_bfs_unit_dense_random": true,
+    "incorrect_bfs_unit_grid_2d": true,
+    "incorrect_bfs_unit_sparse_random": true,
+    "relax_claim": true,
+    "analyzed_exp_de9672a659": true,
     "stagnation": 0,
-    "sweep_proposed": true,
+    "analyzed_exp_80c64940b6": true,
+    "analyzed_exp_3079fc8021": true,
+    "analyzed_exp_6bd2d789f8": true,
     "critic_finalized": true
   },
-  "step": 18
+  "step": 9
 }

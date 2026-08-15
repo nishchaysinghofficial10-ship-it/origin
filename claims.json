@@ -1,44 +1,68 @@
 {
-  "clm_bbc4b6ecee": {
-    "id": "clm_bbc4b6ecee",
-    "text": "Any comparison sort requires Omega(n log n) comparisons in the worst case.",
+  "clm_7535f3ac78": {
+    "id": "clm_7535f3ac78",
+    "text": "Dijkstra with a binary heap runs in O((V+E) log V) on graphs with non-negative weights.",
     "status": "fact",
-    "confidence": 0.97,
+    "confidence": 0.95,
     "source_ids": [
-      "src_4c8df7ee3c"
+      "src_fbc182a1d2"
     ],
-    "notes": "",
-    "created_at": 1786391465.6624563
+    "notes": "asymptotic result; says nothing about constant factors at the tested sizes",
+    "created_at": 1786627400.8232956,
+    "passage": "",
+    "passage_offset": -1,
+    "extraction_method": "",
+    "extracted_at": 0.0,
+    "claim_type": "",
+    "limitations": ""
   },
-  "clm_2a22e5624c": {
-    "id": "clm_2a22e5624c",
-    "text": "Insertion sort runs in O(n + inversions); it is linear on nearly-sorted input.",
+  "clm_97597f457d": {
+    "id": "clm_97597f457d",
+    "text": "Bellman-Ford runs in O(V*E) and tolerates negative weights, which are not present in this benchmark.",
     "status": "fact",
-    "confidence": 0.97,
+    "confidence": 0.95,
     "source_ids": [
-      "src_4c8df7ee3c"
+      "src_fbc182a1d2"
     ],
-    "notes": "",
-    "created_at": 1786391465.6624653
+    "notes": "asymptotic result; says nothing about constant factors at the tested sizes",
+    "created_at": 1786627400.8233054,
+    "passage": "",
+    "passage_offset": -1,
+    "extraction_method": "",
+    "extracted_at": 0.0,
+    "claim_type": "",
+    "limitations": ""
   },
-  "clm_6241b012d7": {
-    "id": "clm_6241b012d7",
-    "text": "Quicksort's worst case is O(n^2), but median-of-three pivoting avoids it on sorted/reversed inputs.",
+  "clm_268917d5f1": {
+    "id": "clm_268917d5f1",
+    "text": "Breadth-first search computes shortest paths only when every edge weight is equal.",
     "status": "fact",
-    "confidence": 0.97,
+    "confidence": 0.95,
     "source_ids": [
-      "src_4c8df7ee3c"
+      "src_fbc182a1d2"
     ],
-    "notes": "",
-    "created_at": 1786391465.6624715
+    "notes": "asymptotic result; says nothing about constant factors at the tested sizes",
+    "created_at": 1786627400.8233109,
+    "passage": "",
+    "passage_offset": -1,
+    "extraction_method": "",
+    "extracted_at": 0.0,
+    "claim_type": "",
+    "limitations": ""
   },
-  "clm_7060fe4c45": {
-    "id": "clm_7060fe4c45",
-    "text": "Hybrid insertion-cutoff optima at n=4096 (7 trials, CPython 3.12.3 on Linux/x86_64): random=16 (indistinguishable from [8, 32]), nearly_sorted=64 (indistinguishable from [32]), reversed=8 (indistinguishable from [16]), few_unique=16 (indistinguishable from [8, 32])",
+  "clm_25a6c3a5f4": {
+    "id": "clm_25a6c3a5f4",
+    "text": "Fewest edge relaxations at n=512 by topology: sparse_random=dijkstra_heap, dense_random=dijkstra_heap, grid_2d=dijkstra_heap, unit_weight=dijkstra_heap (machine-independent count; measured on CPython 3.12.3)",
     "status": "experimental_result",
     "confidence": 0.6,
     "source_ids": [],
     "notes": "",
-    "created_at": 1786391490.8288174
+    "created_at": 1786627404.608763,
+    "passage": "",
+    "passage_offset": -1,
+    "extraction_method": "",
+    "extracted_at": 0.0,
+    "claim_type": "",
+    "limitations": ""
   }
 }

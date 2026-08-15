@@ -1,32 +1,24 @@
 {
-  "question": "Under what input distributions and sizes does a hybrid merge/insertion sorting strategy outperform predefined baselines without violating correctness, and what insertion cutoff is optimal per regime?",
-  "domain": "algobench",
+  "question": "Which single-source shortest-path method wins on which graph topology at the tested sizes, does the machine-independent relaxation count agree with the wall-clock ranking, and where is the BFS candidate actually correct?",
+  "domain": "graphbench",
   "domain_config": {
     "sizes": [
-      256,
-      1024,
-      4096
+      128,
+      512
     ],
-    "trials": 7,
-    "seed": 20260809,
+    "trials": 5,
+    "seed": 4242,
     "regimes": [
-      "random",
-      "nearly_sorted",
-      "reversed",
-      "few_unique"
+      "sparse_random",
+      "dense_random",
+      "grid_2d",
+      "unit_weight"
     ],
-    "timeout_s": 600,
-    "sweep": true,
-    "cutoffs": [
-      8,
-      16,
-      32,
-      64
-    ]
+    "timeout_s": 600
   },
-  "profile": "flagship",
+  "profile": "graph_standard",
   "phase": "CREATED",
-  "created_at": 1786391465.5401185,
+  "created_at": 1786627400.6714277,
   "origin_version": "1.0.0",
   "brain": "mock"
 }
