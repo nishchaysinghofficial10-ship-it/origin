@@ -1,0 +1,60 @@
+{
+  "kind": "falsification",
+  "round": 9,
+  "algorithms": [
+    "insertion_sort",
+    "merge_sort",
+    "quick_sort",
+    "heap_sort",
+    "shell_sort"
+  ],
+  "regimes": [
+    "organ_pipe",
+    "random",
+    "sawtooth"
+  ],
+  "sizes": [
+    8192
+  ],
+  "trials": 7,
+  "seed": 20268586,
+  "timeout_s": 600,
+  "hypothesis_ids": [
+    "hyp_40df9834c7"
+  ],
+  "probe_checks": [
+    {
+      "label": "boundary:random",
+      "check": {
+        "type": "beats",
+        "algorithm": "shell_sort",
+        "than": "insertion_sort",
+        "regime": "random",
+        "min_pct": 0.0
+      },
+      "role": "boundary"
+    },
+    {
+      "label": "scope:sawtooth",
+      "check": {
+        "type": "beats",
+        "algorithm": "shell_sort",
+        "than": "insertion_sort",
+        "regime": "sawtooth",
+        "min_pct": 0.0
+      },
+      "role": "scope"
+    },
+    {
+      "label": "scope:organ_pipe",
+      "check": {
+        "type": "beats",
+        "algorithm": "shell_sort",
+        "than": "insertion_sort",
+        "regime": "organ_pipe",
+        "min_pct": 0.0
+      },
+      "role": "scope"
+    }
+  ]
+}

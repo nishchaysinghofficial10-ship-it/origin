@@ -1,0 +1,254 @@
+{
+  "hyp_47f59f38cd": {
+    "id": "hyp_47f59f38cd",
+    "statement": "Dijkstra with a binary heap is fastest on sparse random graphs at the tested sizes.",
+    "rationale": "Heap ordering avoids the O(V^2) scan that dominates the array variant when the graph is sparse.",
+    "status": "rejected",
+    "predictions": [
+      {
+        "id": "pred_2fb1d265d0",
+        "text": "dijkstra_heap is fastest on sparse_random",
+        "check": {
+          "type": "fastest_on",
+          "algorithm": "dijkstra_heap",
+          "regime": "sparse_random"
+        },
+        "outcome": "refuted",
+        "detail": "fastest on 'sparse_random' is spfa, not dijkstra_heap (24% apart) [n=512, 5 trials]"
+      }
+    ],
+    "supporting_evidence": [],
+    "contradicting_evidence": [
+      "evd_feaacb6a38"
+    ],
+    "importance": 0.8,
+    "cost_estimate": 1.0,
+    "tags": [
+      "counterargued"
+    ],
+    "tested_in": [
+      "exp_f6219e9785"
+    ],
+    "assumptions": [],
+    "scope": "",
+    "revisions": [
+      {
+        "ts": 1786627908.1142445,
+        "from": "under_test",
+        "to": "rejected",
+        "reason": "all predictions refuted in exp_f6219e9785"
+      }
+    ],
+    "created_at": 1786627905.1855555,
+    "updated_at": 1786627908.1142628
+  },
+  "hyp_df0b968ddf": {
+    "id": "hyp_df0b968ddf",
+    "statement": "The array-scan Dijkstra beats the heap variant on dense graphs, where the scan cost is amortised.",
+    "rationale": "With E ~ V^2/8 the heap's per-edge push cost outweighs the array's per-vertex scan.",
+    "status": "rejected",
+    "predictions": [
+      {
+        "id": "pred_195e02afd9",
+        "text": "dijkstra_array beats dijkstra_heap on dense_random",
+        "check": {
+          "type": "beats",
+          "algorithm": "dijkstra_array",
+          "than": "dijkstra_heap",
+          "regime": "dense_random",
+          "min_pct": 0.0
+        },
+        "outcome": "refuted",
+        "detail": "dijkstra_array is decisively SLOWER than dijkstra_heap on 'dense_random' (-39%) [n=512, 5 trials]"
+      }
+    ],
+    "supporting_evidence": [],
+    "contradicting_evidence": [
+      "evd_60c5a11d58"
+    ],
+    "importance": 0.75,
+    "cost_estimate": 1.0,
+    "tags": [],
+    "tested_in": [
+      "exp_f6219e9785"
+    ],
+    "assumptions": [],
+    "scope": "",
+    "revisions": [
+      {
+        "ts": 1786627908.1143725,
+        "from": "under_test",
+        "to": "rejected",
+        "reason": "all predictions refuted in exp_f6219e9785"
+      }
+    ],
+    "created_at": 1786627905.1855683,
+    "updated_at": 1786627908.1143763
+  },
+  "hyp_a155973991": {
+    "id": "hyp_a155973991",
+    "statement": "Bellman-Ford performs the most edge relaxations of any candidate on every tested topology.",
+    "rationale": "It relaxes every edge on every pass rather than settling vertices once.",
+    "status": "provisionally_supported",
+    "predictions": [
+      {
+        "id": "pred_5c5186c187",
+        "text": "bellman_ford has the highest relaxation count",
+        "check": {
+          "type": "most_relaxations",
+          "algorithm": "bellman_ford"
+        },
+        "outcome": "confirmed",
+        "detail": "highest relaxation count by topology: {'sparse_random': 'bellman_ford', 'dense_random': 'bellman_ford', 'grid_2d': 'bellman_ford', 'unit_weight': 'bellman_ford'} [n=512]"
+      }
+    ],
+    "supporting_evidence": [
+      "evd_ba0e62669a",
+      "evd_a3d58f40e6"
+    ],
+    "contradicting_evidence": [],
+    "importance": 0.7,
+    "cost_estimate": 1.0,
+    "tags": [
+      "replicated",
+      "falsification_done"
+    ],
+    "tested_in": [
+      "exp_f6219e9785",
+      "exp_5ddb272042"
+    ],
+    "assumptions": [],
+    "scope": "",
+    "revisions": [
+      {
+        "ts": 1786627908.1144185,
+        "from": "under_test",
+        "to": "provisionally_supported",
+        "reason": "all predictions confirmed in exp_f6219e9785"
+      }
+    ],
+    "created_at": 1786627905.1855767,
+    "updated_at": 1786627910.7849777
+  },
+  "hyp_ff3e742ca3": {
+    "id": "hyp_ff3e742ca3",
+    "statement": "SPFA performs fewer relaxations than Bellman-Ford on sparse random graphs.",
+    "rationale": "Queue-driven relaxation revisits only vertices whose distance improved.",
+    "status": "accepted_with_scope",
+    "predictions": [
+      {
+        "id": "pred_fcffda0b30",
+        "text": "spfa uses fewer relaxations than bellman_ford on sparse_random",
+        "check": {
+          "type": "fewer_relaxations",
+          "algorithm": "spfa",
+          "than": "bellman_ford",
+          "regime": "sparse_random"
+        },
+        "outcome": "confirmed",
+        "detail": "spfa performed 4,907 relaxations vs bellman_ford 21,476 on 'sparse_random' (+77%); exact counts, machine-independent [n=512]"
+      }
+    ],
+    "supporting_evidence": [
+      "evd_e8d9ab0e98",
+      "evd_d7b5253ce6"
+    ],
+    "contradicting_evidence": [],
+    "importance": 0.7,
+    "cost_estimate": 1.0,
+    "tags": [
+      "replicated",
+      "falsification_done",
+      "falsification_survived"
+    ],
+    "tested_in": [
+      "exp_f6219e9785",
+      "exp_4ef2060bc4"
+    ],
+    "assumptions": [],
+    "scope": "holds at n<=2x tested sizes on its original topology; extends to ['long_chain', 'scale_free']",
+    "revisions": [
+      {
+        "ts": 1786627908.1144416,
+        "from": "under_test",
+        "to": "provisionally_supported",
+        "reason": "all predictions confirmed in exp_f6219e9785"
+      },
+      {
+        "ts": 1786627918.0311816,
+        "from": "provisionally_supported",
+        "to": "accepted_with_scope",
+        "reason": "replicated + survived falsification; scope: holds at n<=2x tested sizes on its original topology; extends to ['long_chain', 'scale_free']"
+      }
+    ],
+    "created_at": 1786627905.1855848,
+    "updated_at": 1786627918.031192
+  },
+  "hyp_dfa38e8bf8": {
+    "id": "hyp_dfa38e8bf8",
+    "statement": "The BFS candidate returns correct distances on unit-weight graphs and incorrect distances on every weighted topology.",
+    "rationale": "BFS assumes uniform edge cost; the benchmark should detect the boundary rather than assume it.",
+    "status": "accepted_with_scope",
+    "predictions": [
+      {
+        "id": "pred_b7d296e837",
+        "text": "bfs_unit is correct on unit_weight",
+        "check": {
+          "type": "correct_on",
+          "algorithm": "bfs_unit",
+          "regime": "unit_weight"
+        },
+        "outcome": "confirmed",
+        "detail": "bfs_unit on 'unit_weight' returned correct distances [n=512, 5 trials]"
+      },
+      {
+        "id": "pred_0e3999e25c",
+        "text": "bfs_unit is incorrect on sparse_random",
+        "check": {
+          "type": "incorrect_on",
+          "algorithm": "bfs_unit",
+          "regime": "sparse_random"
+        },
+        "outcome": "confirmed",
+        "detail": "bfs_unit on 'sparse_random' returned INCORRECT distances [n=512, 5 trials]"
+      }
+    ],
+    "supporting_evidence": [
+      "evd_f2f8da1863",
+      "evd_68f0574a66",
+      "evd_684ca5293d",
+      "evd_809ef0cfb9"
+    ],
+    "contradicting_evidence": [],
+    "importance": 0.9,
+    "cost_estimate": 1.0,
+    "tags": [
+      "correctness_boundary",
+      "replicated",
+      "falsification_done",
+      "falsification_survived"
+    ],
+    "tested_in": [
+      "exp_f6219e9785",
+      "exp_e36d780531"
+    ],
+    "assumptions": [],
+    "scope": "holds at n<=2x tested sizes on its original topology; does NOT extend to ['long_chain', 'scale_free']",
+    "revisions": [
+      {
+        "ts": 1786627908.1144712,
+        "from": "under_test",
+        "to": "provisionally_supported",
+        "reason": "all predictions confirmed in exp_f6219e9785"
+      },
+      {
+        "ts": 1786627918.031289,
+        "from": "provisionally_supported",
+        "to": "accepted_with_scope",
+        "reason": "replicated + survived falsification; scope: holds at n<=2x tested sizes on its original topology; does NOT extend to ['long_chain', 'scale_free']"
+      }
+    ],
+    "created_at": 1786627905.1855962,
+    "updated_at": 1786627918.0312903
+  }
+}

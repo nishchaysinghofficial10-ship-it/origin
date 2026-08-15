@@ -1,0 +1,112 @@
+[
+  {
+    "id": "dec_28bfc8d48b",
+    "step": 3,
+    "context": "select_investigation",
+    "options": [
+      {
+        "label": "hyp_dfa38e8bf8",
+        "score": 0.9,
+        "reason": "importance 0.9, evidence 0, cost 1.0"
+      },
+      {
+        "label": "hyp_47f59f38cd",
+        "score": 0.8,
+        "reason": "importance 0.8, evidence 0, cost 1.0"
+      },
+      {
+        "label": "hyp_df0b968ddf",
+        "score": 0.75,
+        "reason": "importance 0.75, evidence 0, cost 1.0"
+      },
+      {
+        "label": "hyp_a155973991",
+        "score": 0.7,
+        "reason": "importance 0.7, evidence 0, cost 1.0"
+      },
+      {
+        "label": "hyp_ff3e742ca3",
+        "score": 0.7,
+        "reason": "importance 0.7, evidence 0, cost 1.0"
+      }
+    ],
+    "chosen": "hyp_dfa38e8bf8",
+    "reason": "highest expected information gain per unit cost; experiment co-tests 5 hypothesis(es)",
+    "ts": 1786627905.1897628
+  },
+  {
+    "id": "dec_b075790848",
+    "step": 5,
+    "context": "critic_replication",
+    "options": [
+      {
+        "label": "hyp_a155973991",
+        "score": 1.0,
+        "reason": "supported by a single experiment only"
+      }
+    ],
+    "chosen": "hyp_a155973991",
+    "reason": "critic refuses single-experiment support; independent replication with new seeds",
+    "ts": 1786627908.1219041
+  },
+  {
+    "id": "dec_04727f5d8a",
+    "step": 6,
+    "context": "critic_replication",
+    "options": [
+      {
+        "label": "hyp_ff3e742ca3",
+        "score": 1.0,
+        "reason": "supported by a single experiment only"
+      }
+    ],
+    "chosen": "hyp_ff3e742ca3",
+    "reason": "critic refuses single-experiment support; independent replication with new seeds",
+    "ts": 1786627910.7891333
+  },
+  {
+    "id": "dec_53865f2e97",
+    "step": 7,
+    "context": "critic_replication",
+    "options": [
+      {
+        "label": "hyp_dfa38e8bf8",
+        "score": 1.0,
+        "reason": "supported by a single experiment only"
+      }
+    ],
+    "chosen": "hyp_dfa38e8bf8",
+    "reason": "critic refuses single-experiment support; independent replication with new seeds",
+    "ts": 1786627913.481382
+  },
+  {
+    "id": "dec_a625015f44",
+    "step": 9,
+    "context": "critic_falsification",
+    "options": [
+      {
+        "label": "hyp_ff3e742ca3",
+        "score": 1.0,
+        "reason": "replicated conclusion must survive boundary + unseen-regime probes"
+      }
+    ],
+    "chosen": "hyp_ff3e742ca3",
+    "reason": "falsification probes: boundary:sparse_random, scope:long_chain, scope:scale_free",
+    "ts": 1786627916.0651681
+  },
+  {
+    "id": "dec_3b6e8f1cb1",
+    "step": 10,
+    "context": "critic_falsification",
+    "options": [
+      {
+        "label": "hyp_dfa38e8bf8",
+        "score": 1.0,
+        "reason": "replicated conclusion must survive boundary + unseen-regime probes"
+      }
+    ],
+    "chosen": "hyp_dfa38e8bf8",
+    "reason": "falsification probes: boundary:unit_weight, scope:long_chain, scope:scale_free",
+    "ts": 1786627917.058366
+  }
+]

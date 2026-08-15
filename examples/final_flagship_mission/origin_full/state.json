@@ -1,0 +1,1188 @@
+{
+  "schema_version": 3,
+  "meta": {
+    "question": "Which single-source shortest-path method wins on which graph topology at n<=512, does the machine-independent relaxation count agree with the wall-clock ranking, and under what precondition is the BFS candidate correct?",
+    "domain": "graphbench",
+    "domain_config": {
+      "sizes": [
+        128,
+        512
+      ],
+      "trials": 5,
+      "seed": 4242,
+      "regimes": [
+        "sparse_random",
+        "dense_random",
+        "grid_2d",
+        "unit_weight"
+      ],
+      "timeout_s": 600
+    },
+    "profile": "graph_standard",
+    "phase": "COMPLETED",
+    "created_at": 1786627905.177292,
+    "origin_version": "1.0.0",
+    "brain": "mock",
+    "stop_reason": "no high-value next experiment remained",
+    "ended_at": 1786627918.0383732
+  },
+  "budget": {
+    "experiments_total": 40,
+    "experiments_used": 6,
+    "compute_seconds_total": 1800,
+    "compute_seconds_used": 12.78218515900005,
+    "searches_total": 0,
+    "searches_used": 0,
+    "elapsed_seconds_total": 0.0,
+    "elapsed_seconds_used": 12.817623138427734,
+    "provider_calls_total": 0,
+    "provider_calls_used": 0,
+    "retries_total": 8,
+    "retries_used": 0
+  },
+  "plan": {
+    "question": "Which single-source shortest-path method wins on which graph topology at n<=512, does the machine-independent relaxation count agree with the wall-clock ranking, and under what precondition is the BFS candidate correct?",
+    "subquestions": [
+      {
+        "id": "q1",
+        "text": "Which shortest-path method is fastest on each graph topology at the tested sizes?"
+      },
+      {
+        "id": "q2",
+        "text": "Do the machine-independent relaxation counts agree with the wall-clock ranking?"
+      },
+      {
+        "id": "q3",
+        "text": "Under what precondition is the BFS candidate correct, and is it detected?"
+      }
+    ],
+    "regimes": [
+      "sparse_random",
+      "dense_random",
+      "grid_2d",
+      "unit_weight"
+    ],
+    "sizes": [
+      128,
+      512
+    ]
+  },
+  "sources": {
+    "src_d3529c5798": {
+      "id": "src_d3529c5798",
+      "kind": "prior_knowledge",
+      "title": "Standard shortest-path complexity results",
+      "locator": "textbook",
+      "reliability": 0.95,
+      "added_at": 1786627905.1830666,
+      "canonical_url": "",
+      "requested_url": "",
+      "final_url": "",
+      "author": "",
+      "published": "",
+      "retrieved_at": 0.0,
+      "content_type": "",
+      "http_status": 0,
+      "content_hash": "",
+      "cache_ref": "",
+      "extraction_method": "",
+      "provider": "",
+      "redirect_chain": [],
+      "reliability_basis": [],
+      "license_note": "",
+      "retrieval_notes": "",
+      "robots_status": "",
+      "pinned_address": ""
+    }
+  },
+  "claims": {
+    "clm_11da2f3007": {
+      "id": "clm_11da2f3007",
+      "text": "Dijkstra with a binary heap runs in O((V+E) log V) on graphs with non-negative weights.",
+      "status": "fact",
+      "confidence": 0.95,
+      "source_ids": [
+        "src_d3529c5798"
+      ],
+      "notes": "asymptotic result; says nothing about constant factors at the tested sizes",
+      "created_at": 1786627905.1831036,
+      "passage": "",
+      "passage_offset": -1,
+      "extraction_method": "",
+      "extracted_at": 0.0,
+      "claim_type": "",
+      "limitations": ""
+    },
+    "clm_2fdd1abb04": {
+      "id": "clm_2fdd1abb04",
+      "text": "Bellman-Ford runs in O(V*E) and tolerates negative weights, which are not present in this benchmark.",
+      "status": "fact",
+      "confidence": 0.95,
+      "source_ids": [
+        "src_d3529c5798"
+      ],
+      "notes": "asymptotic result; says nothing about constant factors at the tested sizes",
+      "created_at": 1786627905.1831172,
+      "passage": "",
+      "passage_offset": -1,
+      "extraction_method": "",
+      "extracted_at": 0.0,
+      "claim_type": "",
+      "limitations": ""
+    },
+    "clm_8e37951c7d": {
+      "id": "clm_8e37951c7d",
+      "text": "Breadth-first search computes shortest paths only when every edge weight is equal.",
+      "status": "fact",
+      "confidence": 0.95,
+      "source_ids": [
+        "src_d3529c5798"
+      ],
+      "notes": "asymptotic result; says nothing about constant factors at the tested sizes",
+      "created_at": 1786627905.1831245,
+      "passage": "",
+      "passage_offset": -1,
+      "extraction_method": "",
+      "extracted_at": 0.0,
+      "claim_type": "",
+      "limitations": ""
+    },
+    "clm_ac9162741d": {
+      "id": "clm_ac9162741d",
+      "text": "Fewest edge relaxations at n=512 by topology: sparse_random=dijkstra_heap, dense_random=dijkstra_heap, grid_2d=dijkstra_heap, unit_weight=dijkstra_heap (machine-independent count; measured on CPython 3.12.3)",
+      "status": "experimental_result",
+      "confidence": 0.6,
+      "source_ids": [],
+      "notes": "",
+      "created_at": 1786627908.114505,
+      "passage": "",
+      "passage_offset": -1,
+      "extraction_method": "",
+      "extracted_at": 0.0,
+      "claim_type": "",
+      "limitations": ""
+    }
+  },
+  "hypotheses": {
+    "hyp_47f59f38cd": {
+      "id": "hyp_47f59f38cd",
+      "statement": "Dijkstra with a binary heap is fastest on sparse random graphs at the tested sizes.",
+      "rationale": "Heap ordering avoids the O(V^2) scan that dominates the array variant when the graph is sparse.",
+      "status": "rejected",
+      "predictions": [
+        {
+          "id": "pred_2fb1d265d0",
+          "text": "dijkstra_heap is fastest on sparse_random",
+          "check": {
+            "type": "fastest_on",
+            "algorithm": "dijkstra_heap",
+            "regime": "sparse_random"
+          },
+          "outcome": "refuted",
+          "detail": "fastest on 'sparse_random' is spfa, not dijkstra_heap (24% apart) [n=512, 5 trials]"
+        }
+      ],
+      "supporting_evidence": [],
+      "contradicting_evidence": [
+        "evd_feaacb6a38"
+      ],
+      "importance": 0.8,
+      "cost_estimate": 1.0,
+      "tags": [
+        "counterargued"
+      ],
+      "tested_in": [
+        "exp_f6219e9785"
+      ],
+      "assumptions": [],
+      "scope": "",
+      "revisions": [
+        {
+          "ts": 1786627908.1142445,
+          "from": "under_test",
+          "to": "rejected",
+          "reason": "all predictions refuted in exp_f6219e9785"
+        }
+      ],
+      "created_at": 1786627905.1855555,
+      "updated_at": 1786627908.1142628
+    },
+    "hyp_df0b968ddf": {
+      "id": "hyp_df0b968ddf",
+      "statement": "The array-scan Dijkstra beats the heap variant on dense graphs, where the scan cost is amortised.",
+      "rationale": "With E ~ V^2/8 the heap's per-edge push cost outweighs the array's per-vertex scan.",
+      "status": "rejected",
+      "predictions": [
+        {
+          "id": "pred_195e02afd9",
+          "text": "dijkstra_array beats dijkstra_heap on dense_random",
+          "check": {
+            "type": "beats",
+            "algorithm": "dijkstra_array",
+            "than": "dijkstra_heap",
+            "regime": "dense_random",
+            "min_pct": 0.0
+          },
+          "outcome": "refuted",
+          "detail": "dijkstra_array is decisively SLOWER than dijkstra_heap on 'dense_random' (-39%) [n=512, 5 trials]"
+        }
+      ],
+      "supporting_evidence": [],
+      "contradicting_evidence": [
+        "evd_60c5a11d58"
+      ],
+      "importance": 0.75,
+      "cost_estimate": 1.0,
+      "tags": [],
+      "tested_in": [
+        "exp_f6219e9785"
+      ],
+      "assumptions": [],
+      "scope": "",
+      "revisions": [
+        {
+          "ts": 1786627908.1143725,
+          "from": "under_test",
+          "to": "rejected",
+          "reason": "all predictions refuted in exp_f6219e9785"
+        }
+      ],
+      "created_at": 1786627905.1855683,
+      "updated_at": 1786627908.1143763
+    },
+    "hyp_a155973991": {
+      "id": "hyp_a155973991",
+      "statement": "Bellman-Ford performs the most edge relaxations of any candidate on every tested topology.",
+      "rationale": "It relaxes every edge on every pass rather than settling vertices once.",
+      "status": "provisionally_supported",
+      "predictions": [
+        {
+          "id": "pred_5c5186c187",
+          "text": "bellman_ford has the highest relaxation count",
+          "check": {
+            "type": "most_relaxations",
+            "algorithm": "bellman_ford"
+          },
+          "outcome": "confirmed",
+          "detail": "highest relaxation count by topology: {'sparse_random': 'bellman_ford', 'dense_random': 'bellman_ford', 'grid_2d': 'bellman_ford', 'unit_weight': 'bellman_ford'} [n=512]"
+        }
+      ],
+      "supporting_evidence": [
+        "evd_ba0e62669a",
+        "evd_a3d58f40e6"
+      ],
+      "contradicting_evidence": [],
+      "importance": 0.7,
+      "cost_estimate": 1.0,
+      "tags": [
+        "replicated",
+        "falsification_done"
+      ],
+      "tested_in": [
+        "exp_f6219e9785",
+        "exp_5ddb272042"
+      ],
+      "assumptions": [],
+      "scope": "",
+      "revisions": [
+        {
+          "ts": 1786627908.1144185,
+          "from": "under_test",
+          "to": "provisionally_supported",
+          "reason": "all predictions confirmed in exp_f6219e9785"
+        }
+      ],
+      "created_at": 1786627905.1855767,
+      "updated_at": 1786627910.7849777
+    },
+    "hyp_ff3e742ca3": {
+      "id": "hyp_ff3e742ca3",
+      "statement": "SPFA performs fewer relaxations than Bellman-Ford on sparse random graphs.",
+      "rationale": "Queue-driven relaxation revisits only vertices whose distance improved.",
+      "status": "accepted_with_scope",
+      "predictions": [
+        {
+          "id": "pred_fcffda0b30",
+          "text": "spfa uses fewer relaxations than bellman_ford on sparse_random",
+          "check": {
+            "type": "fewer_relaxations",
+            "algorithm": "spfa",
+            "than": "bellman_ford",
+            "regime": "sparse_random"
+          },
+          "outcome": "confirmed",
+          "detail": "spfa performed 4,907 relaxations vs bellman_ford 21,476 on 'sparse_random' (+77%); exact counts, machine-independent [n=512]"
+        }
+      ],
+      "supporting_evidence": [
+        "evd_e8d9ab0e98",
+        "evd_d7b5253ce6"
+      ],
+      "contradicting_evidence": [],
+      "importance": 0.7,
+      "cost_estimate": 1.0,
+      "tags": [
+        "replicated",
+        "falsification_done",
+        "falsification_survived"
+      ],
+      "tested_in": [
+        "exp_f6219e9785",
+        "exp_4ef2060bc4"
+      ],
+      "assumptions": [],
+      "scope": "holds at n<=2x tested sizes on its original topology; extends to ['long_chain', 'scale_free']",
+      "revisions": [
+        {
+          "ts": 1786627908.1144416,
+          "from": "under_test",
+          "to": "provisionally_supported",
+          "reason": "all predictions confirmed in exp_f6219e9785"
+        },
+        {
+          "ts": 1786627918.0311816,
+          "from": "provisionally_supported",
+          "to": "accepted_with_scope",
+          "reason": "replicated + survived falsification; scope: holds at n<=2x tested sizes on its original topology; extends to ['long_chain', 'scale_free']"
+        }
+      ],
+      "created_at": 1786627905.1855848,
+      "updated_at": 1786627918.031192
+    },
+    "hyp_dfa38e8bf8": {
+      "id": "hyp_dfa38e8bf8",
+      "statement": "The BFS candidate returns correct distances on unit-weight graphs and incorrect distances on every weighted topology.",
+      "rationale": "BFS assumes uniform edge cost; the benchmark should detect the boundary rather than assume it.",
+      "status": "accepted_with_scope",
+      "predictions": [
+        {
+          "id": "pred_b7d296e837",
+          "text": "bfs_unit is correct on unit_weight",
+          "check": {
+            "type": "correct_on",
+            "algorithm": "bfs_unit",
+            "regime": "unit_weight"
+          },
+          "outcome": "confirmed",
+          "detail": "bfs_unit on 'unit_weight' returned correct distances [n=512, 5 trials]"
+        },
+        {
+          "id": "pred_0e3999e25c",
+          "text": "bfs_unit is incorrect on sparse_random",
+          "check": {
+            "type": "incorrect_on",
+            "algorithm": "bfs_unit",
+            "regime": "sparse_random"
+          },
+          "outcome": "confirmed",
+          "detail": "bfs_unit on 'sparse_random' returned INCORRECT distances [n=512, 5 trials]"
+        }
+      ],
+      "supporting_evidence": [
+        "evd_f2f8da1863",
+        "evd_68f0574a66",
+        "evd_684ca5293d",
+        "evd_809ef0cfb9"
+      ],
+      "contradicting_evidence": [],
+      "importance": 0.9,
+      "cost_estimate": 1.0,
+      "tags": [
+        "correctness_boundary",
+        "replicated",
+        "falsification_done",
+        "falsification_survived"
+      ],
+      "tested_in": [
+        "exp_f6219e9785",
+        "exp_e36d780531"
+      ],
+      "assumptions": [],
+      "scope": "holds at n<=2x tested sizes on its original topology; does NOT extend to ['long_chain', 'scale_free']",
+      "revisions": [
+        {
+          "ts": 1786627908.1144712,
+          "from": "under_test",
+          "to": "provisionally_supported",
+          "reason": "all predictions confirmed in exp_f6219e9785"
+        },
+        {
+          "ts": 1786627918.031289,
+          "from": "provisionally_supported",
+          "to": "accepted_with_scope",
+          "reason": "replicated + survived falsification; scope: holds at n<=2x tested sizes on its original topology; does NOT extend to ['long_chain', 'scale_free']"
+        }
+      ],
+      "created_at": 1786627905.1855962,
+      "updated_at": 1786627918.0312903
+    }
+  },
+  "evidence": {
+    "evd_feaacb6a38": {
+      "id": "evd_feaacb6a38",
+      "target_id": "hyp_47f59f38cd",
+      "direction": "contradicts",
+      "strength": 0.244,
+      "kind": "experiment",
+      "summary": "[round 1] dijkstra_heap is fastest on sparse_random: refuted (fastest on 'sparse_random' is spfa, not dijkstra_heap (24% apart) [n=512, 5 trials])",
+      "experiment_id": "exp_f6219e9785",
+      "source_id": "",
+      "payload": {},
+      "created_at": 1786627908.1142204
+    },
+    "evd_60c5a11d58": {
+      "id": "evd_60c5a11d58",
+      "target_id": "hyp_df0b968ddf",
+      "direction": "contradicts",
+      "strength": 0.389,
+      "kind": "experiment",
+      "summary": "[round 1] dijkstra_array beats dijkstra_heap on dense_random: refuted (dijkstra_array is decisively SLOWER than dijkstra_heap on 'dense_random' (-39%) [n=512, 5 trials])",
+      "experiment_id": "exp_f6219e9785",
+      "source_id": "",
+      "payload": {},
+      "created_at": 1786627908.1143663
+    },
+    "evd_ba0e62669a": {
+      "id": "evd_ba0e62669a",
+      "target_id": "hyp_a155973991",
+      "direction": "supports",
+      "strength": 0.7,
+      "kind": "experiment",
+      "summary": "[round 1] bellman_ford has the highest relaxation count: confirmed (highest relaxation count by topology: {'sparse_random': 'bellman_ford', 'dense_random': 'bellman_ford', 'grid_2d': 'bellman_ford', 'unit_weight': 'bellman_ford'} [n=512])",
+      "experiment_id": "exp_f6219e9785",
+      "source_id": "",
+      "payload": {},
+      "created_at": 1786627908.1144137
+    },
+    "evd_e8d9ab0e98": {
+      "id": "evd_e8d9ab0e98",
+      "target_id": "hyp_ff3e742ca3",
+      "direction": "supports",
+      "strength": 0.772,
+      "kind": "experiment",
+      "summary": "[round 1] spfa uses fewer relaxations than bellman_ford on sparse_random: confirmed (spfa performed 4,907 relaxations vs bellman_ford 21,476 on 'sparse_random' (+77%); exact counts, machine-independent [n=512])",
+      "experiment_id": "exp_f6219e9785",
+      "source_id": "",
+      "payload": {},
+      "created_at": 1786627908.1144388
+    },
+    "evd_f2f8da1863": {
+      "id": "evd_f2f8da1863",
+      "target_id": "hyp_dfa38e8bf8",
+      "direction": "supports",
+      "strength": 0.9,
+      "kind": "experiment",
+      "summary": "[round 1] bfs_unit is correct on unit_weight: confirmed (bfs_unit on 'unit_weight' returned correct distances [n=512, 5 trials])",
+      "experiment_id": "exp_f6219e9785",
+      "source_id": "",
+      "payload": {},
+      "created_at": 1786627908.114455
+    },
+    "evd_68f0574a66": {
+      "id": "evd_68f0574a66",
+      "target_id": "hyp_dfa38e8bf8",
+      "direction": "supports",
+      "strength": 0.9,
+      "kind": "experiment",
+      "summary": "[round 1] bfs_unit is incorrect on sparse_random: confirmed (bfs_unit on 'sparse_random' returned INCORRECT distances [n=512, 5 trials])",
+      "experiment_id": "exp_f6219e9785",
+      "source_id": "",
+      "payload": {},
+      "created_at": 1786627908.1144676
+    },
+    "evd_a3d58f40e6": {
+      "id": "evd_a3d58f40e6",
+      "target_id": "hyp_a155973991",
+      "direction": "supports",
+      "strength": 0.7,
+      "kind": "experiment",
+      "summary": "[replication] bellman_ford has the highest relaxation count: confirmed (highest relaxation count by topology: {'sparse_random': 'bellman_ford', 'dense_random': 'bellman_ford', 'grid_2d': 'bellman_ford', 'unit_weight': 'bellman_ford'} [n=512])",
+      "experiment_id": "exp_5ddb272042",
+      "source_id": "",
+      "payload": {},
+      "created_at": 1786627910.7847533
+    },
+    "evd_d7b5253ce6": {
+      "id": "evd_d7b5253ce6",
+      "target_id": "hyp_ff3e742ca3",
+      "direction": "supports",
+      "strength": 0.741,
+      "kind": "experiment",
+      "summary": "[replication] spfa uses fewer relaxations than bellman_ford on sparse_random: confirmed (spfa performed 4,763 relaxations vs bellman_ford 18,396 on 'sparse_random' (+74%); exact counts, machine-independent [n=512])",
+      "experiment_id": "exp_4ef2060bc4",
+      "source_id": "",
+      "payload": {},
+      "created_at": 1786627913.4770446
+    },
+    "evd_684ca5293d": {
+      "id": "evd_684ca5293d",
+      "target_id": "hyp_dfa38e8bf8",
+      "direction": "supports",
+      "strength": 0.9,
+      "kind": "experiment",
+      "summary": "[replication] bfs_unit is correct on unit_weight: confirmed (bfs_unit on 'unit_weight' returned correct distances [n=512, 5 trials])",
+      "experiment_id": "exp_e36d780531",
+      "source_id": "",
+      "payload": {},
+      "created_at": 1786627916.057758
+    },
+    "evd_809ef0cfb9": {
+      "id": "evd_809ef0cfb9",
+      "target_id": "hyp_dfa38e8bf8",
+      "direction": "supports",
+      "strength": 0.9,
+      "kind": "experiment",
+      "summary": "[replication] bfs_unit is incorrect on sparse_random: confirmed (bfs_unit on 'sparse_random' returned INCORRECT distances [n=512, 5 trials])",
+      "experiment_id": "exp_e36d780531",
+      "source_id": "",
+      "payload": {},
+      "created_at": 1786627916.0577843
+    }
+  },
+  "experiments": {
+    "exp_f6219e9785": {
+      "id": "exp_f6219e9785",
+      "title": "Benchmark round 1 covering 5 hypothesis(es)",
+      "hypothesis_ids": [
+        "hyp_47f59f38cd",
+        "hyp_df0b968ddf",
+        "hyp_a155973991",
+        "hyp_ff3e742ca3",
+        "hyp_dfa38e8bf8"
+      ],
+      "design": {
+        "kind": "benchmark",
+        "round": 1,
+        "algorithms": [
+          "dijkstra_heap",
+          "dijkstra_array",
+          "bellman_ford",
+          "spfa",
+          "bfs_unit"
+        ],
+        "regimes": [
+          "sparse_random",
+          "dense_random",
+          "grid_2d",
+          "unit_weight"
+        ],
+        "sizes": [
+          128,
+          512
+        ],
+        "trials": 5,
+        "seed": 4242,
+        "timeout_s": 600,
+        "hypothesis_ids": [
+          "hyp_47f59f38cd",
+          "hyp_df0b968ddf",
+          "hyp_a155973991",
+          "hyp_ff3e742ca3",
+          "hyp_dfa38e8bf8"
+        ]
+      },
+      "status": "completed",
+      "dir": "experiments/exp_f6219e9785",
+      "duration_s": 2.918640580999977,
+      "summary": {
+        "measurements": 40
+      },
+      "error": "",
+      "created_at": 1786627905.1899035,
+      "finished_at": 1786627908.1119444
+    },
+    "exp_5ddb272042": {
+      "id": "exp_5ddb272042",
+      "title": "Replication of hyp_a155973991",
+      "hypothesis_ids": [
+        "hyp_a155973991"
+      ],
+      "design": {
+        "kind": "benchmark",
+        "round": 2,
+        "algorithms": [
+          "dijkstra_heap",
+          "dijkstra_array",
+          "bellman_ford",
+          "spfa",
+          "bfs_unit"
+        ],
+        "regimes": [
+          "sparse_random",
+          "dense_random",
+          "grid_2d",
+          "unit_weight"
+        ],
+        "sizes": [
+          512
+        ],
+        "trials": 5,
+        "seed": 5242,
+        "timeout_s": 600,
+        "hypothesis_ids": [
+          "hyp_a155973991"
+        ]
+      },
+      "status": "completed",
+      "dir": "experiments/exp_5ddb272042",
+      "duration_s": 2.6578084860000217,
+      "summary": {
+        "measurements": 20
+      },
+      "error": "",
+      "created_at": 1786627908.1220932,
+      "finished_at": 1786627910.7832506
+    },
+    "exp_4ef2060bc4": {
+      "id": "exp_4ef2060bc4",
+      "title": "Replication of hyp_ff3e742ca3",
+      "hypothesis_ids": [
+        "hyp_ff3e742ca3"
+      ],
+      "design": {
+        "kind": "benchmark",
+        "round": 2,
+        "algorithms": [
+          "dijkstra_heap",
+          "dijkstra_array",
+          "bellman_ford",
+          "spfa",
+          "bfs_unit"
+        ],
+        "regimes": [
+          "sparse_random",
+          "dense_random",
+          "grid_2d",
+          "unit_weight"
+        ],
+        "sizes": [
+          512
+        ],
+        "trials": 5,
+        "seed": 5242,
+        "timeout_s": 600,
+        "hypothesis_ids": [
+          "hyp_ff3e742ca3"
+        ]
+      },
+      "status": "completed",
+      "dir": "experiments/exp_4ef2060bc4",
+      "duration_s": 2.683146791000013,
+      "summary": {
+        "measurements": 20
+      },
+      "error": "",
+      "created_at": 1786627910.7893002,
+      "finished_at": 1786627913.4756346
+    },
+    "exp_e36d780531": {
+      "id": "exp_e36d780531",
+      "title": "Replication of hyp_dfa38e8bf8",
+      "hypothesis_ids": [
+        "hyp_dfa38e8bf8"
+      ],
+      "design": {
+        "kind": "benchmark",
+        "round": 2,
+        "algorithms": [
+          "dijkstra_heap",
+          "dijkstra_array",
+          "bellman_ford",
+          "spfa",
+          "bfs_unit"
+        ],
+        "regimes": [
+          "sparse_random",
+          "dense_random",
+          "grid_2d",
+          "unit_weight"
+        ],
+        "sizes": [
+          512
+        ],
+        "trials": 5,
+        "seed": 5242,
+        "timeout_s": 600,
+        "hypothesis_ids": [
+          "hyp_dfa38e8bf8"
+        ]
+      },
+      "status": "completed",
+      "dir": "experiments/exp_e36d780531",
+      "duration_s": 2.571934188,
+      "summary": {
+        "measurements": 20
+      },
+      "error": "",
+      "created_at": 1786627913.4815567,
+      "finished_at": 1786627916.0565276
+    },
+    "exp_549fb806e7": {
+      "id": "exp_549fb806e7",
+      "title": "Falsification probe of hyp_ff3e742ca3",
+      "hypothesis_ids": [
+        "hyp_ff3e742ca3"
+      ],
+      "design": {
+        "kind": "falsification",
+        "round": 9,
+        "algorithms": [
+          "dijkstra_heap",
+          "dijkstra_array",
+          "bellman_ford",
+          "spfa",
+          "bfs_unit"
+        ],
+        "regimes": [
+          "long_chain",
+          "scale_free",
+          "sparse_random"
+        ],
+        "sizes": [
+          1024
+        ],
+        "trials": 5,
+        "seed": 12019,
+        "timeout_s": 600,
+        "hypothesis_ids": [
+          "hyp_ff3e742ca3"
+        ],
+        "probe_checks": [
+          {
+            "label": "boundary:sparse_random",
+            "check": {
+              "type": "fewer_relaxations",
+              "algorithm": "spfa",
+              "than": "bellman_ford",
+              "regime": "sparse_random"
+            },
+            "role": "boundary"
+          },
+          {
+            "label": "scope:long_chain",
+            "check": {
+              "type": "fewer_relaxations",
+              "algorithm": "spfa",
+              "than": "bellman_ford",
+              "regime": "long_chain"
+            },
+            "role": "scope"
+          },
+          {
+            "label": "scope:scale_free",
+            "check": {
+              "type": "fewer_relaxations",
+              "algorithm": "spfa",
+              "than": "bellman_ford",
+              "regime": "scale_free"
+            },
+            "role": "scope"
+          }
+        ]
+      },
+      "status": "completed",
+      "dir": "experiments/exp_549fb806e7",
+      "duration_s": 0.9853461800000787,
+      "summary": {
+        "measurements": 15
+      },
+      "error": "",
+      "created_at": 1786627916.0653272,
+      "finished_at": 1786627917.0534618
+    },
+    "exp_9b2777924f": {
+      "id": "exp_9b2777924f",
+      "title": "Falsification probe of hyp_dfa38e8bf8",
+      "hypothesis_ids": [
+        "hyp_dfa38e8bf8"
+      ],
+      "design": {
+        "kind": "falsification",
+        "round": 9,
+        "algorithms": [
+          "dijkstra_heap",
+          "dijkstra_array",
+          "bellman_ford",
+          "spfa",
+          "bfs_unit"
+        ],
+        "regimes": [
+          "long_chain",
+          "scale_free",
+          "unit_weight"
+        ],
+        "sizes": [
+          1024
+        ],
+        "trials": 5,
+        "seed": 12019,
+        "timeout_s": 600,
+        "hypothesis_ids": [
+          "hyp_dfa38e8bf8"
+        ],
+        "probe_checks": [
+          {
+            "label": "boundary:unit_weight",
+            "check": {
+              "type": "correct_on",
+              "algorithm": "bfs_unit",
+              "regime": "unit_weight"
+            },
+            "role": "boundary"
+          },
+          {
+            "label": "scope:long_chain",
+            "check": {
+              "type": "correct_on",
+              "algorithm": "bfs_unit",
+              "regime": "long_chain"
+            },
+            "role": "scope"
+          },
+          {
+            "label": "scope:scale_free",
+            "check": {
+              "type": "correct_on",
+              "algorithm": "bfs_unit",
+              "regime": "scale_free"
+            },
+            "role": "scope"
+          }
+        ]
+      },
+      "status": "completed",
+      "dir": "experiments/exp_9b2777924f",
+      "duration_s": 0.9653089329999602,
+      "summary": {
+        "measurements": 15
+      },
+      "error": "",
+      "created_at": 1786627917.05852,
+      "finished_at": 1786627918.0266101
+    }
+  },
+  "decisions": [
+    {
+      "id": "dec_28bfc8d48b",
+      "step": 3,
+      "context": "select_investigation",
+      "options": [
+        {
+          "label": "hyp_dfa38e8bf8",
+          "score": 0.9,
+          "reason": "importance 0.9, evidence 0, cost 1.0"
+        },
+        {
+          "label": "hyp_47f59f38cd",
+          "score": 0.8,
+          "reason": "importance 0.8, evidence 0, cost 1.0"
+        },
+        {
+          "label": "hyp_df0b968ddf",
+          "score": 0.75,
+          "reason": "importance 0.75, evidence 0, cost 1.0"
+        },
+        {
+          "label": "hyp_a155973991",
+          "score": 0.7,
+          "reason": "importance 0.7, evidence 0, cost 1.0"
+        },
+        {
+          "label": "hyp_ff3e742ca3",
+          "score": 0.7,
+          "reason": "importance 0.7, evidence 0, cost 1.0"
+        }
+      ],
+      "chosen": "hyp_dfa38e8bf8",
+      "reason": "highest expected information gain per unit cost; experiment co-tests 5 hypothesis(es)",
+      "ts": 1786627905.1897628
+    },
+    {
+      "id": "dec_b075790848",
+      "step": 5,
+      "context": "critic_replication",
+      "options": [
+        {
+          "label": "hyp_a155973991",
+          "score": 1.0,
+          "reason": "supported by a single experiment only"
+        }
+      ],
+      "chosen": "hyp_a155973991",
+      "reason": "critic refuses single-experiment support; independent replication with new seeds",
+      "ts": 1786627908.1219041
+    },
+    {
+      "id": "dec_04727f5d8a",
+      "step": 6,
+      "context": "critic_replication",
+      "options": [
+        {
+          "label": "hyp_ff3e742ca3",
+          "score": 1.0,
+          "reason": "supported by a single experiment only"
+        }
+      ],
+      "chosen": "hyp_ff3e742ca3",
+      "reason": "critic refuses single-experiment support; independent replication with new seeds",
+      "ts": 1786627910.7891333
+    },
+    {
+      "id": "dec_53865f2e97",
+      "step": 7,
+      "context": "critic_replication",
+      "options": [
+        {
+          "label": "hyp_dfa38e8bf8",
+          "score": 1.0,
+          "reason": "supported by a single experiment only"
+        }
+      ],
+      "chosen": "hyp_dfa38e8bf8",
+      "reason": "critic refuses single-experiment support; independent replication with new seeds",
+      "ts": 1786627913.481382
+    },
+    {
+      "id": "dec_a625015f44",
+      "step": 9,
+      "context": "critic_falsification",
+      "options": [
+        {
+          "label": "hyp_ff3e742ca3",
+          "score": 1.0,
+          "reason": "replicated conclusion must survive boundary + unseen-regime probes"
+        }
+      ],
+      "chosen": "hyp_ff3e742ca3",
+      "reason": "falsification probes: boundary:sparse_random, scope:long_chain, scope:scale_free",
+      "ts": 1786627916.0651681
+    },
+    {
+      "id": "dec_3b6e8f1cb1",
+      "step": 10,
+      "context": "critic_falsification",
+      "options": [
+        {
+          "label": "hyp_dfa38e8bf8",
+          "score": 1.0,
+          "reason": "replicated conclusion must survive boundary + unseen-regime probes"
+        }
+      ],
+      "chosen": "hyp_dfa38e8bf8",
+      "reason": "falsification probes: boundary:unit_weight, scope:long_chain, scope:scale_free",
+      "ts": 1786627917.058366
+    }
+  ],
+  "graph": {
+    "entities": {},
+    "relations": {},
+    "contradictions": []
+  },
+  "assumptions": [
+    "All graphs are connected and undirected with positive integer weights, so Dijkstra's preconditions hold.",
+    "Source vertex is always 0; results describe single-source shortest paths only.",
+    "Pure-Python implementations: constant factors dominate at these sizes and do not transfer to compiled implementations.",
+    "Edge relaxations are counted identically across candidates, so the count is comparable; wall-clock time is host-specific.",
+    "All timings come from a single machine and interpreter; absolute numbers will not transfer, only rankings might.",
+    "Conclusions hold only for the tested input regimes and sizes; extrapolation beyond them is speculation, not inference."
+  ],
+  "cautions": [
+    "[mock counterargument, unverified] Timing rankings at these sizes may be dominated by interpreter overhead rather than algorithmic behaviour. (targets hyp_47f59f38cd)",
+    "Topology 'unit_weight' at n=512 in exp_f6219e9785: spfa has the lowest mean but is not separable from bfs_unit at 5 trials \u2014 no winner is claimed.",
+    "Topology 'dense_random' at n=512 in exp_5ddb272042: dijkstra_heap has the lowest mean but is not separable from spfa at 5 trials \u2014 no winner is claimed.",
+    "Topology 'unit_weight' at n=512 in exp_5ddb272042: spfa has the lowest mean but is not separable from bfs_unit at 5 trials \u2014 no winner is claimed.",
+    "Topology 'grid_2d' at n=512 in exp_4ef2060bc4: spfa has the lowest mean but is not separable from dijkstra_heap at 5 trials \u2014 no winner is claimed.",
+    "Topology 'unit_weight' at n=512 in exp_4ef2060bc4: bfs_unit has the lowest mean but is not separable from spfa at 5 trials \u2014 no winner is claimed.",
+    "Topology 'dense_random' at n=512 in exp_e36d780531: dijkstra_heap has the lowest mean but is not separable from spfa at 5 trials \u2014 no winner is claimed.",
+    "Topology 'unit_weight' at n=512 in exp_e36d780531: bfs_unit has the lowest mean but is not separable from spfa at 5 trials \u2014 no winner is claimed.",
+    "hyp_a155973991 could not be falsification-probed (prediction types not probeable); it remains provisionally supported, not accepted."
+  ],
+  "failures": [
+    {
+      "experiment": "exp_f6219e9785",
+      "hypothesis": "",
+      "kind": "incorrect_output",
+      "prediction": "(correctness)",
+      "expected": "distances equal to the reference",
+      "observed": "bfs_unit returned wrong distances on 'dense_random'",
+      "action": "candidate excluded from performance rankings on this topology",
+      "ts": 1786627908.1136146
+    },
+    {
+      "experiment": "exp_f6219e9785",
+      "hypothesis": "",
+      "kind": "incorrect_output",
+      "prediction": "(correctness)",
+      "expected": "distances equal to the reference",
+      "observed": "bfs_unit returned wrong distances on 'grid_2d'",
+      "action": "candidate excluded from performance rankings on this topology",
+      "ts": 1786627908.1138017
+    },
+    {
+      "experiment": "exp_f6219e9785",
+      "hypothesis": "",
+      "kind": "incorrect_output",
+      "prediction": "(correctness)",
+      "expected": "distances equal to the reference",
+      "observed": "bfs_unit returned wrong distances on 'sparse_random'",
+      "action": "candidate excluded from performance rankings on this topology",
+      "ts": 1786627908.1139057
+    },
+    {
+      "experiment": "exp_f6219e9785",
+      "hypothesis": "hyp_47f59f38cd",
+      "prediction": "dijkstra_heap is fastest on sparse_random",
+      "expected": "dijkstra_heap is fastest on sparse_random",
+      "observed": "fastest on 'sparse_random' is spfa, not dijkstra_heap (24% apart) [n=512, 5 trials]",
+      "action": "hypothesis status re-evaluated",
+      "ts": 1786627908.1142313
+    },
+    {
+      "experiment": "exp_f6219e9785",
+      "hypothesis": "hyp_df0b968ddf",
+      "prediction": "dijkstra_array beats dijkstra_heap on dense_random",
+      "expected": "dijkstra_array beats dijkstra_heap on dense_random",
+      "observed": "dijkstra_array is decisively SLOWER than dijkstra_heap on 'dense_random' (-39%) [n=512, 5 trials]",
+      "action": "hypothesis status re-evaluated",
+      "ts": 1786627908.114369
+    }
+  ],
+  "falsifications": {
+    "fal_964748cd40": {
+      "id": "fal_964748cd40",
+      "hypothesis_id": "hyp_a155973991",
+      "experiment_id": "",
+      "probe": "",
+      "outcome": "inconclusive",
+      "detail": "no probeable predictions for this hypothesis (its prediction types cannot be evaluated at boundary/unseen conditions)",
+      "ts": 1786627916.0618696
+    },
+    "fal_4119f3b2b8": {
+      "id": "fal_4119f3b2b8",
+      "hypothesis_id": "hyp_ff3e742ca3",
+      "experiment_id": "exp_549fb806e7",
+      "probe": "boundary:sparse_random, scope:long_chain, scope:scale_free",
+      "outcome": "survived",
+      "detail": "[boundary:sparse_random] confirmed: spfa performed 9,907 relaxations vs bellman_ford 42,980 on 'sparse_random' (+77%); exact counts, machine-independent [n=1024] | [scope:long_chain] confirmed: spfa performed 4,493 relaxations vs bellman_ford 150,360 on 'long_chain' (+97%); exact counts, machine-independent [n=1024] | [scope:scale_free] confirmed: spfa performed 5,410 relaxations vs bellman_ford 20,460 on 'scale_free' (+74%); exact counts, machine-independent [n=1024]",
+      "ts": 1786627916.065148
+    },
+    "fal_902d71b09e": {
+      "id": "fal_902d71b09e",
+      "hypothesis_id": "hyp_dfa38e8bf8",
+      "experiment_id": "exp_9b2777924f",
+      "probe": "boundary:unit_weight, scope:long_chain, scope:scale_free",
+      "outcome": "survived",
+      "detail": "[boundary:unit_weight] confirmed: bfs_unit on 'unit_weight' returned correct distances [n=1024, 5 trials] | [scope:long_chain] refuted: bfs_unit on 'long_chain' returned INCORRECT distances [n=1024, 5 trials] | [scope:scale_free] refuted: bfs_unit on 'scale_free' returned INCORRECT distances [n=1024, 5 trials]",
+      "ts": 1786627917.0583496
+    }
+  },
+  "confidence_history": [
+    {
+      "ts": 1786627908.1142612,
+      "kind": "hypothesis",
+      "id": "hyp_47f59f38cd",
+      "old": "under_test",
+      "new": "rejected",
+      "reason": "evidence from exp_f6219e9785"
+    },
+    {
+      "ts": 1786627908.1143754,
+      "kind": "hypothesis",
+      "id": "hyp_df0b968ddf",
+      "old": "under_test",
+      "new": "rejected",
+      "reason": "evidence from exp_f6219e9785"
+    },
+    {
+      "ts": 1786627908.114421,
+      "kind": "hypothesis",
+      "id": "hyp_a155973991",
+      "old": "under_test",
+      "new": "provisionally_supported",
+      "reason": "evidence from exp_f6219e9785"
+    },
+    {
+      "ts": 1786627908.1144438,
+      "kind": "hypothesis",
+      "id": "hyp_ff3e742ca3",
+      "old": "under_test",
+      "new": "provisionally_supported",
+      "reason": "evidence from exp_f6219e9785"
+    },
+    {
+      "ts": 1786627908.114473,
+      "kind": "hypothesis",
+      "id": "hyp_dfa38e8bf8",
+      "old": "under_test",
+      "new": "provisionally_supported",
+      "reason": "evidence from exp_f6219e9785"
+    },
+    {
+      "ts": 1786627908.1145077,
+      "kind": "claim",
+      "id": "clm_ac9162741d",
+      "old": null,
+      "new": 0.6,
+      "reason": "measured in exp_f6219e9785"
+    },
+    {
+      "ts": 1786627918.0311944,
+      "kind": "hypothesis",
+      "id": "hyp_ff3e742ca3",
+      "old": "provisionally_supported",
+      "new": "accepted_with_scope",
+      "reason": "critic promotion after falsification"
+    },
+    {
+      "ts": 1786627918.0312915,
+      "kind": "hypothesis",
+      "id": "hyp_dfa38e8bf8",
+      "old": "provisionally_supported",
+      "new": "accepted_with_scope",
+      "reason": "critic promotion after falsification"
+    }
+  ],
+  "recommendations": [
+    "[mock knowledge gap] Comparison and move counts are not measured, so rankings cannot be separated from constant factors.",
+    "Investigate knowledge gap: Directed graphs and negative edge weights are not benchmarked; Bellman-Ford's actual advantage is therefore untested here.",
+    "Investigate knowledge gap: Only single-source queries from vertex 0 are measured.",
+    "Investigate knowledge gap: Memory use and cache behaviour are not instrumented, so the dense/sparse crossover is explained only by relaxation counts and wall-clock time."
+  ],
+  "flags": {
+    "current": "Complete",
+    "graph_hypotheses_seeded": true,
+    "proposed_designs": [
+      {
+        "proposal_id": "prop_e31021938f",
+        "statement": "Re-measure the full roster on the two most discriminating regimes with extra trials.",
+        "algorithms": [
+          "dijkstra_heap",
+          "dijkstra_array",
+          "bellman_ford",
+          "spfa",
+          "bfs_unit"
+        ],
+        "regimes": [
+          "sparse_random",
+          "dense_random"
+        ],
+        "sizes": [
+          128,
+          512
+        ],
+        "trials": 7
+      }
+    ],
+    "incorrect_bfs_unit_dense_random": true,
+    "incorrect_bfs_unit_grid_2d": true,
+    "incorrect_bfs_unit_sparse_random": true,
+    "relax_claim": true,
+    "analyzed_exp_f6219e9785": true,
+    "stagnation": 0,
+    "analyzed_exp_5ddb272042": true,
+    "analyzed_exp_4ef2060bc4": true,
+    "analyzed_exp_e36d780531": true,
+    "critic_finalized": true
+  },
+  "step": 13
+}

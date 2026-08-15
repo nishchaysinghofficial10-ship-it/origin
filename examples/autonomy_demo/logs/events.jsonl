@@ -1,0 +1,50 @@
+{"ts": 1786481373.1731875, "kind": "init", "msg": "Research project initialized: Which sorting strategy wins under which input regime, and what does the published literature claim about those tradeoffs?"}
+{"ts": 1786481373.1798391, "kind": "retrieval", "msg": "https://fixtures.invalid/adaptive-sorting \u2192 200 text/plain 265B sha256:382f1a33ea66412f in 0.00s via fixture [robots: not_checked] (content treated as UNTRUSTED)"}
+{"ts": 1786481373.180156, "kind": "source_ingested", "msg": "src_b2481390ad: Adaptive Sorting Notes (https://fixtures.invalid/adaptive-sorting) \u2014 reliability 0.25 from 4 recorded reason(s); content is UNTRUSTED", "refs": {"source": "src_b2481390ad"}}
+{"ts": 1786481373.1805975, "kind": "claim_extracted", "msg": "clm_9ba0267aea [comparative, SPECULATION, conf 0.25] from src_b2481390ad@24: Insertion sort is faster than merge sort on nearly-sorted input because the number of inve", "refs": {"claim": "clm_9ba0267aea", "source": "src_b2481390ad"}}
+{"ts": 1786481373.180703, "kind": "claim_extracted", "msg": "clm_cdef10f89c [descriptive, SPECULATION, conf 0.25] from src_b2481390ad@163: Merge sort is a stable comparison sort with guaranteed n log n behaviour on every input di", "refs": {"claim": "clm_cdef10f89c", "source": "src_b2481390ad"}}
+{"ts": 1786481373.1845567, "kind": "retrieval_failed", "msg": "RetrievalError for https://fixtures.invalid/intermittent: TimeoutError fetching https://fixtures.invalid/intermittent: simulated transient failure 1/2"}
+{"ts": 1786481373.188649, "kind": "transition", "msg": "CREATED -> VALIDATING"}
+{"ts": 1786481373.1887631, "kind": "transition", "msg": "VALIDATING -> PLANNING (mission spec validated)"}
+{"ts": 1786481373.1888137, "kind": "heartbeat", "msg": "step 0 phase PLANNING | hyp 0 exp 0 evd 0 fail 0 | budget exp 0/8 compute 0.0s retries 0/8"}
+{"ts": 1786481373.1889, "kind": "planned", "msg": "Question decomposed into research tree; prior knowledge seeded"}
+{"ts": 1786481373.188943, "kind": "transition", "msg": "PLANNING -> FORMING_HYPOTHESES"}
+{"ts": 1786481373.1889844, "kind": "heartbeat", "msg": "step 0 phase FORMING_HYPOTHESES | hyp 0 exp 0 evd 0 fail 0 | budget exp 0/8 compute 0.0s retries 0/8"}
+{"ts": 1786481373.1924913, "kind": "retrieval_failed", "msg": "RetrievalError for https://fixtures.invalid/intermittent: TimeoutError fetching https://fixtures.invalid/intermittent: simulated transient failure 2/2"}
+{"ts": 1786481373.1971564, "kind": "hypothesis", "msg": "hyp_48de48fcea: Insertion sort is the fastest candidate on nearly-sorted input, and the slowest on random input, at the tested sizes.", "refs": {"hypothesis": "hyp_48de48fcea"}}
+{"ts": 1786481373.197219, "kind": "hypothesis", "msg": "hyp_fc15d13b1b: Merge sort is the fastest pure-Python candidate on random input.", "refs": {"hypothesis": "hyp_fc15d13b1b"}}
+{"ts": 1786481373.1972594, "kind": "hypothesis", "msg": "hyp_2be7e87921: Quick sort (median-of-three, Hoare) stays within 25% of the best candidate on random input and does not collapse on reversed input.", "refs": {"hypothesis": "hyp_2be7e87921"}}
+{"ts": 1786481373.1972935, "kind": "hypothesis", "msg": "hyp_db14df8458: Heap sort is the most consistent candidate (lowest relative timing variance across regimes) but is never the fastest in any regime.", "refs": {"hypothesis": "hyp_db14df8458"}}
+{"ts": 1786481373.1973295, "kind": "transition", "msg": "FORMING_HYPOTHESES -> SELECTING_NEXT_ACTION"}
+{"ts": 1786481373.1973672, "kind": "heartbeat", "msg": "step 0 phase SELECTING_NEXT_ACTION | hyp 4 exp 0 evd 0 fail 0 | budget exp 0/8 compute 0.0s retries 0/8"}
+{"ts": 1786481373.2058222, "kind": "retrieval", "msg": "https://fixtures.invalid/intermittent \u2192 200 text/plain 265B sha256:382f1a33ea66412f in 0.00s via fixture [robots: not_checked] (content treated as UNTRUSTED)"}
+{"ts": 1786481373.205893, "kind": "ingest_skipped", "msg": "https://fixtures.invalid/intermittent duplicates src_b2481390ad by content hash 382f1a33ea66412f"}
+{"ts": 1786481373.2120495, "kind": "transition", "msg": "SELECTING_NEXT_ACTION -> DESIGNING_EXPERIMENT"}
+{"ts": 1786481373.2121441, "kind": "decision", "msg": "[select_investigation] chose: hyp_48de48fcea \u2014 highest expected information gain per unit cost; experiment co-tests 4 hypothesis(es)"}
+{"ts": 1786481373.2122169, "kind": "transition", "msg": "DESIGNING_EXPERIMENT -> EXECUTING"}
+{"ts": 1786481373.2143102, "kind": "experiment_started", "msg": "exp_066779c791: Benchmark round 1 covering 4 hypothesis(es)", "refs": {"experiment": "exp_066779c791"}}
+{"ts": 1786481373.2857559, "kind": "experiment_completed", "msg": "exp_066779c791 completed in 0.1s (40 measurements)", "refs": {"experiment": "exp_066779c791"}}
+{"ts": 1786481373.2860873, "kind": "transition", "msg": "EXECUTING -> ANALYZING"}
+{"ts": 1786481373.287887, "kind": "hypothesis_generated", "msg": "New candidate synthesized from evidence: hyp_5542e8d61c (hybrid_sort)", "refs": {"hypothesis": "hyp_5542e8d61c"}}
+{"ts": 1786481373.28797, "kind": "analysis", "msg": "exp_066779c791 analyzed; regime winners: {'random': 'quick_sort', 'nearly_sorted': 'insertion_sort', 'reversed': 'quick_sort', 'few_unique': 'shell_sort'}", "refs": {"experiment": "exp_066779c791"}}
+{"ts": 1786481373.2880175, "kind": "transition", "msg": "ANALYZING -> UPDATING_KNOWLEDGE"}
+{"ts": 1786481373.2880504, "kind": "transition", "msg": "UPDATING_KNOWLEDGE -> SELECTING_NEXT_ACTION"}
+{"ts": 1786481373.2881103, "kind": "heartbeat", "msg": "step 0 phase SELECTING_NEXT_ACTION | hyp 5 exp 1 evd 7 fail 1 | budget exp 1/8 compute 0.1s retries 0/8"}
+{"ts": 1786481373.2934752, "kind": "transition", "msg": "SELECTING_NEXT_ACTION -> DESIGNING_EXPERIMENT"}
+{"ts": 1786481373.293566, "kind": "decision", "msg": "[select_investigation] chose: hyp_5542e8d61c \u2014 highest expected information gain per unit cost; experiment co-tests 1 hypothesis(es)"}
+{"ts": 1786481373.293608, "kind": "transition", "msg": "DESIGNING_EXPERIMENT -> EXECUTING"}
+{"ts": 1786481373.2952824, "kind": "experiment_started", "msg": "exp_a582f67436: Benchmark round 2 covering 1 hypothesis(es)", "refs": {"experiment": "exp_a582f67436"}}
+{"ts": 1786481373.3735342, "kind": "experiment_completed", "msg": "exp_a582f67436 completed in 0.1s (48 measurements)", "refs": {"experiment": "exp_a582f67436"}}
+{"ts": 1786481373.3739436, "kind": "transition", "msg": "EXECUTING -> ANALYZING"}
+{"ts": 1786481373.375129, "kind": "analysis", "msg": "exp_a582f67436 analyzed; regime winners: {'random': 'quick_sort', 'nearly_sorted': 'insertion_sort', 'reversed': 'quick_sort', 'few_unique': 'shell_sort'}", "refs": {"experiment": "exp_a582f67436"}}
+{"ts": 1786481373.3751943, "kind": "transition", "msg": "ANALYZING -> UPDATING_KNOWLEDGE"}
+{"ts": 1786481373.375232, "kind": "transition", "msg": "UPDATING_KNOWLEDGE -> SELECTING_NEXT_ACTION"}
+{"ts": 1786481373.375286, "kind": "heartbeat", "msg": "step 1 phase SELECTING_NEXT_ACTION | hyp 5 exp 2 evd 9 fail 1 | budget exp 2/8 compute 0.1s retries 0/8"}
+{"ts": 1786481373.382213, "kind": "transition", "msg": "SELECTING_NEXT_ACTION -> CRITICIZING (no pending hypotheses remain)"}
+{"ts": 1786481373.3822873, "kind": "heartbeat", "msg": "step 2 phase CRITICIZING | hyp 5 exp 2 evd 9 fail 1 | budget exp 2/8 compute 0.1s retries 0/8"}
+{"ts": 1786481373.3878267, "kind": "critic_review", "msg": "Critic pass complete: 5 assumptions on record, 10 cautions, 9 recommended follow-ups"}
+{"ts": 1786481373.3878896, "kind": "heartbeat", "msg": "step 3 phase CRITICIZING | hyp 5 exp 2 evd 9 fail 1 | budget exp 2/8 compute 0.1s retries 0/8"}
+{"ts": 1786481373.3949769, "kind": "synthesis", "msg": "Research dossier and timeline written to reports/"}
+{"ts": 1786481373.3950257, "kind": "transition", "msg": "CRITICIZING -> COMPLETED (no high-value next experiment remained)"}
+{"ts": 1786481373.3950577, "kind": "stopped", "msg": "Mission COMPLETED: no high-value next experiment remained"}
+{"ts": 1786481373.3950913, "kind": "heartbeat", "msg": "step 4 phase COMPLETED | hyp 5 exp 2 evd 9 fail 1 | budget exp 2/8 compute 0.1s retries 0/8"}

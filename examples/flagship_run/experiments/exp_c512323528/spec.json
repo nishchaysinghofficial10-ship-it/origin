@@ -1,0 +1,31 @@
+{
+  "kind": "benchmark",
+  "round": 1,
+  "algorithms": [
+    "insertion_sort",
+    "merge_sort",
+    "quick_sort",
+    "heap_sort",
+    "shell_sort"
+  ],
+  "regimes": [
+    "random",
+    "nearly_sorted",
+    "reversed",
+    "few_unique"
+  ],
+  "sizes": [
+    256,
+    1024,
+    4096
+  ],
+  "trials": 7,
+  "seed": 20260809,
+  "timeout_s": 600,
+  "hypothesis_ids": [
+    "hyp_dbe5f386a7",
+    "hyp_fa035de7df",
+    "hyp_cae1c60f85",
+    "hyp_ad33a3dcb5"
+  ]
+}

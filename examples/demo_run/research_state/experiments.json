@@ -1,0 +1,258 @@
+{
+  "exp_defeaebae2": {
+    "id": "exp_defeaebae2",
+    "title": "Benchmark round 1 covering 4 hypothesis(es)",
+    "hypothesis_ids": [
+      "hyp_d4e20c8a29",
+      "hyp_e8add5b17c",
+      "hyp_c8cb718328",
+      "hyp_a2e585909f"
+    ],
+    "design": {
+      "kind": "benchmark",
+      "round": 1,
+      "algorithms": [
+        "insertion_sort",
+        "merge_sort",
+        "quick_sort",
+        "heap_sort"
+      ],
+      "regimes": [
+        "random",
+        "nearly_sorted",
+        "reversed",
+        "few_unique"
+      ],
+      "sizes": [
+        400,
+        1600
+      ],
+      "trials": 3,
+      "seed": 1234,
+      "timeout_s": 600,
+      "hypothesis_ids": [
+        "hyp_d4e20c8a29",
+        "hyp_e8add5b17c",
+        "hyp_c8cb718328",
+        "hyp_a2e585909f"
+      ]
+    },
+    "status": "completed",
+    "dir": "experiments/exp_defeaebae2",
+    "duration_s": 0.5808399670000313,
+    "summary": {
+      "measurements": 32
+    },
+    "error": "",
+    "created_at": 1786190849.1663117,
+    "finished_at": 1786190849.7497265
+  },
+  "exp_dfae537d8f": {
+    "id": "exp_dfae537d8f",
+    "title": "Benchmark round 2 covering 1 hypothesis(es)",
+    "hypothesis_ids": [
+      "hyp_7850a311fa"
+    ],
+    "design": {
+      "kind": "benchmark",
+      "round": 2,
+      "algorithms": [
+        "insertion_sort",
+        "merge_sort",
+        "quick_sort",
+        "heap_sort",
+        "hybrid_sort"
+      ],
+      "regimes": [
+        "random",
+        "nearly_sorted",
+        "reversed",
+        "few_unique"
+      ],
+      "sizes": [
+        400,
+        1600
+      ],
+      "trials": 3,
+      "seed": 1234,
+      "timeout_s": 600,
+      "hypothesis_ids": [
+        "hyp_7850a311fa"
+      ]
+    },
+    "status": "completed",
+    "dir": "experiments/exp_dfae537d8f",
+    "duration_s": 0.5615822139999977,
+    "summary": {
+      "measurements": 40
+    },
+    "error": "",
+    "created_at": 1786190849.7529533,
+    "finished_at": 1786190850.3166525
+  },
+  "exp_d6590ff7d6": {
+    "id": "exp_d6590ff7d6",
+    "title": "Replication of hyp_d4e20c8a29",
+    "hypothesis_ids": [
+      "hyp_d4e20c8a29"
+    ],
+    "design": {
+      "kind": "replication",
+      "round": 0,
+      "algorithms": [
+        "insertion_sort",
+        "merge_sort",
+        "quick_sort",
+        "heap_sort"
+      ],
+      "regimes": [
+        "random",
+        "nearly_sorted",
+        "reversed",
+        "few_unique"
+      ],
+      "sizes": [
+        1600
+      ],
+      "trials": 3,
+      "seed": 2234,
+      "timeout_s": 600,
+      "hypothesis_ids": [
+        "hyp_d4e20c8a29"
+      ]
+    },
+    "status": "completed",
+    "dir": "experiments/exp_d6590ff7d6",
+    "duration_s": 0.5125551880000216,
+    "summary": {
+      "measurements": 16
+    },
+    "error": "",
+    "created_at": 1786190850.3193705,
+    "finished_at": 1786190850.8337677
+  },
+  "exp_21ee7d3058": {
+    "id": "exp_21ee7d3058",
+    "title": "Replication of hyp_c8cb718328",
+    "hypothesis_ids": [
+      "hyp_c8cb718328"
+    ],
+    "design": {
+      "kind": "replication",
+      "round": 0,
+      "algorithms": [
+        "insertion_sort",
+        "merge_sort",
+        "quick_sort",
+        "heap_sort"
+      ],
+      "regimes": [
+        "random",
+        "nearly_sorted",
+        "reversed",
+        "few_unique"
+      ],
+      "sizes": [
+        1600
+      ],
+      "trials": 3,
+      "seed": 2234,
+      "timeout_s": 600,
+      "hypothesis_ids": [
+        "hyp_c8cb718328"
+      ]
+    },
+    "status": "completed",
+    "dir": "experiments/exp_21ee7d3058",
+    "duration_s": 0.5060897360000354,
+    "summary": {
+      "measurements": 16
+    },
+    "error": "",
+    "created_at": 1786190850.8366566,
+    "finished_at": 1786190851.3446424
+  },
+  "exp_89bfcf883b": {
+    "id": "exp_89bfcf883b",
+    "title": "Replication of hyp_a2e585909f",
+    "hypothesis_ids": [
+      "hyp_a2e585909f"
+    ],
+    "design": {
+      "kind": "replication",
+      "round": 0,
+      "algorithms": [
+        "insertion_sort",
+        "merge_sort",
+        "quick_sort",
+        "heap_sort"
+      ],
+      "regimes": [
+        "random",
+        "nearly_sorted",
+        "reversed",
+        "few_unique"
+      ],
+      "sizes": [
+        1600
+      ],
+      "trials": 3,
+      "seed": 2234,
+      "timeout_s": 600,
+      "hypothesis_ids": [
+        "hyp_a2e585909f"
+      ]
+    },
+    "status": "completed",
+    "dir": "experiments/exp_89bfcf883b",
+    "duration_s": 0.5193549149999512,
+    "summary": {
+      "measurements": 16
+    },
+    "error": "",
+    "created_at": 1786190851.3476188,
+    "finished_at": 1786190851.8687701
+  },
+  "exp_03c68e9b8c": {
+    "id": "exp_03c68e9b8c",
+    "title": "Replication of hyp_7850a311fa",
+    "hypothesis_ids": [
+      "hyp_7850a311fa"
+    ],
+    "design": {
+      "kind": "replication",
+      "round": 0,
+      "algorithms": [
+        "insertion_sort",
+        "merge_sort",
+        "quick_sort",
+        "heap_sort",
+        "hybrid_sort"
+      ],
+      "regimes": [
+        "random",
+        "nearly_sorted",
+        "reversed",
+        "few_unique"
+      ],
+      "sizes": [
+        1600
+      ],
+      "trials": 3,
+      "seed": 2234,
+      "timeout_s": 600,
+      "hypothesis_ids": [
+        "hyp_7850a311fa"
+      ]
+    },
+    "status": "completed",
+    "dir": "experiments/exp_03c68e9b8c",
+    "duration_s": 0.5210909340000285,
+    "summary": {
+      "measurements": 20
+    },
+    "error": "",
+    "created_at": 1786190851.8721313,
+    "finished_at": 1786190852.3954127
+  }
+}

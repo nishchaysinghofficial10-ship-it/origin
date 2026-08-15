@@ -1,0 +1,23 @@
+{
+  "question": "Which sorting strategy wins under which input regime, and what does the published literature claim about those tradeoffs?",
+  "domain": "algobench",
+  "domain_config": {
+    "sizes": [
+      64,
+      128
+    ],
+    "trials": 5,
+    "seed": 1234,
+    "regimes": [
+      "random",
+      "nearly_sorted",
+      "reversed",
+      "few_unique"
+    ],
+    "timeout_s": 120
+  },
+  "profile": "fast",
+  "phase": "CREATED",
+  "created_at": 1786481373.1730704,
+  "origin_version": "1.0.0"
+}

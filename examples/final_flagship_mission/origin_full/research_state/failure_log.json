@@ -1,0 +1,50 @@
+[
+  {
+    "experiment": "exp_f6219e9785",
+    "hypothesis": "",
+    "kind": "incorrect_output",
+    "prediction": "(correctness)",
+    "expected": "distances equal to the reference",
+    "observed": "bfs_unit returned wrong distances on 'dense_random'",
+    "action": "candidate excluded from performance rankings on this topology",
+    "ts": 1786627908.1136146
+  },
+  {
+    "experiment": "exp_f6219e9785",
+    "hypothesis": "",
+    "kind": "incorrect_output",
+    "prediction": "(correctness)",
+    "expected": "distances equal to the reference",
+    "observed": "bfs_unit returned wrong distances on 'grid_2d'",
+    "action": "candidate excluded from performance rankings on this topology",
+    "ts": 1786627908.1138017
+  },
+  {
+    "experiment": "exp_f6219e9785",
+    "hypothesis": "",
+    "kind": "incorrect_output",
+    "prediction": "(correctness)",
+    "expected": "distances equal to the reference",
+    "observed": "bfs_unit returned wrong distances on 'sparse_random'",
+    "action": "candidate excluded from performance rankings on this topology",
+    "ts": 1786627908.1139057
+  },
+  {
+    "experiment": "exp_f6219e9785",
+    "hypothesis": "hyp_47f59f38cd",
+    "prediction": "dijkstra_heap is fastest on sparse_random",
+    "expected": "dijkstra_heap is fastest on sparse_random",
+    "observed": "fastest on 'sparse_random' is spfa, not dijkstra_heap (24% apart) [n=512, 5 trials]",
+    "action": "hypothesis status re-evaluated",
+    "ts": 1786627908.1142313
+  },
+  {
+    "experiment": "exp_f6219e9785",
+    "hypothesis": "hyp_df0b968ddf",
+    "prediction": "dijkstra_array beats dijkstra_heap on dense_random",
+    "expected": "dijkstra_array beats dijkstra_heap on dense_random",
+    "observed": "dijkstra_array is decisively SLOWER than dijkstra_heap on 'dense_random' (-39%) [n=512, 5 trials]",
+    "action": "hypothesis status re-evaluated",
+    "ts": 1786627908.114369
+  }
+]

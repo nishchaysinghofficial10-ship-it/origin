@@ -1,0 +1,44 @@
+{
+  "clm_bbc4b6ecee": {
+    "id": "clm_bbc4b6ecee",
+    "text": "Any comparison sort requires Omega(n log n) comparisons in the worst case.",
+    "status": "fact",
+    "confidence": 0.97,
+    "source_ids": [
+      "src_4c8df7ee3c"
+    ],
+    "notes": "",
+    "created_at": 1786391465.6624563
+  },
+  "clm_2a22e5624c": {
+    "id": "clm_2a22e5624c",
+    "text": "Insertion sort runs in O(n + inversions); it is linear on nearly-sorted input.",
+    "status": "fact",
+    "confidence": 0.97,
+    "source_ids": [
+      "src_4c8df7ee3c"
+    ],
+    "notes": "",
+    "created_at": 1786391465.6624653
+  },
+  "clm_6241b012d7": {
+    "id": "clm_6241b012d7",
+    "text": "Quicksort's worst case is O(n^2), but median-of-three pivoting avoids it on sorted/reversed inputs.",
+    "status": "fact",
+    "confidence": 0.97,
+    "source_ids": [
+      "src_4c8df7ee3c"
+    ],
+    "notes": "",
+    "created_at": 1786391465.6624715
+  },
+  "clm_7060fe4c45": {
+    "id": "clm_7060fe4c45",
+    "text": "Hybrid insertion-cutoff optima at n=4096 (7 trials, CPython 3.12.3 on Linux/x86_64): random=16 (indistinguishable from [8, 32]), nearly_sorted=64 (indistinguishable from [32]), reversed=8 (indistinguishable from [16]), few_unique=16 (indistinguishable from [8, 32])",
+    "status": "experimental_result",
+    "confidence": 0.6,
+    "source_ids": [],
+    "notes": "",
+    "created_at": 1786391490.8288174
+  }
+}

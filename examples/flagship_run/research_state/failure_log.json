@@ -1,0 +1,29 @@
+[
+  {
+    "experiment": "exp_c512323528",
+    "hypothesis": "hyp_fa035de7df",
+    "prediction": "merge_sort is fastest on random",
+    "expected": "merge_sort is fastest on random",
+    "observed": "fastest_on on 'random' is quick_sort, not merge_sort (71% apart, decisive) [n=4096, 7 trials]",
+    "action": "hypothesis status re-evaluated from evidence",
+    "ts": 1786391477.6909187
+  },
+  {
+    "experiment": "exp_c512323528",
+    "hypothesis": "hyp_ad33a3dcb5",
+    "prediction": "heap_sort has lowest mean relative stdev",
+    "expected": "heap_sort has lowest mean relative stdev",
+    "observed": "lowest mean relative stdev: merge_sort (0.050); next is quick_sort (0.063) [n=4096, 7 trials]",
+    "action": "hypothesis status re-evaluated from evidence",
+    "ts": 1786391477.691301
+  },
+  {
+    "experiment": "exp_409be65fa9",
+    "hypothesis": "hyp_f1699d47b3",
+    "prediction": "Heap sort beats shell sort on reversed input at the tested sizes.",
+    "expected": "Heap sort beats shell sort on reversed input at the tested sizes.",
+    "observed": "heap_sort is decisively SLOWER than shell_sort on 'reversed' (-30%) [n=4096, 7 trials]",
+    "action": "hypothesis status re-evaluated from evidence",
+    "ts": 1786391503.3501675
+  }
+]

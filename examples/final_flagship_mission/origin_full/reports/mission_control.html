@@ -1,0 +1,48 @@
+<!doctype html><html><head><meta charset='utf-8'>
+<title>ORIGIN mission control</title><style>
+body{font-family:ui-monospace,Menlo,Consolas,monospace;background:#0e1116;
+color:#d7dde6;margin:2rem;line-height:1.45}
+h1,h2{color:#7ee0a3;font-weight:600} a{color:#7ab8ff}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.8rem}
+.card{background:#161b22;border:1px solid #2b3240;border-radius:8px;padding:.8rem}
+.card b{font-size:1.5rem;color:#fff}
+table{border-collapse:collapse;width:100%;font-size:.85rem}
+td,th{border:1px solid #2b3240;padding:.35rem .5rem;text-align:left;vertical-align:top}
+.bar{background:#2b3240;height:10px;border-radius:5px;overflow:hidden}
+.bar div{background:#7ee0a3;height:100%}
+.st.accepted_with_scope{color:#7ee0a3} .st.provisionally_supported{color:#a3d8ff}
+.st.rejected{color:#ff8f8f} .st.weakened{color:#ffd27e}
+small{color:#8b96a5}</style></head><body>
+<h1>ORIGIN — mission control</h1>
+<p><b>Which single-source shortest-path method wins on which graph topology at n&lt;=512, does the machine-independent relaxation count agree with the wall-clock ranking, and under what precondition is the BFS candidate correct?</b><br>
+<small>phase <b>COMPLETED</b> · step 13 ·
+stop reason: no high-value next experiment remained ·
+generated from state.json (single source of truth)</small></p>
+<div class='grid'>
+<div class='card'>hypotheses<br><b>5</b></div>
+<div class='card'>experiments<br><b>6</b></div>
+<div class='card'>evidence<br><b>10</b></div>
+<div class='card'>claims<br><b>4</b></div>
+<div class='card'>contradictions<br><b>0</b></div>
+<div class='card'>failures<br><b>5</b></div>
+<div class='card'>falsification attempts<br><b>3</b></div>
+<div class='card'>decisions<br><b>6</b></div>
+</div>
+<h2>Budgets</h2>
+<div class='grid'>
+<div class='card'>experiments <div class="bar"><div style="width:15%"></div></div><small>6 / 40 (15%)</small></div>
+<div class='card'>compute seconds <div class="bar"><div style="width:0%"></div></div><small>13 / 1800 (0%)</small></div>
+<div class='card'>retries <div class="bar"><div style="width:0%"></div></div><small>0 / 8 (0%)</small></div>
+</div>
+<h2>Hypotheses</h2>
+<table><tr><th>id</th><th>status</th><th>statement</th><th>evid +/−</th>
+<th>scope</th><th>tags</th></tr><tr><td>hyp_47f59f38cd</td><td class='st rejected'>rejected</td><td>Dijkstra with a binary heap is fastest on sparse random graphs at the tested sizes.</td><td>0/1</td><td>—</td><td>counterargued</td></tr><tr><td>hyp_df0b968ddf</td><td class='st rejected'>rejected</td><td>The array-scan Dijkstra beats the heap variant on dense graphs, where the scan cost is amortised.</td><td>0/1</td><td>—</td><td>—</td></tr><tr><td>hyp_a155973991</td><td class='st provisionally_supported'>provisionally_supported</td><td>Bellman-Ford performs the most edge relaxations of any candidate on every tested topology.</td><td>2/0</td><td>—</td><td>replicated, falsification_done</td></tr><tr><td>hyp_ff3e742ca3</td><td class='st accepted_with_scope'>accepted_with_scope</td><td>SPFA performs fewer relaxations than Bellman-Ford on sparse random graphs.</td><td>2/0</td><td>holds at n&lt;=2x tested sizes on its original topology; extends to [&#x27;long_chain&#x27;, &#x27;scale_free&#x27;]</td><td>replicated, falsification_done, falsification_survived</td></tr><tr><td>hyp_dfa38e8bf8</td><td class='st accepted_with_scope'>accepted_with_scope</td><td>The BFS candidate returns correct distances on unit-weight graphs and incorrect distances on every weighted topology.</td><td>4/0</td><td>holds at n&lt;=2x tested sizes on its original topology; does NOT extend to [&#x27;long_chain&#x27;, &#x27;scale_free&#x27;]</td><td>correctness_boundary, replicated, falsification_done, falsification_survived</td></tr></table>
+<h2>Falsification attempts</h2>
+<table><tr><th>hypothesis</th><th>outcome</th><th>probe</th><th>detail</th></tr>
+<tr><td>hyp_a155973991</td><td>inconclusive</td><td>—</td><td>no probeable predictions for this hypothesis (its prediction types cannot be evaluated at boundary/unseen conditions)</td></tr><tr><td>hyp_ff3e742ca3</td><td>survived</td><td>boundary:sparse_random, scope:long_chain, scope:scale_free</td><td>[boundary:sparse_random] confirmed: spfa performed 9,907 relaxations vs bellman_ford 42,980 on &#x27;sparse_random&#x27; (+77%); exact counts, machine-independent [n=1024] | [scope:long_chain] confirmed: spfa performed 4,493 relax</td></tr><tr><td>hyp_dfa38e8bf8</td><td>survived</td><td>boundary:unit_weight, scope:long_chain, scope:scale_free</td><td>[boundary:unit_weight] confirmed: bfs_unit on &#x27;unit_weight&#x27; returned correct distances [n=1024, 5 trials] | [scope:long_chain] refuted: bfs_unit on &#x27;long_chain&#x27; returned INCORRECT distances [n=1024, 5 trials] | [scope:sc</td></tr></table>
+<h2>Contradictions</h2><ul><li>none</li></ul>
+<h2>Recent failures</h2>
+<table><tr><th>experiment</th><th>hypothesis</th><th>observed</th></tr><tr><td>exp_f6219e9785</td><td></td><td>bfs_unit returned wrong distances on &#x27;dense_random&#x27;</td></tr><tr><td>exp_f6219e9785</td><td></td><td>bfs_unit returned wrong distances on &#x27;grid_2d&#x27;</td></tr><tr><td>exp_f6219e9785</td><td></td><td>bfs_unit returned wrong distances on &#x27;sparse_random&#x27;</td></tr><tr><td>exp_f6219e9785</td><td>hyp_47f59f38cd</td><td>fastest on &#x27;sparse_random&#x27; is spfa, not dijkstra_heap (24% apart) [n=512, 5 trials]</td></tr><tr><td>exp_f6219e9785</td><td>hyp_df0b968ddf</td><td>dijkstra_array is decisively SLOWER than dijkstra_heap on &#x27;dense_random&#x27; (-39%) [n=512, 5 trials]</td></tr></table>
+<h2>Decision timeline (last 20)</h2><ul><li><b>step 3</b> [select_investigation] → hyp_dfa38e8bf8<br><small>highest expected information gain per unit cost; experiment co-tests 5 hypothesis(es)</small></li><li><b>step 5</b> [critic_replication] → hyp_a155973991<br><small>critic refuses single-experiment support; independent replication with new seeds</small></li><li><b>step 6</b> [critic_replication] → hyp_ff3e742ca3<br><small>critic refuses single-experiment support; independent replication with new seeds</small></li><li><b>step 7</b> [critic_replication] → hyp_dfa38e8bf8<br><small>critic refuses single-experiment support; independent replication with new seeds</small></li><li><b>step 9</b> [critic_falsification] → hyp_ff3e742ca3<br><small>falsification probes: boundary:sparse_random, scope:long_chain, scope:scale_free</small></li><li><b>step 10</b> [critic_falsification] → hyp_dfa38e8bf8<br><small>falsification probes: boundary:unit_weight, scope:long_chain, scope:scale_free</small></li></ul>
+<p><small>Files: state.json · logs/events.jsonl · experiments/exp_*/ ·
+reports/dossier.md</small></p></body></html>

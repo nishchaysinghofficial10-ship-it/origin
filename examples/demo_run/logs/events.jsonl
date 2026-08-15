@@ -1,0 +1,32 @@
+{"ts": 1786190849.1001856, "kind": "init", "msg": "Research project initialized: Which comparison-sort strategy is most efficient across input regimes (random, nearly-sorted, reversed, few-unique) in pure Python at n<=1600, and can a hybrid synthesized from the evidence beat the base algorithms?"}
+{"ts": 1786190849.1627314, "kind": "planned", "msg": "Question decomposed into research tree; prior knowledge seeded"}
+{"ts": 1786190849.1644719, "kind": "hypothesis", "msg": "hyp_d4e20c8a29: Insertion sort is the fastest candidate on nearly-sorted input, and the slowest on random input, at the tested sizes.", "refs": {"hypothesis": "hyp_d4e20c8a29"}}
+{"ts": 1786190849.1645598, "kind": "hypothesis", "msg": "hyp_e8add5b17c: Merge sort is the fastest pure-Python candidate on random input.", "refs": {"hypothesis": "hyp_e8add5b17c"}}
+{"ts": 1786190849.1646528, "kind": "hypothesis", "msg": "hyp_c8cb718328: Quick sort (median-of-three, Hoare) stays within 25% of the best candidate on random input and does not collapse on reversed input.", "refs": {"hypothesis": "hyp_c8cb718328"}}
+{"ts": 1786190849.1646984, "kind": "hypothesis", "msg": "hyp_a2e585909f: Heap sort is the most consistent candidate (lowest relative timing variance across regimes) but is never the fastest in any regime.", "refs": {"hypothesis": "hyp_a2e585909f"}}
+{"ts": 1786190849.1662555, "kind": "decision", "msg": "[select_investigation] chose: hyp_d4e20c8a29 \u2014 highest expected information gain per unit cost; experiment co-tests 4 hypothesis(es)"}
+{"ts": 1786190849.16846, "kind": "experiment_started", "msg": "exp_defeaebae2: Benchmark round 1 covering 4 hypothesis(es)", "refs": {"experiment": "exp_defeaebae2"}}
+{"ts": 1786190849.7497892, "kind": "experiment_completed", "msg": "exp_defeaebae2 completed in 0.6s (32 measurements)", "refs": {"experiment": "exp_defeaebae2"}}
+{"ts": 1786190849.750426, "kind": "hypothesis_generated", "msg": "New candidate synthesized from evidence: hyp_7850a311fa (hybrid_sort)", "refs": {"hypothesis": "hyp_7850a311fa"}}
+{"ts": 1786190849.750613, "kind": "analysis", "msg": "exp_defeaebae2 analyzed; regime winners: {'random': 'quick_sort', 'nearly_sorted': 'insertion_sort', 'reversed': 'quick_sort', 'few_unique': 'quick_sort'}", "refs": {"experiment": "exp_defeaebae2"}}
+{"ts": 1786190849.752891, "kind": "decision", "msg": "[select_investigation] chose: hyp_7850a311fa \u2014 highest expected information gain per unit cost; experiment co-tests 1 hypothesis(es)"}
+{"ts": 1786190849.7547212, "kind": "experiment_started", "msg": "exp_dfae537d8f: Benchmark round 2 covering 1 hypothesis(es)", "refs": {"experiment": "exp_dfae537d8f"}}
+{"ts": 1786190850.3166995, "kind": "experiment_completed", "msg": "exp_dfae537d8f completed in 0.6s (40 measurements)", "refs": {"experiment": "exp_dfae537d8f"}}
+{"ts": 1786190850.3170247, "kind": "analysis", "msg": "exp_dfae537d8f analyzed; regime winners: {'random': 'hybrid_sort', 'nearly_sorted': 'insertion_sort', 'reversed': 'quick_sort', 'few_unique': 'hybrid_sort'}", "refs": {"experiment": "exp_dfae537d8f"}}
+{"ts": 1786190850.319316, "kind": "decision", "msg": "[critic_replication] chose: hyp_d4e20c8a29 \u2014 critic refuses single-experiment support; independent replication with new seeds"}
+{"ts": 1786190850.3209202, "kind": "experiment_started", "msg": "exp_d6590ff7d6: Replication of hyp_d4e20c8a29", "refs": {"experiment": "exp_d6590ff7d6"}}
+{"ts": 1786190850.8338122, "kind": "experiment_completed", "msg": "exp_d6590ff7d6 completed in 0.5s (16 measurements)", "refs": {"experiment": "exp_d6590ff7d6"}}
+{"ts": 1786190850.83405, "kind": "replicated", "msg": "hyp_d4e20c8a29 survived independent replication"}
+{"ts": 1786190850.8365886, "kind": "decision", "msg": "[critic_replication] chose: hyp_c8cb718328 \u2014 critic refuses single-experiment support; independent replication with new seeds"}
+{"ts": 1786190850.8382294, "kind": "experiment_started", "msg": "exp_21ee7d3058: Replication of hyp_c8cb718328", "refs": {"experiment": "exp_21ee7d3058"}}
+{"ts": 1786190851.344687, "kind": "experiment_completed", "msg": "exp_21ee7d3058 completed in 0.5s (16 measurements)", "refs": {"experiment": "exp_21ee7d3058"}}
+{"ts": 1786190851.3449173, "kind": "replicated", "msg": "hyp_c8cb718328 survived independent replication"}
+{"ts": 1786190851.347564, "kind": "decision", "msg": "[critic_replication] chose: hyp_a2e585909f \u2014 critic refuses single-experiment support; independent replication with new seeds"}
+{"ts": 1786190851.3490052, "kind": "experiment_started", "msg": "exp_89bfcf883b: Replication of hyp_a2e585909f", "refs": {"experiment": "exp_89bfcf883b"}}
+{"ts": 1786190851.8688223, "kind": "experiment_completed", "msg": "exp_89bfcf883b completed in 0.5s (16 measurements)", "refs": {"experiment": "exp_89bfcf883b"}}
+{"ts": 1786190851.872035, "kind": "decision", "msg": "[critic_replication] chose: hyp_7850a311fa \u2014 critic refuses single-experiment support; independent replication with new seeds"}
+{"ts": 1786190851.8739889, "kind": "experiment_started", "msg": "exp_03c68e9b8c: Replication of hyp_7850a311fa", "refs": {"experiment": "exp_03c68e9b8c"}}
+{"ts": 1786190852.3954592, "kind": "experiment_completed", "msg": "exp_03c68e9b8c completed in 0.5s (20 measurements)", "refs": {"experiment": "exp_03c68e9b8c"}}
+{"ts": 1786190852.3956957, "kind": "replicated", "msg": "hyp_7850a311fa survived independent replication"}
+{"ts": 1786190852.3985739, "kind": "critic_review", "msg": "Critic pass complete: 5 assumptions on record, 2 cautions, 6 recommended follow-ups"}
+{"ts": 1786190852.4025834, "kind": "synthesis", "msg": "Research dossier and timeline written to reports/"}

@@ -1,0 +1,35 @@
+{
+  "clm_6f028314f0": {
+    "id": "clm_6f028314f0",
+    "text": "Any comparison sort requires Omega(n log n) comparisons in the worst case.",
+    "status": "fact",
+    "confidence": 0.97,
+    "source_ids": [
+      "src_88b9551777"
+    ],
+    "notes": "",
+    "created_at": 1786190849.1626596
+  },
+  "clm_f865f28e6d": {
+    "id": "clm_f865f28e6d",
+    "text": "Insertion sort runs in O(n + inversions); it is linear on nearly-sorted input.",
+    "status": "fact",
+    "confidence": 0.97,
+    "source_ids": [
+      "src_88b9551777"
+    ],
+    "notes": "",
+    "created_at": 1786190849.1626687
+  },
+  "clm_39f69af74f": {
+    "id": "clm_39f69af74f",
+    "text": "Quicksort's worst case is O(n^2), but median-of-three pivoting avoids it on sorted/reversed inputs.",
+    "status": "fact",
+    "confidence": 0.97,
+    "source_ids": [
+      "src_88b9551777"
+    ],
+    "notes": "",
+    "created_at": 1786190849.1626735
+  }
+}

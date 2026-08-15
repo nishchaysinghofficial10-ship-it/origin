@@ -1,0 +1,68 @@
+{
+  "clm_11da2f3007": {
+    "id": "clm_11da2f3007",
+    "text": "Dijkstra with a binary heap runs in O((V+E) log V) on graphs with non-negative weights.",
+    "status": "fact",
+    "confidence": 0.95,
+    "source_ids": [
+      "src_d3529c5798"
+    ],
+    "notes": "asymptotic result; says nothing about constant factors at the tested sizes",
+    "created_at": 1786627905.1831036,
+    "passage": "",
+    "passage_offset": -1,
+    "extraction_method": "",
+    "extracted_at": 0.0,
+    "claim_type": "",
+    "limitations": ""
+  },
+  "clm_2fdd1abb04": {
+    "id": "clm_2fdd1abb04",
+    "text": "Bellman-Ford runs in O(V*E) and tolerates negative weights, which are not present in this benchmark.",
+    "status": "fact",
+    "confidence": 0.95,
+    "source_ids": [
+      "src_d3529c5798"
+    ],
+    "notes": "asymptotic result; says nothing about constant factors at the tested sizes",
+    "created_at": 1786627905.1831172,
+    "passage": "",
+    "passage_offset": -1,
+    "extraction_method": "",
+    "extracted_at": 0.0,
+    "claim_type": "",
+    "limitations": ""
+  },
+  "clm_8e37951c7d": {
+    "id": "clm_8e37951c7d",
+    "text": "Breadth-first search computes shortest paths only when every edge weight is equal.",
+    "status": "fact",
+    "confidence": 0.95,
+    "source_ids": [
+      "src_d3529c5798"
+    ],
+    "notes": "asymptotic result; says nothing about constant factors at the tested sizes",
+    "created_at": 1786627905.1831245,
+    "passage": "",
+    "passage_offset": -1,
+    "extraction_method": "",
+    "extracted_at": 0.0,
+    "claim_type": "",
+    "limitations": ""
+  },
+  "clm_ac9162741d": {
+    "id": "clm_ac9162741d",
+    "text": "Fewest edge relaxations at n=512 by topology: sparse_random=dijkstra_heap, dense_random=dijkstra_heap, grid_2d=dijkstra_heap, unit_weight=dijkstra_heap (machine-independent count; measured on CPython 3.12.3)",
+    "status": "experimental_result",
+    "confidence": 0.6,
+    "source_ids": [],
+    "notes": "",
+    "created_at": 1786627908.114505,
+    "passage": "",
+    "passage_offset": -1,
+    "extraction_method": "",
+    "extracted_at": 0.0,
+    "claim_type": "",
+    "limitations": ""
+  }
+}

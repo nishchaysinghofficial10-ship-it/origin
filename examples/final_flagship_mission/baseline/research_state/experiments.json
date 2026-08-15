@@ -1,0 +1,41 @@
+{
+  "exp_7cdf87b7c6": {
+    "id": "exp_7cdf87b7c6",
+    "title": "baseline sweep",
+    "hypothesis_ids": [],
+    "design": {
+      "kind": "benchmark",
+      "round": 1,
+      "algorithms": [
+        "dijkstra_heap",
+        "dijkstra_array",
+        "bellman_ford",
+        "spfa",
+        "bfs_unit"
+      ],
+      "regimes": [
+        "sparse_random",
+        "dense_random",
+        "grid_2d",
+        "unit_weight"
+      ],
+      "sizes": [
+        128,
+        512
+      ],
+      "trials": 5,
+      "seed": 4242,
+      "timeout_s": 600,
+      "hypothesis_ids": []
+    },
+    "status": "completed",
+    "dir": "experiments/exp_7cdf87b7c6",
+    "duration_s": 2.725414756999953,
+    "summary": {
+      "measurements": 40
+    },
+    "error": "",
+    "created_at": 1786627902.4381006,
+    "finished_at": 1786627905.1675234
+  }
+}

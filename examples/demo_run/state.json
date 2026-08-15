@@ -1,0 +1,1191 @@
+{
+  "meta": {
+    "question": "Which comparison-sort strategy is most efficient across input regimes (random, nearly-sorted, reversed, few-unique) in pure Python at n<=1600, and can a hybrid synthesized from the evidence beat the base algorithms?",
+    "domain": "algobench",
+    "domain_config": {
+      "sizes": [
+        400,
+        1600
+      ],
+      "trials": 3,
+      "seed": 1234,
+      "regimes": [
+        "random",
+        "nearly_sorted",
+        "reversed",
+        "few_unique"
+      ],
+      "timeout_s": 600
+    },
+    "profile": "standard",
+    "phase": "complete",
+    "created_at": 1786190849.0999637,
+    "origin_version": "0.1.0"
+  },
+  "budget": {
+    "experiments_total": 10,
+    "experiments_used": 6,
+    "compute_seconds_total": 1200.0,
+    "compute_seconds_used": 3.2015129540000657,
+    "searches_total": 0,
+    "searches_used": 0
+  },
+  "plan": {
+    "question": "Which comparison-sort strategy is most efficient across input regimes (random, nearly-sorted, reversed, few-unique) in pure Python at n<=1600, and can a hybrid synthesized from the evidence beat the base algorithms?",
+    "branches": {
+      "input_regimes": [
+        "random",
+        "nearly_sorted",
+        "reversed",
+        "few_unique"
+      ],
+      "metrics": {
+        "wall_time": "measured in v0.1",
+        "memory": "gap (untested)",
+        "comparison_count": "gap (untested)"
+      },
+      "candidates": {
+        "base": [
+          "insertion_sort",
+          "merge_sort",
+          "quick_sort",
+          "heap_sort"
+        ],
+        "generated": "to be synthesized from evidence"
+      },
+      "scales": {
+        "tested": [
+          400,
+          1600
+        ],
+        "large_n": "gap (untested)"
+      }
+    }
+  },
+  "sources": {
+    "src_88b9551777": {
+      "id": "src_88b9551777",
+      "kind": "prior_knowledge",
+      "title": "Standard algorithm-analysis results (seeded; Phase 2 replaces with live source acquisition)",
+      "locator": "",
+      "reliability": 0.95,
+      "added_at": 1786190849.1626394
+    }
+  },
+  "claims": {
+    "clm_6f028314f0": {
+      "id": "clm_6f028314f0",
+      "text": "Any comparison sort requires Omega(n log n) comparisons in the worst case.",
+      "status": "fact",
+      "confidence": 0.97,
+      "source_ids": [
+        "src_88b9551777"
+      ],
+      "notes": "",
+      "created_at": 1786190849.1626596
+    },
+    "clm_f865f28e6d": {
+      "id": "clm_f865f28e6d",
+      "text": "Insertion sort runs in O(n + inversions); it is linear on nearly-sorted input.",
+      "status": "fact",
+      "confidence": 0.97,
+      "source_ids": [
+        "src_88b9551777"
+      ],
+      "notes": "",
+      "created_at": 1786190849.1626687
+    },
+    "clm_39f69af74f": {
+      "id": "clm_39f69af74f",
+      "text": "Quicksort's worst case is O(n^2), but median-of-three pivoting avoids it on sorted/reversed inputs.",
+      "status": "fact",
+      "confidence": 0.97,
+      "source_ids": [
+        "src_88b9551777"
+      ],
+      "notes": "",
+      "created_at": 1786190849.1626735
+    }
+  },
+  "hypotheses": {
+    "hyp_d4e20c8a29": {
+      "id": "hyp_d4e20c8a29",
+      "statement": "Insertion sort is the fastest candidate on nearly-sorted input, and the slowest on random input, at the tested sizes.",
+      "rationale": "Adaptive O(n + inversions) behavior dominates on low-inversion input; O(n^2) dominates on random input.",
+      "status": "provisionally_supported",
+      "predictions": [
+        {
+          "id": "pred_a175a4af8e",
+          "text": "insertion_sort is fastest on nearly_sorted",
+          "check": {
+            "type": "fastest_on",
+            "algorithm": "insertion_sort",
+            "regime": "nearly_sorted"
+          },
+          "outcome": "confirmed",
+          "detail": "fastest_on 'nearly_sorted' at n=1600 is insertion_sort (0.1 ms, margin 688%)"
+        },
+        {
+          "id": "pred_7ca4886e5e",
+          "text": "insertion_sort is slowest on random",
+          "check": {
+            "type": "slowest_on",
+            "algorithm": "insertion_sort",
+            "regime": "random"
+          },
+          "outcome": "confirmed",
+          "detail": "slowest_on 'random' at n=1600 is insertion_sort (38.5 ms, margin 94%)"
+        }
+      ],
+      "supporting_evidence": [
+        "evd_2fea229d76",
+        "evd_4123fdf67e",
+        "evd_1e11eec28f",
+        "evd_490aa8e2a0"
+      ],
+      "contradicting_evidence": [],
+      "importance": 1.0,
+      "cost_estimate": 1.0,
+      "tags": [
+        "base",
+        "replicated"
+      ],
+      "tested_in": [
+        "exp_defeaebae2",
+        "exp_d6590ff7d6"
+      ],
+      "created_at": 1786190849.1643965,
+      "updated_at": 1786190850.834122
+    },
+    "hyp_e8add5b17c": {
+      "id": "hyp_e8add5b17c",
+      "statement": "Merge sort is the fastest pure-Python candidate on random input.",
+      "rationale": "Guaranteed n log n with sequential memory access; no pathological cases.",
+      "status": "rejected",
+      "predictions": [
+        {
+          "id": "pred_8cb9d5dc8a",
+          "text": "merge_sort is fastest on random",
+          "check": {
+            "type": "fastest_on",
+            "algorithm": "merge_sort",
+            "regime": "random"
+          },
+          "outcome": "refuted",
+          "detail": "fastest_on 'random' at n=1600 is quick_sort (1.4 ms, margin 60%)"
+        }
+      ],
+      "supporting_evidence": [],
+      "contradicting_evidence": [
+        "evd_ecff8ca42b"
+      ],
+      "importance": 1.0,
+      "cost_estimate": 1.0,
+      "tags": [
+        "base"
+      ],
+      "tested_in": [
+        "exp_defeaebae2"
+      ],
+      "created_at": 1786190849.1644065,
+      "updated_at": 1786190849.750162
+    },
+    "hyp_c8cb718328": {
+      "id": "hyp_c8cb718328",
+      "statement": "Quick sort (median-of-three, Hoare) stays within 25% of the best candidate on random input and does not collapse on reversed input.",
+      "rationale": "MO3 pivoting neutralizes ordered-input pathologies; constant factors are low.",
+      "status": "provisionally_supported",
+      "predictions": [
+        {
+          "id": "pred_efc4cc628c",
+          "text": "quick_sort within 25% of best on random",
+          "check": {
+            "type": "within_pct_of_best",
+            "algorithm": "quick_sort",
+            "regime": "random",
+            "pct": 25
+          },
+          "outcome": "confirmed",
+          "detail": "quick_sort is 0% off best on 'random' (limit 25%)"
+        },
+        {
+          "id": "pred_0147ba7e83",
+          "text": "quick_sort within 200% of best on reversed",
+          "check": {
+            "type": "within_pct_of_best",
+            "algorithm": "quick_sort",
+            "regime": "reversed",
+            "pct": 200
+          },
+          "outcome": "confirmed",
+          "detail": "quick_sort is 0% off best on 'reversed' (limit 200%)"
+        }
+      ],
+      "supporting_evidence": [
+        "evd_a1d005597b",
+        "evd_8d2ba961c2",
+        "evd_28bb3b3b86",
+        "evd_5f82290575"
+      ],
+      "contradicting_evidence": [],
+      "importance": 0.9,
+      "cost_estimate": 1.0,
+      "tags": [
+        "base",
+        "replicated"
+      ],
+      "tested_in": [
+        "exp_defeaebae2",
+        "exp_21ee7d3058"
+      ],
+      "created_at": 1786190849.1644177,
+      "updated_at": 1786190851.3449533
+    },
+    "hyp_a2e585909f": {
+      "id": "hyp_a2e585909f",
+      "statement": "Heap sort is the most consistent candidate (lowest relative timing variance across regimes) but is never the fastest in any regime.",
+      "rationale": "Input-oblivious n log n behavior; poor cache locality keeps constants high.",
+      "status": "weakened",
+      "predictions": [
+        {
+          "id": "pred_785d191955",
+          "text": "heap_sort has lowest mean relative stdev",
+          "check": {
+            "type": "lowest_mean_rel_stdev",
+            "algorithm": "heap_sort"
+          },
+          "outcome": "unstable",
+          "detail": "failed replication: lowest mean relative stdev: merge_sort (0.029)"
+        },
+        {
+          "id": "pred_e6b6de2cfc",
+          "text": "heap_sort is never fastest in any regime",
+          "check": {
+            "type": "never_fastest",
+            "algorithm": "heap_sort"
+          },
+          "outcome": "confirmed",
+          "detail": "regime winners: ['insertion_sort', 'quick_sort']"
+        }
+      ],
+      "supporting_evidence": [
+        "evd_304a774f32",
+        "evd_4810a89e89",
+        "evd_53a94f6c16"
+      ],
+      "contradicting_evidence": [
+        "evd_f665ee410f"
+      ],
+      "importance": 0.8,
+      "cost_estimate": 1.0,
+      "tags": [
+        "base",
+        "needs_replication"
+      ],
+      "tested_in": [
+        "exp_defeaebae2",
+        "exp_89bfcf883b"
+      ],
+      "created_at": 1786190849.164427,
+      "updated_at": 1786190851.869048
+    },
+    "hyp_7850a311fa": {
+      "id": "hyp_7850a311fa",
+      "statement": "A hybrid algorithm (merge sort with insertion-sort cutoff <= 32) beats plain merge sort on random AND nearly-sorted input at the tested sizes.",
+      "rationale": "Round-1 evidence: 'insertion_sort' won nearly_sorted and 'quick_sort' won random. Combining merge structure with insertion's strength on short/ordered runs should reduce recursion overhead without losing n log n guarantees. Derived from experiment exp_defeaebae2.",
+      "status": "provisionally_supported",
+      "predictions": [
+        {
+          "id": "pred_d9d2ad270d",
+          "text": "hybrid_sort beats merge_sort on random by >= 5%",
+          "check": {
+            "type": "beats",
+            "algorithm": "hybrid_sort",
+            "than": "merge_sort",
+            "regime": "random",
+            "min_pct": 5
+          },
+          "outcome": "confirmed",
+          "detail": "hybrid_sort vs merge_sort on 'random': +61% (needs >= 5%)"
+        },
+        {
+          "id": "pred_6199194e88",
+          "text": "hybrid_sort beats merge_sort on nearly_sorted",
+          "check": {
+            "type": "beats",
+            "algorithm": "hybrid_sort",
+            "than": "merge_sort",
+            "regime": "nearly_sorted",
+            "min_pct": 0
+          },
+          "outcome": "confirmed",
+          "detail": "hybrid_sort vs merge_sort on 'nearly_sorted': +190% (needs >= 0%)"
+        }
+      ],
+      "supporting_evidence": [
+        "evd_18282bca36",
+        "evd_87203c261b",
+        "evd_329ca057d1",
+        "evd_8a8a927b4a"
+      ],
+      "contradicting_evidence": [],
+      "importance": 1.2,
+      "cost_estimate": 1.2,
+      "tags": [
+        "generated",
+        "replicated"
+      ],
+      "tested_in": [
+        "exp_dfae537d8f",
+        "exp_03c68e9b8c"
+      ],
+      "created_at": 1786190849.7503667,
+      "updated_at": 1786190852.3957338
+    }
+  },
+  "evidence": {
+    "evd_2fea229d76": {
+      "id": "evd_2fea229d76",
+      "target_id": "hyp_d4e20c8a29",
+      "direction": "supports",
+      "strength": 0.85,
+      "kind": "experiment",
+      "summary": "[test] insertion_sort is fastest on nearly_sorted: confirmed (fastest_on 'nearly_sorted' at n=1600 is insertion_sort (0.1 ms, margin 688%))",
+      "experiment_id": "exp_defeaebae2",
+      "source_id": "",
+      "payload": {
+        "margin": 6.8815
+      },
+      "created_at": 1786190849.7500854
+    },
+    "evd_4123fdf67e": {
+      "id": "evd_4123fdf67e",
+      "target_id": "hyp_d4e20c8a29",
+      "direction": "supports",
+      "strength": 0.85,
+      "kind": "experiment",
+      "summary": "[test] insertion_sort is slowest on random: confirmed (slowest_on 'random' at n=1600 is insertion_sort (38.5 ms, margin 94%))",
+      "experiment_id": "exp_defeaebae2",
+      "source_id": "",
+      "payload": {
+        "margin": 0.9366
+      },
+      "created_at": 1786190849.7501278
+    },
+    "evd_ecff8ca42b": {
+      "id": "evd_ecff8ca42b",
+      "target_id": "hyp_e8add5b17c",
+      "direction": "contradicts",
+      "strength": 0.85,
+      "kind": "experiment",
+      "summary": "[test] merge_sort is fastest on random: refuted (fastest_on 'random' at n=1600 is quick_sort (1.4 ms, margin 60%))",
+      "experiment_id": "exp_defeaebae2",
+      "source_id": "",
+      "payload": {
+        "margin": 0.5956
+      },
+      "created_at": 1786190849.7501547
+    },
+    "evd_a1d005597b": {
+      "id": "evd_a1d005597b",
+      "target_id": "hyp_c8cb718328",
+      "direction": "supports",
+      "strength": 0.6,
+      "kind": "experiment",
+      "summary": "[test] quick_sort within 25% of best on random: confirmed (quick_sort is 0% off best on 'random' (limit 25%))",
+      "experiment_id": "exp_defeaebae2",
+      "source_id": "",
+      "payload": {
+        "margin": 0.25
+      },
+      "created_at": 1786190849.7501812
+    },
+    "evd_8d2ba961c2": {
+      "id": "evd_8d2ba961c2",
+      "target_id": "hyp_c8cb718328",
+      "direction": "supports",
+      "strength": 0.85,
+      "kind": "experiment",
+      "summary": "[test] quick_sort within 200% of best on reversed: confirmed (quick_sort is 0% off best on 'reversed' (limit 200%))",
+      "experiment_id": "exp_defeaebae2",
+      "source_id": "",
+      "payload": {
+        "margin": 2.0
+      },
+      "created_at": 1786190849.7501984
+    },
+    "evd_304a774f32": {
+      "id": "evd_304a774f32",
+      "target_id": "hyp_a2e585909f",
+      "direction": "supports",
+      "strength": 0.45,
+      "kind": "experiment",
+      "summary": "[test] heap_sort has lowest mean relative stdev: confirmed (lowest mean relative stdev: heap_sort (0.025))",
+      "experiment_id": "exp_defeaebae2",
+      "source_id": "",
+      "payload": {
+        "margin": 0.1
+      },
+      "created_at": 1786190849.7502453
+    },
+    "evd_4810a89e89": {
+      "id": "evd_4810a89e89",
+      "target_id": "hyp_a2e585909f",
+      "direction": "supports",
+      "strength": 0.45,
+      "kind": "experiment",
+      "summary": "[test] heap_sort is never fastest in any regime: confirmed (regime winners: ['insertion_sort', 'quick_sort'])",
+      "experiment_id": "exp_defeaebae2",
+      "source_id": "",
+      "payload": {
+        "margin": 0.1
+      },
+      "created_at": 1786190849.7502658
+    },
+    "evd_18282bca36": {
+      "id": "evd_18282bca36",
+      "target_id": "hyp_7850a311fa",
+      "direction": "supports",
+      "strength": 0.85,
+      "kind": "experiment",
+      "summary": "[test] hybrid_sort beats merge_sort on random by >= 5%: confirmed (hybrid_sort vs merge_sort on 'random': +61% (needs >= 5%))",
+      "experiment_id": "exp_dfae537d8f",
+      "source_id": "",
+      "payload": {
+        "margin": 0.6135
+      },
+      "created_at": 1786190850.3169174
+    },
+    "evd_87203c261b": {
+      "id": "evd_87203c261b",
+      "target_id": "hyp_7850a311fa",
+      "direction": "supports",
+      "strength": 0.85,
+      "kind": "experiment",
+      "summary": "[test] hybrid_sort beats merge_sort on nearly_sorted: confirmed (hybrid_sort vs merge_sort on 'nearly_sorted': +190% (needs >= 0%))",
+      "experiment_id": "exp_dfae537d8f",
+      "source_id": "",
+      "payload": {
+        "margin": 1.8988
+      },
+      "created_at": 1786190850.3169382
+    },
+    "evd_1e11eec28f": {
+      "id": "evd_1e11eec28f",
+      "target_id": "hyp_d4e20c8a29",
+      "direction": "supports",
+      "strength": 0.85,
+      "kind": "experiment",
+      "summary": "[replication] insertion_sort is fastest on nearly_sorted: confirmed (fastest_on 'nearly_sorted' at n=1600 is insertion_sort (0.1 ms, margin 602%))",
+      "experiment_id": "exp_d6590ff7d6",
+      "source_id": "",
+      "payload": {
+        "margin": 6.0225
+      },
+      "created_at": 1786190850.8339918
+    },
+    "evd_490aa8e2a0": {
+      "id": "evd_490aa8e2a0",
+      "target_id": "hyp_d4e20c8a29",
+      "direction": "supports",
+      "strength": 0.85,
+      "kind": "experiment",
+      "summary": "[replication] insertion_sort is slowest on random: confirmed (slowest_on 'random' at n=1600 is insertion_sort (36.5 ms, margin 93%))",
+      "experiment_id": "exp_d6590ff7d6",
+      "source_id": "",
+      "payload": {
+        "margin": 0.934
+      },
+      "created_at": 1786190850.8340113
+    },
+    "evd_28bb3b3b86": {
+      "id": "evd_28bb3b3b86",
+      "target_id": "hyp_c8cb718328",
+      "direction": "supports",
+      "strength": 0.6,
+      "kind": "experiment",
+      "summary": "[replication] quick_sort within 25% of best on random: confirmed (quick_sort is 0% off best on 'random' (limit 25%))",
+      "experiment_id": "exp_21ee7d3058",
+      "source_id": "",
+      "payload": {
+        "margin": 0.25
+      },
+      "created_at": 1786190851.34487
+    },
+    "evd_5f82290575": {
+      "id": "evd_5f82290575",
+      "target_id": "hyp_c8cb718328",
+      "direction": "supports",
+      "strength": 0.85,
+      "kind": "experiment",
+      "summary": "[replication] quick_sort within 200% of best on reversed: confirmed (quick_sort is 0% off best on 'reversed' (limit 200%))",
+      "experiment_id": "exp_21ee7d3058",
+      "source_id": "",
+      "payload": {
+        "margin": 2.0
+      },
+      "created_at": 1786190851.34489
+    },
+    "evd_f665ee410f": {
+      "id": "evd_f665ee410f",
+      "target_id": "hyp_a2e585909f",
+      "direction": "contradicts",
+      "strength": 0.45,
+      "kind": "experiment",
+      "summary": "[replication] heap_sort has lowest mean relative stdev: refuted (lowest mean relative stdev: merge_sort (0.029))",
+      "experiment_id": "exp_89bfcf883b",
+      "source_id": "",
+      "payload": {
+        "margin": 0.1
+      },
+      "created_at": 1786190851.8690176
+    },
+    "evd_53a94f6c16": {
+      "id": "evd_53a94f6c16",
+      "target_id": "hyp_a2e585909f",
+      "direction": "supports",
+      "strength": 0.45,
+      "kind": "experiment",
+      "summary": "[replication] heap_sort is never fastest in any regime: confirmed (regime winners: ['insertion_sort', 'quick_sort'])",
+      "experiment_id": "exp_89bfcf883b",
+      "source_id": "",
+      "payload": {
+        "margin": 0.1
+      },
+      "created_at": 1786190851.869042
+    },
+    "evd_329ca057d1": {
+      "id": "evd_329ca057d1",
+      "target_id": "hyp_7850a311fa",
+      "direction": "supports",
+      "strength": 0.85,
+      "kind": "experiment",
+      "summary": "[replication] hybrid_sort beats merge_sort on random by >= 5%: confirmed (hybrid_sort vs merge_sort on 'random': +63% (needs >= 5%))",
+      "experiment_id": "exp_03c68e9b8c",
+      "source_id": "",
+      "payload": {
+        "margin": 0.6318
+      },
+      "created_at": 1786190852.39565
+    },
+    "evd_8a8a927b4a": {
+      "id": "evd_8a8a927b4a",
+      "target_id": "hyp_7850a311fa",
+      "direction": "supports",
+      "strength": 0.85,
+      "kind": "experiment",
+      "summary": "[replication] hybrid_sort beats merge_sort on nearly_sorted: confirmed (hybrid_sort vs merge_sort on 'nearly_sorted': +173% (needs >= 0%))",
+      "experiment_id": "exp_03c68e9b8c",
+      "source_id": "",
+      "payload": {
+        "margin": 1.7263
+      },
+      "created_at": 1786190852.3956695
+    }
+  },
+  "experiments": {
+    "exp_defeaebae2": {
+      "id": "exp_defeaebae2",
+      "title": "Benchmark round 1 covering 4 hypothesis(es)",
+      "hypothesis_ids": [
+        "hyp_d4e20c8a29",
+        "hyp_e8add5b17c",
+        "hyp_c8cb718328",
+        "hyp_a2e585909f"
+      ],
+      "design": {
+        "kind": "benchmark",
+        "round": 1,
+        "algorithms": [
+          "insertion_sort",
+          "merge_sort",
+          "quick_sort",
+          "heap_sort"
+        ],
+        "regimes": [
+          "random",
+          "nearly_sorted",
+          "reversed",
+          "few_unique"
+        ],
+        "sizes": [
+          400,
+          1600
+        ],
+        "trials": 3,
+        "seed": 1234,
+        "timeout_s": 600,
+        "hypothesis_ids": [
+          "hyp_d4e20c8a29",
+          "hyp_e8add5b17c",
+          "hyp_c8cb718328",
+          "hyp_a2e585909f"
+        ]
+      },
+      "status": "completed",
+      "dir": "experiments/exp_defeaebae2",
+      "duration_s": 0.5808399670000313,
+      "summary": {
+        "measurements": 32
+      },
+      "error": "",
+      "created_at": 1786190849.1663117,
+      "finished_at": 1786190849.7497265
+    },
+    "exp_dfae537d8f": {
+      "id": "exp_dfae537d8f",
+      "title": "Benchmark round 2 covering 1 hypothesis(es)",
+      "hypothesis_ids": [
+        "hyp_7850a311fa"
+      ],
+      "design": {
+        "kind": "benchmark",
+        "round": 2,
+        "algorithms": [
+          "insertion_sort",
+          "merge_sort",
+          "quick_sort",
+          "heap_sort",
+          "hybrid_sort"
+        ],
+        "regimes": [
+          "random",
+          "nearly_sorted",
+          "reversed",
+          "few_unique"
+        ],
+        "sizes": [
+          400,
+          1600
+        ],
+        "trials": 3,
+        "seed": 1234,
+        "timeout_s": 600,
+        "hypothesis_ids": [
+          "hyp_7850a311fa"
+        ]
+      },
+      "status": "completed",
+      "dir": "experiments/exp_dfae537d8f",
+      "duration_s": 0.5615822139999977,
+      "summary": {
+        "measurements": 40
+      },
+      "error": "",
+      "created_at": 1786190849.7529533,
+      "finished_at": 1786190850.3166525
+    },
+    "exp_d6590ff7d6": {
+      "id": "exp_d6590ff7d6",
+      "title": "Replication of hyp_d4e20c8a29",
+      "hypothesis_ids": [
+        "hyp_d4e20c8a29"
+      ],
+      "design": {
+        "kind": "replication",
+        "round": 0,
+        "algorithms": [
+          "insertion_sort",
+          "merge_sort",
+          "quick_sort",
+          "heap_sort"
+        ],
+        "regimes": [
+          "random",
+          "nearly_sorted",
+          "reversed",
+          "few_unique"
+        ],
+        "sizes": [
+          1600
+        ],
+        "trials": 3,
+        "seed": 2234,
+        "timeout_s": 600,
+        "hypothesis_ids": [
+          "hyp_d4e20c8a29"
+        ]
+      },
+      "status": "completed",
+      "dir": "experiments/exp_d6590ff7d6",
+      "duration_s": 0.5125551880000216,
+      "summary": {
+        "measurements": 16
+      },
+      "error": "",
+      "created_at": 1786190850.3193705,
+      "finished_at": 1786190850.8337677
+    },
+    "exp_21ee7d3058": {
+      "id": "exp_21ee7d3058",
+      "title": "Replication of hyp_c8cb718328",
+      "hypothesis_ids": [
+        "hyp_c8cb718328"
+      ],
+      "design": {
+        "kind": "replication",
+        "round": 0,
+        "algorithms": [
+          "insertion_sort",
+          "merge_sort",
+          "quick_sort",
+          "heap_sort"
+        ],
+        "regimes": [
+          "random",
+          "nearly_sorted",
+          "reversed",
+          "few_unique"
+        ],
+        "sizes": [
+          1600
+        ],
+        "trials": 3,
+        "seed": 2234,
+        "timeout_s": 600,
+        "hypothesis_ids": [
+          "hyp_c8cb718328"
+        ]
+      },
+      "status": "completed",
+      "dir": "experiments/exp_21ee7d3058",
+      "duration_s": 0.5060897360000354,
+      "summary": {
+        "measurements": 16
+      },
+      "error": "",
+      "created_at": 1786190850.8366566,
+      "finished_at": 1786190851.3446424
+    },
+    "exp_89bfcf883b": {
+      "id": "exp_89bfcf883b",
+      "title": "Replication of hyp_a2e585909f",
+      "hypothesis_ids": [
+        "hyp_a2e585909f"
+      ],
+      "design": {
+        "kind": "replication",
+        "round": 0,
+        "algorithms": [
+          "insertion_sort",
+          "merge_sort",
+          "quick_sort",
+          "heap_sort"
+        ],
+        "regimes": [
+          "random",
+          "nearly_sorted",
+          "reversed",
+          "few_unique"
+        ],
+        "sizes": [
+          1600
+        ],
+        "trials": 3,
+        "seed": 2234,
+        "timeout_s": 600,
+        "hypothesis_ids": [
+          "hyp_a2e585909f"
+        ]
+      },
+      "status": "completed",
+      "dir": "experiments/exp_89bfcf883b",
+      "duration_s": 0.5193549149999512,
+      "summary": {
+        "measurements": 16
+      },
+      "error": "",
+      "created_at": 1786190851.3476188,
+      "finished_at": 1786190851.8687701
+    },
+    "exp_03c68e9b8c": {
+      "id": "exp_03c68e9b8c",
+      "title": "Replication of hyp_7850a311fa",
+      "hypothesis_ids": [
+        "hyp_7850a311fa"
+      ],
+      "design": {
+        "kind": "replication",
+        "round": 0,
+        "algorithms": [
+          "insertion_sort",
+          "merge_sort",
+          "quick_sort",
+          "heap_sort",
+          "hybrid_sort"
+        ],
+        "regimes": [
+          "random",
+          "nearly_sorted",
+          "reversed",
+          "few_unique"
+        ],
+        "sizes": [
+          1600
+        ],
+        "trials": 3,
+        "seed": 2234,
+        "timeout_s": 600,
+        "hypothesis_ids": [
+          "hyp_7850a311fa"
+        ]
+      },
+      "status": "completed",
+      "dir": "experiments/exp_03c68e9b8c",
+      "duration_s": 0.5210909340000285,
+      "summary": {
+        "measurements": 20
+      },
+      "error": "",
+      "created_at": 1786190851.8721313,
+      "finished_at": 1786190852.3954127
+    }
+  },
+  "decisions": [
+    {
+      "id": "dec_77c21ab82d",
+      "step": 2,
+      "context": "select_investigation",
+      "options": [
+        {
+          "label": "hyp_d4e20c8a29",
+          "score": 1.0,
+          "reason": "importance 1.0, evidence 0, cost 1.0"
+        },
+        {
+          "label": "hyp_e8add5b17c",
+          "score": 1.0,
+          "reason": "importance 1.0, evidence 0, cost 1.0"
+        },
+        {
+          "label": "hyp_c8cb718328",
+          "score": 0.9,
+          "reason": "importance 0.9, evidence 0, cost 1.0"
+        },
+        {
+          "label": "hyp_a2e585909f",
+          "score": 0.8,
+          "reason": "importance 0.8, evidence 0, cost 1.0"
+        }
+      ],
+      "chosen": "hyp_d4e20c8a29",
+      "reason": "highest expected information gain per unit cost; experiment co-tests 4 hypothesis(es)",
+      "ts": 1786190849.166226
+    },
+    {
+      "id": "dec_885756cdcb",
+      "step": 3,
+      "context": "select_investigation",
+      "options": [
+        {
+          "label": "hyp_7850a311fa",
+          "score": 1.0,
+          "reason": "importance 1.2, evidence 0, cost 1.2"
+        }
+      ],
+      "chosen": "hyp_7850a311fa",
+      "reason": "highest expected information gain per unit cost; experiment co-tests 1 hypothesis(es)",
+      "ts": 1786190849.7528532
+    },
+    {
+      "id": "dec_9b1c7c6d71",
+      "step": 4,
+      "context": "critic_replication",
+      "options": [
+        {
+          "label": "hyp_d4e20c8a29",
+          "score": 1.0,
+          "reason": "supported by a single experiment only"
+        }
+      ],
+      "chosen": "hyp_d4e20c8a29",
+      "reason": "critic refuses single-experiment support; independent replication with new seeds",
+      "ts": 1786190850.3192813
+    },
+    {
+      "id": "dec_ea8fc2a967",
+      "step": 5,
+      "context": "critic_replication",
+      "options": [
+        {
+          "label": "hyp_c8cb718328",
+          "score": 1.0,
+          "reason": "supported by a single experiment only"
+        }
+      ],
+      "chosen": "hyp_c8cb718328",
+      "reason": "critic refuses single-experiment support; independent replication with new seeds",
+      "ts": 1786190850.8365412
+    },
+    {
+      "id": "dec_075268e700",
+      "step": 6,
+      "context": "critic_replication",
+      "options": [
+        {
+          "label": "hyp_a2e585909f",
+          "score": 1.0,
+          "reason": "supported by a single experiment only"
+        }
+      ],
+      "chosen": "hyp_a2e585909f",
+      "reason": "critic refuses single-experiment support; independent replication with new seeds",
+      "ts": 1786190851.3475301
+    },
+    {
+      "id": "dec_ee83e90483",
+      "step": 7,
+      "context": "critic_replication",
+      "options": [
+        {
+          "label": "hyp_7850a311fa",
+          "score": 1.0,
+          "reason": "supported by a single experiment only"
+        }
+      ],
+      "chosen": "hyp_7850a311fa",
+      "reason": "critic refuses single-experiment support; independent replication with new seeds",
+      "ts": 1786190851.8719995
+    }
+  ],
+  "graph": {
+    "entities": {
+      "ent_4cd6e86fe7": {
+        "id": "ent_4cd6e86fe7",
+        "name": "quick_sort",
+        "kind": "algorithm"
+      },
+      "ent_93b4f5979e": {
+        "id": "ent_93b4f5979e",
+        "name": "random",
+        "kind": "input_regime"
+      },
+      "ent_bb5b127a41": {
+        "id": "ent_bb5b127a41",
+        "name": "insertion_sort",
+        "kind": "algorithm"
+      },
+      "ent_ea8fbd25ac": {
+        "id": "ent_ea8fbd25ac",
+        "name": "nearly_sorted",
+        "kind": "input_regime"
+      },
+      "ent_673c3ed0b7": {
+        "id": "ent_673c3ed0b7",
+        "name": "reversed",
+        "kind": "input_regime"
+      },
+      "ent_90d57540e1": {
+        "id": "ent_90d57540e1",
+        "name": "few_unique",
+        "kind": "input_regime"
+      },
+      "ent_4801c5c873": {
+        "id": "ent_4801c5c873",
+        "name": "hybrid_sort",
+        "kind": "algorithm"
+      },
+      "ent_b65a70c674": {
+        "id": "ent_b65a70c674",
+        "name": "merge_sort",
+        "kind": "algorithm"
+      }
+    },
+    "relations": {
+      "rel_73b56c245c": {
+        "id": "rel_73b56c245c",
+        "subj": "ent_4cd6e86fe7",
+        "pred": "fastest_on",
+        "obj": "ent_93b4f5979e",
+        "confidence": 0.9,
+        "evidence_ids": [
+          "evd_2fea229d76",
+          "evd_4123fdf67e",
+          "evd_ecff8ca42b",
+          "evd_1e11eec28f",
+          "evd_490aa8e2a0",
+          "evd_28bb3b3b86",
+          "evd_5f82290575",
+          "evd_f665ee410f",
+          "evd_53a94f6c16"
+        ],
+        "created_at": 1786190849.7502973
+      },
+      "rel_d58251986c": {
+        "id": "rel_d58251986c",
+        "subj": "ent_bb5b127a41",
+        "pred": "fastest_on",
+        "obj": "ent_ea8fbd25ac",
+        "confidence": 0.9,
+        "evidence_ids": [
+          "evd_2fea229d76",
+          "evd_4123fdf67e",
+          "evd_ecff8ca42b",
+          "evd_18282bca36",
+          "evd_87203c261b",
+          "evd_1e11eec28f",
+          "evd_490aa8e2a0",
+          "evd_28bb3b3b86",
+          "evd_5f82290575",
+          "evd_f665ee410f",
+          "evd_53a94f6c16",
+          "evd_329ca057d1",
+          "evd_8a8a927b4a"
+        ],
+        "created_at": 1786190849.7503176
+      },
+      "rel_a81ec9efeb": {
+        "id": "rel_a81ec9efeb",
+        "subj": "ent_4cd6e86fe7",
+        "pred": "fastest_on",
+        "obj": "ent_673c3ed0b7",
+        "confidence": 0.9,
+        "evidence_ids": [
+          "evd_2fea229d76",
+          "evd_4123fdf67e",
+          "evd_ecff8ca42b",
+          "evd_18282bca36",
+          "evd_87203c261b",
+          "evd_1e11eec28f",
+          "evd_490aa8e2a0",
+          "evd_28bb3b3b86",
+          "evd_5f82290575",
+          "evd_f665ee410f",
+          "evd_53a94f6c16",
+          "evd_329ca057d1",
+          "evd_8a8a927b4a"
+        ],
+        "created_at": 1786190849.7503316
+      },
+      "rel_a6be427053": {
+        "id": "rel_a6be427053",
+        "subj": "ent_4cd6e86fe7",
+        "pred": "fastest_on",
+        "obj": "ent_90d57540e1",
+        "confidence": 0.9,
+        "evidence_ids": [
+          "evd_2fea229d76",
+          "evd_4123fdf67e",
+          "evd_ecff8ca42b",
+          "evd_1e11eec28f",
+          "evd_490aa8e2a0",
+          "evd_28bb3b3b86",
+          "evd_5f82290575",
+          "evd_f665ee410f",
+          "evd_53a94f6c16"
+        ],
+        "created_at": 1786190849.7503448
+      },
+      "rel_dd5ac8e5c4": {
+        "id": "rel_dd5ac8e5c4",
+        "subj": "ent_4801c5c873",
+        "pred": "derived_from",
+        "obj": "ent_b65a70c674",
+        "confidence": 0.99,
+        "evidence_ids": [],
+        "created_at": 1786190849.7503796
+      },
+      "rel_b822095fe8": {
+        "id": "rel_b822095fe8",
+        "subj": "ent_4801c5c873",
+        "pred": "derived_from",
+        "obj": "ent_bb5b127a41",
+        "confidence": 0.99,
+        "evidence_ids": [],
+        "created_at": 1786190849.7503843
+      },
+      "rel_f41ecb7dca": {
+        "id": "rel_f41ecb7dca",
+        "subj": "ent_4801c5c873",
+        "pred": "fastest_on",
+        "obj": "ent_93b4f5979e",
+        "confidence": 0.5127400638966736,
+        "evidence_ids": [
+          "evd_18282bca36",
+          "evd_87203c261b",
+          "evd_329ca057d1",
+          "evd_8a8a927b4a"
+        ],
+        "created_at": 1786190850.3169675
+      },
+      "rel_13a0e83328": {
+        "id": "rel_13a0e83328",
+        "subj": "ent_4801c5c873",
+        "pred": "fastest_on",
+        "obj": "ent_90d57540e1",
+        "confidence": 0.593,
+        "evidence_ids": [
+          "evd_18282bca36",
+          "evd_87203c261b",
+          "evd_329ca057d1",
+          "evd_8a8a927b4a"
+        ],
+        "created_at": 1786190850.3169956
+      }
+    },
+    "contradictions": [
+      {
+        "id": "contra_4303659900",
+        "description": "'quick_sort' and 'hybrid_sort' both claimed as fastest_on 'random'",
+        "relation_ids": [
+          "rel_73b56c245c"
+        ],
+        "created_at": 1786190850.3169625
+      },
+      {
+        "id": "contra_54b2fb6db0",
+        "description": "'quick_sort' and 'hybrid_sort' both claimed as fastest_on 'few_unique'",
+        "relation_ids": [
+          "rel_a6be427053"
+        ],
+        "created_at": 1786190850.3169923
+      }
+    ]
+  },
+  "assumptions": [
+    "Wall-clock time on a single machine/interpreter is an acceptable proxy for algorithmic cost at these sizes.",
+    "Pure-Python implementations are compared against each other only; C-accelerated builtins are out of scope for fairness.",
+    "The four tested input regimes are representative of the distributions of interest.",
+    "All timings come from a single machine and interpreter; absolute numbers will not transfer, only rankings might.",
+    "Conclusions hold only for the tested input regimes and sizes; extrapolation beyond them is speculation, not inference."
+  ],
+  "cautions": [
+    "Unresolved contradiction in knowledge graph: 'quick_sort' and 'hybrid_sort' both claimed as fastest_on 'random'",
+    "Unresolved contradiction in knowledge graph: 'quick_sort' and 'hybrid_sort' both claimed as fastest_on 'few_unique'"
+  ],
+  "failures": [
+    {
+      "experiment": "exp_defeaebae2",
+      "hypothesis": "hyp_e8add5b17c",
+      "prediction": "merge_sort is fastest on random",
+      "expected": "merge_sort is fastest on random",
+      "observed": "fastest_on 'random' at n=1600 is quick_sort (1.4 ms, margin 60%)",
+      "action": "hypothesis status re-evaluated from evidence",
+      "ts": 1786190849.7501574
+    },
+    {
+      "experiment": "exp_89bfcf883b",
+      "hypothesis": "hyp_a2e585909f",
+      "prediction": "heap_sort has lowest mean relative stdev",
+      "expected": "replicated confirmation",
+      "observed": "lowest mean relative stdev: merge_sort (0.029)",
+      "action": "hyp_a2e585909f downgraded to WEAKENED",
+      "ts": 1786190851.8690245
+    }
+  ],
+  "recommendations": [
+    "Investigate knowledge gap: Scaling behavior beyond n=1600 is untested (asymptotic crossovers may differ).",
+    "Investigate knowledge gap: Memory usage and comparison/move counts were not measured (wall time only).",
+    "Investigate knowledge gap: Adversarial input patterns (sawtooth, organ-pipe, quicksort-killer) are untested.",
+    "Investigate knowledge gap: Only one machine/interpreter was used; hardware sensitivity is unknown.",
+    "Investigate knowledge gap: Stability of the sorts (equal-key ordering) was not evaluated.",
+    "Revise or split hyp_a2e585909f: mixed evidence (3 for / 1 against)."
+  ],
+  "flags": {
+    "current": "Complete",
+    "base_hypotheses_done": true,
+    "hybrid_proposed": true,
+    "critic_finalized": true
+  },
+  "step": 10
+}

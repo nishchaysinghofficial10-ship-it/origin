@@ -1,0 +1,240 @@
+{
+  "evd_2fea229d76": {
+    "id": "evd_2fea229d76",
+    "target_id": "hyp_d4e20c8a29",
+    "direction": "supports",
+    "strength": 0.85,
+    "kind": "experiment",
+    "summary": "[test] insertion_sort is fastest on nearly_sorted: confirmed (fastest_on 'nearly_sorted' at n=1600 is insertion_sort (0.1 ms, margin 688%))",
+    "experiment_id": "exp_defeaebae2",
+    "source_id": "",
+    "payload": {
+      "margin": 6.8815
+    },
+    "created_at": 1786190849.7500854
+  },
+  "evd_4123fdf67e": {
+    "id": "evd_4123fdf67e",
+    "target_id": "hyp_d4e20c8a29",
+    "direction": "supports",
+    "strength": 0.85,
+    "kind": "experiment",
+    "summary": "[test] insertion_sort is slowest on random: confirmed (slowest_on 'random' at n=1600 is insertion_sort (38.5 ms, margin 94%))",
+    "experiment_id": "exp_defeaebae2",
+    "source_id": "",
+    "payload": {
+      "margin": 0.9366
+    },
+    "created_at": 1786190849.7501278
+  },
+  "evd_ecff8ca42b": {
+    "id": "evd_ecff8ca42b",
+    "target_id": "hyp_e8add5b17c",
+    "direction": "contradicts",
+    "strength": 0.85,
+    "kind": "experiment",
+    "summary": "[test] merge_sort is fastest on random: refuted (fastest_on 'random' at n=1600 is quick_sort (1.4 ms, margin 60%))",
+    "experiment_id": "exp_defeaebae2",
+    "source_id": "",
+    "payload": {
+      "margin": 0.5956
+    },
+    "created_at": 1786190849.7501547
+  },
+  "evd_a1d005597b": {
+    "id": "evd_a1d005597b",
+    "target_id": "hyp_c8cb718328",
+    "direction": "supports",
+    "strength": 0.6,
+    "kind": "experiment",
+    "summary": "[test] quick_sort within 25% of best on random: confirmed (quick_sort is 0% off best on 'random' (limit 25%))",
+    "experiment_id": "exp_defeaebae2",
+    "source_id": "",
+    "payload": {
+      "margin": 0.25
+    },
+    "created_at": 1786190849.7501812
+  },
+  "evd_8d2ba961c2": {
+    "id": "evd_8d2ba961c2",
+    "target_id": "hyp_c8cb718328",
+    "direction": "supports",
+    "strength": 0.85,
+    "kind": "experiment",
+    "summary": "[test] quick_sort within 200% of best on reversed: confirmed (quick_sort is 0% off best on 'reversed' (limit 200%))",
+    "experiment_id": "exp_defeaebae2",
+    "source_id": "",
+    "payload": {
+      "margin": 2.0
+    },
+    "created_at": 1786190849.7501984
+  },
+  "evd_304a774f32": {
+    "id": "evd_304a774f32",
+    "target_id": "hyp_a2e585909f",
+    "direction": "supports",
+    "strength": 0.45,
+    "kind": "experiment",
+    "summary": "[test] heap_sort has lowest mean relative stdev: confirmed (lowest mean relative stdev: heap_sort (0.025))",
+    "experiment_id": "exp_defeaebae2",
+    "source_id": "",
+    "payload": {
+      "margin": 0.1
+    },
+    "created_at": 1786190849.7502453
+  },
+  "evd_4810a89e89": {
+    "id": "evd_4810a89e89",
+    "target_id": "hyp_a2e585909f",
+    "direction": "supports",
+    "strength": 0.45,
+    "kind": "experiment",
+    "summary": "[test] heap_sort is never fastest in any regime: confirmed (regime winners: ['insertion_sort', 'quick_sort'])",
+    "experiment_id": "exp_defeaebae2",
+    "source_id": "",
+    "payload": {
+      "margin": 0.1
+    },
+    "created_at": 1786190849.7502658
+  },
+  "evd_18282bca36": {
+    "id": "evd_18282bca36",
+    "target_id": "hyp_7850a311fa",
+    "direction": "supports",
+    "strength": 0.85,
+    "kind": "experiment",
+    "summary": "[test] hybrid_sort beats merge_sort on random by >= 5%: confirmed (hybrid_sort vs merge_sort on 'random': +61% (needs >= 5%))",
+    "experiment_id": "exp_dfae537d8f",
+    "source_id": "",
+    "payload": {
+      "margin": 0.6135
+    },
+    "created_at": 1786190850.3169174
+  },
+  "evd_87203c261b": {
+    "id": "evd_87203c261b",
+    "target_id": "hyp_7850a311fa",
+    "direction": "supports",
+    "strength": 0.85,
+    "kind": "experiment",
+    "summary": "[test] hybrid_sort beats merge_sort on nearly_sorted: confirmed (hybrid_sort vs merge_sort on 'nearly_sorted': +190% (needs >= 0%))",
+    "experiment_id": "exp_dfae537d8f",
+    "source_id": "",
+    "payload": {
+      "margin": 1.8988
+    },
+    "created_at": 1786190850.3169382
+  },
+  "evd_1e11eec28f": {
+    "id": "evd_1e11eec28f",
+    "target_id": "hyp_d4e20c8a29",
+    "direction": "supports",
+    "strength": 0.85,
+    "kind": "experiment",
+    "summary": "[replication] insertion_sort is fastest on nearly_sorted: confirmed (fastest_on 'nearly_sorted' at n=1600 is insertion_sort (0.1 ms, margin 602%))",
+    "experiment_id": "exp_d6590ff7d6",
+    "source_id": "",
+    "payload": {
+      "margin": 6.0225
+    },
+    "created_at": 1786190850.8339918
+  },
+  "evd_490aa8e2a0": {
+    "id": "evd_490aa8e2a0",
+    "target_id": "hyp_d4e20c8a29",
+    "direction": "supports",
+    "strength": 0.85,
+    "kind": "experiment",
+    "summary": "[replication] insertion_sort is slowest on random: confirmed (slowest_on 'random' at n=1600 is insertion_sort (36.5 ms, margin 93%))",
+    "experiment_id": "exp_d6590ff7d6",
+    "source_id": "",
+    "payload": {
+      "margin": 0.934
+    },
+    "created_at": 1786190850.8340113
+  },
+  "evd_28bb3b3b86": {
+    "id": "evd_28bb3b3b86",
+    "target_id": "hyp_c8cb718328",
+    "direction": "supports",
+    "strength": 0.6,
+    "kind": "experiment",
+    "summary": "[replication] quick_sort within 25% of best on random: confirmed (quick_sort is 0% off best on 'random' (limit 25%))",
+    "experiment_id": "exp_21ee7d3058",
+    "source_id": "",
+    "payload": {
+      "margin": 0.25
+    },
+    "created_at": 1786190851.34487
+  },
+  "evd_5f82290575": {
+    "id": "evd_5f82290575",
+    "target_id": "hyp_c8cb718328",
+    "direction": "supports",
+    "strength": 0.85,
+    "kind": "experiment",
+    "summary": "[replication] quick_sort within 200% of best on reversed: confirmed (quick_sort is 0% off best on 'reversed' (limit 200%))",
+    "experiment_id": "exp_21ee7d3058",
+    "source_id": "",
+    "payload": {
+      "margin": 2.0
+    },
+    "created_at": 1786190851.34489
+  },
+  "evd_f665ee410f": {
+    "id": "evd_f665ee410f",
+    "target_id": "hyp_a2e585909f",
+    "direction": "contradicts",
+    "strength": 0.45,
+    "kind": "experiment",
+    "summary": "[replication] heap_sort has lowest mean relative stdev: refuted (lowest mean relative stdev: merge_sort (0.029))",
+    "experiment_id": "exp_89bfcf883b",
+    "source_id": "",
+    "payload": {
+      "margin": 0.1
+    },
+    "created_at": 1786190851.8690176
+  },
+  "evd_53a94f6c16": {
+    "id": "evd_53a94f6c16",
+    "target_id": "hyp_a2e585909f",
+    "direction": "supports",
+    "strength": 0.45,
+    "kind": "experiment",
+    "summary": "[replication] heap_sort is never fastest in any regime: confirmed (regime winners: ['insertion_sort', 'quick_sort'])",
+    "experiment_id": "exp_89bfcf883b",
+    "source_id": "",
+    "payload": {
+      "margin": 0.1
+    },
+    "created_at": 1786190851.869042
+  },
+  "evd_329ca057d1": {
+    "id": "evd_329ca057d1",
+    "target_id": "hyp_7850a311fa",
+    "direction": "supports",
+    "strength": 0.85,
+    "kind": "experiment",
+    "summary": "[replication] hybrid_sort beats merge_sort on random by >= 5%: confirmed (hybrid_sort vs merge_sort on 'random': +63% (needs >= 5%))",
+    "experiment_id": "exp_03c68e9b8c",
+    "source_id": "",
+    "payload": {
+      "margin": 0.6318
+    },
+    "created_at": 1786190852.39565
+  },
+  "evd_8a8a927b4a": {
+    "id": "evd_8a8a927b4a",
+    "target_id": "hyp_7850a311fa",
+    "direction": "supports",
+    "strength": 0.85,
+    "kind": "experiment",
+    "summary": "[replication] hybrid_sort beats merge_sort on nearly_sorted: confirmed (hybrid_sort vs merge_sort on 'nearly_sorted': +173% (needs >= 0%))",
+    "experiment_id": "exp_03c68e9b8c",
+    "source_id": "",
+    "payload": {
+      "margin": 1.7263
+    },
+    "created_at": 1786190852.3956695
+  }
+}

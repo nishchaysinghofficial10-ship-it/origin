@@ -1,0 +1,11 @@
+[
+  {
+    "experiment": "exp_066779c791",
+    "hypothesis": "hyp_fc15d13b1b",
+    "prediction": "merge_sort is fastest on random",
+    "expected": "merge_sort is fastest on random",
+    "observed": "fastest_on on 'random' is quick_sort, not merge_sort (85% apart, decisive) [n=128, 5 trials]",
+    "action": "hypothesis status re-evaluated from evidence",
+    "ts": 1786481373.287412
+  }
+]

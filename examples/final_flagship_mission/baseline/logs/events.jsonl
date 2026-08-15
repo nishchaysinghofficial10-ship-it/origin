@@ -1,0 +1,3 @@
+{"ts": 1786627902.4336, "kind": "init", "msg": "Research project initialized: Which single-source shortest-path method wins on which graph topology at n<=512, does the machine-independent relaxation count agree with the wall-clock ranking, and under what precondition is the BFS candidate correct?"}
+{"ts": 1786627902.441308, "kind": "experiment_started", "msg": "exp_7cdf87b7c6: baseline sweep", "refs": {"experiment": "exp_7cdf87b7c6"}}
+{"ts": 1786627905.167611, "kind": "experiment_completed", "msg": "exp_7cdf87b7c6 completed in 2.7s (40 measurements)", "refs": {"experiment": "exp_7cdf87b7c6"}}

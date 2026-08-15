@@ -1,0 +1,467 @@
+{
+  "hyp_dbe5f386a7": {
+    "id": "hyp_dbe5f386a7",
+    "statement": "Insertion sort is the fastest candidate on nearly-sorted input, and the slowest on random input, at the tested sizes.",
+    "rationale": "Adaptive O(n + inversions) behavior dominates on low-inversion input; O(n^2) dominates on random input.",
+    "status": "accepted_with_scope",
+    "predictions": [
+      {
+        "id": "pred_e7dbfa8e5d",
+        "text": "insertion_sort is fastest on nearly_sorted",
+        "check": {
+          "type": "fastest_on",
+          "algorithm": "insertion_sort",
+          "regime": "nearly_sorted"
+        },
+        "outcome": "confirmed",
+        "detail": "fastest_on on 'nearly_sorted' is insertion_sort (0.5 ms, margin 704% over shell_sort, separation 3.45 ms > required 0.07 ms) [n=4096, 7 trials]"
+      },
+      {
+        "id": "pred_d981d439fc",
+        "text": "insertion_sort is slowest on random",
+        "check": {
+          "type": "slowest_on",
+          "algorithm": "insertion_sort",
+          "regime": "random"
+        },
+        "outcome": "confirmed",
+        "detail": "slowest_on on 'random' is insertion_sort (375.7 ms, margin 1802% over shell_sort, separation 355.94 ms > required 9.65 ms) [n=4096, 7 trials]"
+      }
+    ],
+    "supporting_evidence": [
+      "evd_6632bf5051",
+      "evd_694edfaf72",
+      "evd_4ac9395f7d",
+      "evd_533eb22ed5"
+    ],
+    "contradicting_evidence": [],
+    "importance": 1.0,
+    "cost_estimate": 1.0,
+    "tags": [
+      "base",
+      "counterargued",
+      "replicated",
+      "falsification_done",
+      "falsification_survived"
+    ],
+    "tested_in": [
+      "exp_c512323528",
+      "exp_dac3afe6aa"
+    ],
+    "assumptions": [],
+    "scope": "holds at n<=2x tested sizes on its original regime(s); does NOT extend to ['organ_pipe', 'sawtooth']",
+    "revisions": [
+      {
+        "ts": 1786391477.6906478,
+        "from": "under_test",
+        "to": "provisionally_supported",
+        "reason": "all predictions confirmed in exp_c512323528"
+      },
+      {
+        "ts": 1786391709.9254131,
+        "from": "provisionally_supported",
+        "to": "accepted_with_scope",
+        "reason": "replicated + survived falsification; scope: holds at n<=2x tested sizes on its original regime(s); does NOT extend to ['organ_pipe', 'sawtooth']"
+      }
+    ],
+    "created_at": 1786391465.6649683,
+    "updated_at": 1786391709.925424
+  },
+  "hyp_fa035de7df": {
+    "id": "hyp_fa035de7df",
+    "statement": "Merge sort is the fastest pure-Python candidate on random input.",
+    "rationale": "Guaranteed n log n with sequential memory access; no pathological cases.",
+    "status": "rejected",
+    "predictions": [
+      {
+        "id": "pred_d17f90bac8",
+        "text": "merge_sort is fastest on random",
+        "check": {
+          "type": "fastest_on",
+          "algorithm": "merge_sort",
+          "regime": "random"
+        },
+        "outcome": "refuted",
+        "detail": "fastest_on on 'random' is quick_sort, not merge_sort (71% apart, decisive) [n=4096, 7 trials]"
+      }
+    ],
+    "supporting_evidence": [],
+    "contradicting_evidence": [
+      "evd_8154955858"
+    ],
+    "importance": 1.0,
+    "cost_estimate": 1.0,
+    "tags": [
+      "base"
+    ],
+    "tested_in": [
+      "exp_c512323528"
+    ],
+    "assumptions": [],
+    "scope": "",
+    "revisions": [
+      {
+        "ts": 1786391477.6909256,
+        "from": "under_test",
+        "to": "rejected",
+        "reason": "all predictions refuted in exp_c512323528"
+      }
+    ],
+    "created_at": 1786391465.664981,
+    "updated_at": 1786391477.6909301
+  },
+  "hyp_cae1c60f85": {
+    "id": "hyp_cae1c60f85",
+    "statement": "Quick sort (median-of-three, Hoare) stays within 25% of the best candidate on random input and does not collapse on reversed input.",
+    "rationale": "MO3 pivoting neutralizes ordered-input pathologies; constant factors are low.",
+    "status": "accepted_with_scope",
+    "predictions": [
+      {
+        "id": "pred_8163f1d024",
+        "text": "quick_sort within 25% of best on random",
+        "check": {
+          "type": "within_pct_of_best",
+          "algorithm": "quick_sort",
+          "regime": "random",
+          "pct": 25
+        },
+        "outcome": "confirmed",
+        "detail": "quick_sort is 0% off best on 'random' (limit 25%, uncertainty \u00b124%) [n=4096, 7 trials]"
+      },
+      {
+        "id": "pred_f4764deabd",
+        "text": "quick_sort within 200% of best on reversed",
+        "check": {
+          "type": "within_pct_of_best",
+          "algorithm": "quick_sort",
+          "regime": "reversed",
+          "pct": 200
+        },
+        "outcome": "confirmed",
+        "detail": "quick_sort is 0% off best on 'reversed' (limit 200%, uncertainty \u00b14%) [n=4096, 7 trials]"
+      }
+    ],
+    "supporting_evidence": [
+      "evd_ad2d195f35",
+      "evd_e61be393e9",
+      "evd_fb8bcda184",
+      "evd_5e7a292654"
+    ],
+    "contradicting_evidence": [],
+    "importance": 0.9,
+    "cost_estimate": 1.0,
+    "tags": [
+      "base",
+      "replicated",
+      "falsification_done",
+      "falsification_survived"
+    ],
+    "tested_in": [
+      "exp_c512323528",
+      "exp_ac020259d2"
+    ],
+    "assumptions": [],
+    "scope": "holds at n<=2x tested sizes on its original regime(s); extends to ['organ_pipe', 'sawtooth']",
+    "revisions": [
+      {
+        "ts": 1786391477.6912518,
+        "from": "under_test",
+        "to": "provisionally_supported",
+        "reason": "all predictions confirmed in exp_c512323528"
+      },
+      {
+        "ts": 1786391709.9255471,
+        "from": "provisionally_supported",
+        "to": "accepted_with_scope",
+        "reason": "replicated + survived falsification; scope: holds at n<=2x tested sizes on its original regime(s); extends to ['organ_pipe', 'sawtooth']"
+      }
+    ],
+    "created_at": 1786391465.664995,
+    "updated_at": 1786391709.925549
+  },
+  "hyp_ad33a3dcb5": {
+    "id": "hyp_ad33a3dcb5",
+    "statement": "Heap sort is the most consistent candidate (lowest relative timing variance across regimes) but is never the fastest in any regime.",
+    "rationale": "Input-oblivious n log n behavior; poor cache locality keeps constants high.",
+    "status": "weakened",
+    "predictions": [
+      {
+        "id": "pred_cec482fccc",
+        "text": "heap_sort has lowest mean relative stdev",
+        "check": {
+          "type": "lowest_mean_rel_stdev",
+          "algorithm": "heap_sort"
+        },
+        "outcome": "refuted",
+        "detail": "lowest mean relative stdev: merge_sort (0.050); next is quick_sort (0.063) [n=4096, 7 trials]"
+      },
+      {
+        "id": "pred_10295982c3",
+        "text": "heap_sort is never fastest in any regime",
+        "check": {
+          "type": "never_fastest",
+          "algorithm": "heap_sort"
+        },
+        "outcome": "confirmed",
+        "detail": "regime winners: ['insertion_sort', 'quick_sort'] (decisively separated in: ['few_unique', 'nearly_sorted', 'random', 'reversed']) [n=4096, 7 trials]"
+      }
+    ],
+    "supporting_evidence": [
+      "evd_1fc89d1194"
+    ],
+    "contradicting_evidence": [
+      "evd_9becf00f24"
+    ],
+    "importance": 0.8,
+    "cost_estimate": 1.0,
+    "tags": [
+      "base"
+    ],
+    "tested_in": [
+      "exp_c512323528"
+    ],
+    "assumptions": [],
+    "scope": "",
+    "revisions": [
+      {
+        "ts": 1786391477.6913326,
+        "from": "under_test",
+        "to": "weakened",
+        "reason": "mixed prediction outcomes in exp_c512323528"
+      }
+    ],
+    "created_at": 1786391465.6650069,
+    "updated_at": 1786391477.6913354
+  },
+  "hyp_40df9834c7": {
+    "id": "hyp_40df9834c7",
+    "statement": "Shell sort beats insertion sort on random input but not on nearly-sorted input at the tested sizes.",
+    "rationale": "[mock proposal prop_92794c6d1c] Gap sequences reduce long-distance disorder faster than adjacent swaps; on nearly-sorted data insertion sort's adaptivity should dominate.",
+    "status": "accepted_with_scope",
+    "predictions": [
+      {
+        "id": "pred_30014e51bc",
+        "text": "Shell sort beats insertion sort on random input but not on nearly-sorted input at the tested sizes.",
+        "check": {
+          "type": "beats",
+          "algorithm": "shell_sort",
+          "than": "insertion_sort",
+          "regime": "random",
+          "min_pct": 0.0
+        },
+        "outcome": "confirmed",
+        "detail": "shell_sort vs insertion_sort on 'random': +739% (needs >= 0.0%, decisive: gap 19.45 ms > required 1.39 ms) [n=1024, 7 trials]"
+      }
+    ],
+    "supporting_evidence": [
+      "evd_1bbf2017f2",
+      "evd_2718a24c25"
+    ],
+    "contradicting_evidence": [],
+    "importance": 0.6,
+    "cost_estimate": 1.0,
+    "tags": [
+      "llm_proposed",
+      "replicated",
+      "falsification_done",
+      "falsification_survived"
+    ],
+    "tested_in": [
+      "exp_2593d8e300",
+      "exp_13f5f8410a"
+    ],
+    "assumptions": [
+      "pure-Python implementations",
+      "wall-clock time is the metric"
+    ],
+    "scope": "holds at n<=2x tested sizes on its original regime(s); extends to ['organ_pipe', 'sawtooth']",
+    "revisions": [
+      {
+        "ts": 1786391491.208577,
+        "from": "under_test",
+        "to": "provisionally_supported",
+        "reason": "all predictions confirmed in exp_2593d8e300"
+      },
+      {
+        "ts": 1786391709.9256172,
+        "from": "provisionally_supported",
+        "to": "accepted_with_scope",
+        "reason": "replicated + survived falsification; scope: holds at n<=2x tested sizes on its original regime(s); extends to ['organ_pipe', 'sawtooth']"
+      }
+    ],
+    "created_at": 1786391465.6657376,
+    "updated_at": 1786391709.9256184
+  },
+  "hyp_f1699d47b3": {
+    "id": "hyp_f1699d47b3",
+    "statement": "Heap sort beats shell sort on reversed input at the tested sizes.",
+    "rationale": "[mock proposal prop_b8a25c4aab] Reversed input is adversarial for gap/insertion strategies while heap construction cost is input-independent.",
+    "status": "rejected",
+    "predictions": [
+      {
+        "id": "pred_cd548b69f5",
+        "text": "Heap sort beats shell sort on reversed input at the tested sizes.",
+        "check": {
+          "type": "beats",
+          "algorithm": "heap_sort",
+          "than": "shell_sort",
+          "regime": "reversed",
+          "min_pct": 0.0
+        },
+        "outcome": "refuted",
+        "detail": "heap_sort is decisively SLOWER than shell_sort on 'reversed' (-30%) [n=4096, 7 trials]"
+      }
+    ],
+    "supporting_evidence": [],
+    "contradicting_evidence": [
+      "evd_4137776c99"
+    ],
+    "importance": 0.45,
+    "cost_estimate": 1.0,
+    "tags": [
+      "llm_proposed"
+    ],
+    "tested_in": [
+      "exp_409be65fa9"
+    ],
+    "assumptions": [
+      "reversed inputs are fully descending"
+    ],
+    "scope": "",
+    "revisions": [
+      {
+        "ts": 1786391503.3501797,
+        "from": "under_test",
+        "to": "rejected",
+        "reason": "all predictions refuted in exp_409be65fa9"
+      }
+    ],
+    "created_at": 1786391465.6664128,
+    "updated_at": 1786391503.3501947
+  },
+  "hyp_38e7e1fe16": {
+    "id": "hyp_38e7e1fe16",
+    "statement": "A hybrid algorithm (merge sort with insertion-sort cutoff <= 32) beats plain merge sort on random AND nearly-sorted input at the tested sizes.",
+    "rationale": "Round-1 evidence: 'insertion_sort' won nearly_sorted and 'quick_sort' won random. Combining merge structure with insertion's strength on short/ordered runs should reduce recursion overhead without losing n log n guarantees. Derived from experiment exp_c512323528.",
+    "status": "accepted_with_scope",
+    "predictions": [
+      {
+        "id": "pred_f9b7737084",
+        "text": "hybrid_sort beats merge_sort on random by >= 5%",
+        "check": {
+          "type": "beats",
+          "algorithm": "hybrid_sort",
+          "than": "merge_sort",
+          "regime": "random",
+          "min_pct": 5
+        },
+        "outcome": "confirmed",
+        "detail": "hybrid_sort vs merge_sort on 'random': +53% (needs >= 5%, decisive: gap 3.24 ms > required 0.62 ms) [n=4096, 7 trials]"
+      },
+      {
+        "id": "pred_ee29fd4040",
+        "text": "hybrid_sort beats merge_sort on nearly_sorted",
+        "check": {
+          "type": "beats",
+          "algorithm": "hybrid_sort",
+          "than": "merge_sort",
+          "regime": "nearly_sorted",
+          "min_pct": 0
+        },
+        "outcome": "confirmed",
+        "detail": "hybrid_sort vs merge_sort on 'nearly_sorted': +182% (needs >= 0%, decisive: gap 4.41 ms > required 0.93 ms) [n=4096, 7 trials]"
+      }
+    ],
+    "supporting_evidence": [
+      "evd_29dc192093",
+      "evd_9126722f3b",
+      "evd_009948521d",
+      "evd_0f71b453e4"
+    ],
+    "contradicting_evidence": [],
+    "importance": 1.2,
+    "cost_estimate": 1.2,
+    "tags": [
+      "generated",
+      "replicated",
+      "falsification_done",
+      "falsification_survived"
+    ],
+    "tested_in": [
+      "exp_48613ed686",
+      "exp_1351d074bc"
+    ],
+    "assumptions": [],
+    "scope": "holds at n<=2x tested sizes on its original regime(s); extends to ['organ_pipe', 'sawtooth']",
+    "revisions": [
+      {
+        "ts": 1786391490.011822,
+        "from": "under_test",
+        "to": "provisionally_supported",
+        "reason": "all predictions confirmed in exp_48613ed686"
+      },
+      {
+        "ts": 1786391709.9257238,
+        "from": "provisionally_supported",
+        "to": "accepted_with_scope",
+        "reason": "replicated + survived falsification; scope: holds at n<=2x tested sizes on its original regime(s); extends to ['organ_pipe', 'sawtooth']"
+      }
+    ],
+    "created_at": 1786391477.691476,
+    "updated_at": 1786391709.9257257
+  },
+  "hyp_bf17e1f36c": {
+    "id": "hyp_bf17e1f36c",
+    "statement": "The hybrid's optimal insertion cutoff on random input lies in [16, 64], and the optimal cutoff on nearly-sorted input is >= the optimum on random input.",
+    "rationale": "Python call overhead favors moderate cutoffs; insertion sort's adaptivity should tolerate larger segments on nearly-sorted data. Pre-registered before any sweep ran.",
+    "status": "weakened",
+    "predictions": [
+      {
+        "id": "pred_e0238b01ef",
+        "text": "optimal cutoff on random in [16, 64]",
+        "check": {
+          "type": "sweep_optimum_in",
+          "regime": "random",
+          "lo": 16,
+          "hi": 64
+        },
+        "outcome": "inconclusive",
+        "detail": "best cutoff on random = 16 (inside [16,64]) but cutoffs [8] are statistically indistinguishable from it at 7 trials \u2014 the optimum is not resolvable to that interval"
+      },
+      {
+        "id": "pred_dc32d5732d",
+        "text": "optimal cutoff on nearly_sorted >= optimal on random",
+        "check": {
+          "type": "sweep_optimum_ge",
+          "regime_a": "nearly_sorted",
+          "regime_b": "random"
+        },
+        "outcome": "inconclusive",
+        "detail": "optimum nearly_sorted=64 vs random=16, but the optima are not uniquely identified (indistinguishable sets: nearly_sorted=[32, 64], random=[8, 16, 32])"
+      }
+    ],
+    "supporting_evidence": [],
+    "contradicting_evidence": [],
+    "importance": 0.95,
+    "cost_estimate": 0.8,
+    "tags": [
+      "generated",
+      "sweep"
+    ],
+    "tested_in": [
+      "exp_42d46105c8"
+    ],
+    "assumptions": [],
+    "scope": "",
+    "revisions": [
+      {
+        "ts": 1786391490.8287709,
+        "from": "under_test",
+        "to": "weakened",
+        "reason": "sweep mixed outcomes in exp_42d46105c8"
+      }
+    ],
+    "created_at": 1786391490.011936,
+    "updated_at": 1786391490.8287866
+  }
+}

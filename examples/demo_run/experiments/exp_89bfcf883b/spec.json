@@ -1,0 +1,25 @@
+{
+  "kind": "replication",
+  "round": 0,
+  "algorithms": [
+    "insertion_sort",
+    "merge_sort",
+    "quick_sort",
+    "heap_sort"
+  ],
+  "regimes": [
+    "random",
+    "nearly_sorted",
+    "reversed",
+    "few_unique"
+  ],
+  "sizes": [
+    1600
+  ],
+  "trials": 3,
+  "seed": 2234,
+  "timeout_s": 600,
+  "hypothesis_ids": [
+    "hyp_a2e585909f"
+  ]
+}

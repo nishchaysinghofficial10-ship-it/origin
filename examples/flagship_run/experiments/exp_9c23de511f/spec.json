@@ -1,0 +1,82 @@
+{
+  "kind": "falsification",
+  "round": 9,
+  "algorithms": [
+    "insertion_sort",
+    "merge_sort",
+    "quick_sort",
+    "heap_sort",
+    "shell_sort"
+  ],
+  "regimes": [
+    "nearly_sorted",
+    "organ_pipe",
+    "random",
+    "sawtooth"
+  ],
+  "sizes": [
+    8192
+  ],
+  "trials": 7,
+  "seed": 20268586,
+  "timeout_s": 600,
+  "hypothesis_ids": [
+    "hyp_dbe5f386a7"
+  ],
+  "probe_checks": [
+    {
+      "label": "boundary:nearly_sorted",
+      "check": {
+        "type": "fastest_on",
+        "algorithm": "insertion_sort",
+        "regime": "nearly_sorted"
+      },
+      "role": "boundary"
+    },
+    {
+      "label": "scope:sawtooth",
+      "check": {
+        "type": "fastest_on",
+        "algorithm": "insertion_sort",
+        "regime": "sawtooth"
+      },
+      "role": "scope"
+    },
+    {
+      "label": "scope:organ_pipe",
+      "check": {
+        "type": "fastest_on",
+        "algorithm": "insertion_sort",
+        "regime": "organ_pipe"
+      },
+      "role": "scope"
+    },
+    {
+      "label": "boundary:random",
+      "check": {
+        "type": "slowest_on",
+        "algorithm": "insertion_sort",
+        "regime": "random"
+      },
+      "role": "boundary"
+    },
+    {
+      "label": "scope:sawtooth",
+      "check": {
+        "type": "slowest_on",
+        "algorithm": "insertion_sort",
+        "regime": "sawtooth"
+      },
+      "role": "scope"
+    },
+    {
+      "label": "scope:organ_pipe",
+      "check": {
+        "type": "slowest_on",
+        "algorithm": "insertion_sort",
+        "regime": "organ_pipe"
+      },
+      "role": "scope"
+    }
+  ]
+}

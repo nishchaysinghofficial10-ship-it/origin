@@ -1,0 +1,20 @@
+[
+  {
+    "experiment": "exp_defeaebae2",
+    "hypothesis": "hyp_e8add5b17c",
+    "prediction": "merge_sort is fastest on random",
+    "expected": "merge_sort is fastest on random",
+    "observed": "fastest_on 'random' at n=1600 is quick_sort (1.4 ms, margin 60%)",
+    "action": "hypothesis status re-evaluated from evidence",
+    "ts": 1786190849.7501574
+  },
+  {
+    "experiment": "exp_89bfcf883b",
+    "hypothesis": "hyp_a2e585909f",
+    "prediction": "heap_sort has lowest mean relative stdev",
+    "expected": "replicated confirmation",
+    "observed": "lowest mean relative stdev: merge_sort (0.029)",
+    "action": "hyp_a2e585909f downgraded to WEAKENED",
+    "ts": 1786190851.8690245
+  }
+]

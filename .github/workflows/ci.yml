@@ -1,0 +1,146 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    name: tests (py${{ matrix.python-version }}, ${{ matrix.runner }})
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ubuntu-24.04]
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Show interpreter and OS
+        run: |
+          python -VV
+          uname -a
+          nproc
+      - name: Confirm ORIGIN needs no third-party packages
+        run: |
+          pip list --format=freeze > /tmp/before.txt
+          python -c "import origin, origin.cli, origin.sandbox; print('import ok')"
+          diff <(pip list --format=freeze) /tmp/before.txt
+      - name: Full test suite
+        run: python -m unittest discover -s tests -v
+
+  portability:
+    name: portability (relocated + archived artifacts)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: No machine-specific absolute paths in artifacts
+        run: python tools/check_artifacts_portable.py .
+
+      - name: Shipped example missions verify in place
+        run: |
+          python -m origin verify --dir examples/flagship_run
+          python -m origin verify --dir examples/demo_run
+
+      - name: Performance-reproducibility guarantees on the shipped flagship
+        run: |
+          set -euo pipefail
+          EXP=$(python - <<'PY'
+from origin.state import ResearchState
+st = ResearchState.load("examples/flagship_run")
+print(next(r.id for r in st.experiments.values()
+           if r.design.get("kind") == "sweep" and r.status == "completed"))
+PY
+)
+          echo "replaying $EXP — exact reproducibility is asserted, timing is not"
+          python -m origin replay --dir examples/flagship_run --exp "$EXP"
+
+      - name: Relocated flagship mission verifies and replays
+        run: |
+          set -euo pipefail
+          cp -r examples/flagship_run "$RUNNER_TEMP/relocated_mission"
+          python -m origin verify --dir "$RUNNER_TEMP/relocated_mission"
+          EXP=$(python - <<'PY'
+from origin.state import ResearchState
+st = ResearchState.load("examples/flagship_run")
+print(next(r.id for r in st.experiments.values() if r.status == "completed"))
+PY
+)
+          echo "replaying $EXP from the relocated copy"
+          python -m origin replay --dir "$RUNNER_TEMP/relocated_mission" --exp "$EXP"
+
+      - name: A copy without its own artifacts must FAIL verify (no phantom pass)
+        run: |
+          set -euo pipefail
+          cp -r examples/flagship_run "$RUNNER_TEMP/gutted"
+          rm -rf "$RUNNER_TEMP/gutted/experiments"
+          if python -m origin verify --dir "$RUNNER_TEMP/gutted"; then
+            echo "::error::verify passed on a mission with no artifacts"
+            exit 1
+          fi
+          echo "verify correctly reported the missing artifacts"
+
+      - name: Archive round-trip is independently usable
+        run: |
+          set -euo pipefail
+          git archive --format=zip --prefix=origin-project/ HEAD > "$RUNNER_TEMP/origin.zip"
+          mkdir -p "$RUNNER_TEMP/extracted"
+          unzip -q "$RUNNER_TEMP/origin.zip" -d "$RUNNER_TEMP/extracted"
+          cd "$RUNNER_TEMP/extracted/origin-project"
+          python tools/check_artifacts_portable.py .
+          python -m unittest discover -s tests
+          python -m origin verify --dir examples/flagship_run
+
+  fresh-mission:
+    name: end-to-end mission from a clean checkout
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Init, run, verify, report
+        run: |
+          set -euo pipefail
+          python -m origin init "CI smoke: which sort wins where?" \
+            --dir "$RUNNER_TEMP/ci_mission" --profile fast --brain mock
+          python -m origin run --dir "$RUNNER_TEMP/ci_mission"
+          python -m origin verify --dir "$RUNNER_TEMP/ci_mission"
+          python -m origin status --dir "$RUNNER_TEMP/ci_mission"
+          python -m origin html --dir "$RUNNER_TEMP/ci_mission"
+          python tools/check_artifacts_portable.py "$RUNNER_TEMP/ci_mission"
+      - name: Web evidence pipeline (fixture mode, no network)
+        run: |
+          set -euo pipefail
+          python tools/web_evidence_demo.py --dir "$RUNNER_TEMP/evidence" --mode fixture
+          python -m origin verify --dir "$RUNNER_TEMP/evidence"
+          python tools/check_artifacts_portable.py "$RUNNER_TEMP/evidence"
+
+      - name: Bounded autonomy (fixture demo, no network)
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s tests -p test_autonomy.py -v
+          python tools/autonomy_demo.py --dir "$RUNNER_TEMP/autonomy"
+          python -m origin verify --dir "$RUNNER_TEMP/autonomy"
+          python -m origin autonomy status --dir "$RUNNER_TEMP/autonomy"
+          python tools/check_artifacts_portable.py "$RUNNER_TEMP/autonomy"
+
+      - name: Interrupt and resume
+        run: |
+          set -euo pipefail
+          python -m origin init "CI interrupt test" \
+            --dir "$RUNNER_TEMP/ci_resume" --profile fast --brain none
+          python -m origin run --dir "$RUNNER_TEMP/ci_resume" --steps 2
+          python -m origin run --dir "$RUNNER_TEMP/ci_resume"
+          python -m origin verify --dir "$RUNNER_TEMP/ci_resume"

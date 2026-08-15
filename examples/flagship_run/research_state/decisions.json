@@ -1,0 +1,247 @@
+[
+  {
+    "id": "dec_4df4558dd8",
+    "step": 3,
+    "context": "select_investigation",
+    "options": [
+      {
+        "label": "hyp_dbe5f386a7",
+        "score": 1.0,
+        "reason": "importance 1.0, evidence 0, cost 1.0"
+      },
+      {
+        "label": "hyp_fa035de7df",
+        "score": 1.0,
+        "reason": "importance 1.0, evidence 0, cost 1.0"
+      },
+      {
+        "label": "hyp_cae1c60f85",
+        "score": 0.9,
+        "reason": "importance 0.9, evidence 0, cost 1.0"
+      },
+      {
+        "label": "hyp_ad33a3dcb5",
+        "score": 0.8,
+        "reason": "importance 0.8, evidence 0, cost 1.0"
+      },
+      {
+        "label": "hyp_40df9834c7",
+        "score": 0.6,
+        "reason": "importance 0.6, evidence 0, cost 1.0"
+      },
+      {
+        "label": "hyp_f1699d47b3",
+        "score": 0.45,
+        "reason": "importance 0.45, evidence 0, cost 1.0"
+      }
+    ],
+    "chosen": "hyp_dbe5f386a7",
+    "reason": "highest expected information gain per unit cost; experiment co-tests 4 hypothesis(es)",
+    "ts": 1786391465.6703813
+  },
+  {
+    "id": "dec_5f5ca9a147",
+    "step": 4,
+    "context": "select_investigation",
+    "options": [
+      {
+        "label": "hyp_38e7e1fe16",
+        "score": 1.0,
+        "reason": "importance 1.2, evidence 0, cost 1.2"
+      },
+      {
+        "label": "hyp_40df9834c7",
+        "score": 0.6,
+        "reason": "importance 0.6, evidence 0, cost 1.0"
+      },
+      {
+        "label": "hyp_f1699d47b3",
+        "score": 0.45,
+        "reason": "importance 0.45, evidence 0, cost 1.0"
+      }
+    ],
+    "chosen": "hyp_38e7e1fe16",
+    "reason": "highest expected information gain per unit cost; experiment co-tests 1 hypothesis(es)",
+    "ts": 1786391477.6964126
+  },
+  {
+    "id": "dec_ff4dff5756",
+    "step": 5,
+    "context": "select_investigation",
+    "options": [
+      {
+        "label": "hyp_bf17e1f36c",
+        "score": 1.187,
+        "reason": "importance 0.95, evidence 0, cost 0.8"
+      },
+      {
+        "label": "hyp_40df9834c7",
+        "score": 0.6,
+        "reason": "importance 0.6, evidence 0, cost 1.0"
+      },
+      {
+        "label": "hyp_f1699d47b3",
+        "score": 0.45,
+        "reason": "importance 0.45, evidence 0, cost 1.0"
+      }
+    ],
+    "chosen": "hyp_bf17e1f36c",
+    "reason": "highest expected information gain per unit cost; experiment co-tests 1 hypothesis(es)",
+    "ts": 1786391490.017457
+  },
+  {
+    "id": "dec_08756668a2",
+    "step": 6,
+    "context": "select_investigation",
+    "options": [
+      {
+        "label": "hyp_40df9834c7",
+        "score": 0.6,
+        "reason": "importance 0.6, evidence 0, cost 1.0"
+      },
+      {
+        "label": "hyp_f1699d47b3",
+        "score": 0.45,
+        "reason": "importance 0.45, evidence 0, cost 1.0"
+      }
+    ],
+    "chosen": "hyp_40df9834c7",
+    "reason": "highest expected information gain per unit cost; experiment co-tests 1 hypothesis(es)",
+    "ts": 1786391490.834191
+  },
+  {
+    "id": "dec_1ad65f04dd",
+    "step": 7,
+    "context": "select_investigation",
+    "options": [
+      {
+        "label": "hyp_f1699d47b3",
+        "score": 0.45,
+        "reason": "importance 0.45, evidence 0, cost 1.0"
+      }
+    ],
+    "chosen": "hyp_f1699d47b3",
+    "reason": "highest expected information gain per unit cost; experiment co-tests 1 hypothesis(es)",
+    "ts": 1786391491.214269
+  },
+  {
+    "id": "dec_e6c431c729",
+    "step": 9,
+    "context": "critic_replication",
+    "options": [
+      {
+        "label": "hyp_dbe5f386a7",
+        "score": 1.0,
+        "reason": "supported by a single experiment only"
+      }
+    ],
+    "chosen": "hyp_dbe5f386a7",
+    "reason": "critic refuses single-experiment support; independent replication with new seeds",
+    "ts": 1786391503.3608744
+  },
+  {
+    "id": "dec_ad70fbced8",
+    "step": 10,
+    "context": "critic_replication",
+    "options": [
+      {
+        "label": "hyp_cae1c60f85",
+        "score": 1.0,
+        "reason": "supported by a single experiment only"
+      }
+    ],
+    "chosen": "hyp_cae1c60f85",
+    "reason": "critic refuses single-experiment support; independent replication with new seeds",
+    "ts": 1786391515.0117714
+  },
+  {
+    "id": "dec_049a98894b",
+    "step": 11,
+    "context": "critic_replication",
+    "options": [
+      {
+        "label": "hyp_40df9834c7",
+        "score": 1.0,
+        "reason": "supported by a single experiment only"
+      }
+    ],
+    "chosen": "hyp_40df9834c7",
+    "reason": "critic refuses single-experiment support; independent replication with new seeds",
+    "ts": 1786391526.1053867
+  },
+  {
+    "id": "dec_b0f759da9e",
+    "step": 12,
+    "context": "critic_replication",
+    "options": [
+      {
+        "label": "hyp_38e7e1fe16",
+        "score": 1.0,
+        "reason": "supported by a single experiment only"
+      }
+    ],
+    "chosen": "hyp_38e7e1fe16",
+    "reason": "critic refuses single-experiment support; independent replication with new seeds",
+    "ts": 1786391537.512964
+  },
+  {
+    "id": "dec_e98a51738b",
+    "step": 13,
+    "context": "critic_falsification",
+    "options": [
+      {
+        "label": "hyp_dbe5f386a7",
+        "score": 1.0,
+        "reason": "replicated conclusion must survive boundary + unseen-regime probes"
+      }
+    ],
+    "chosen": "hyp_dbe5f386a7",
+    "reason": "falsification probes: boundary:nearly_sorted, scope:sawtooth, scope:organ_pipe, boundary:random, scope:sawtooth, scope:organ_pipe",
+    "ts": 1786391548.9145293
+  },
+  {
+    "id": "dec_0848670097",
+    "step": 14,
+    "context": "critic_falsification",
+    "options": [
+      {
+        "label": "hyp_cae1c60f85",
+        "score": 1.0,
+        "reason": "replicated conclusion must survive boundary + unseen-regime probes"
+      }
+    ],
+    "chosen": "hyp_cae1c60f85",
+    "reason": "falsification probes: boundary:random, scope:sawtooth, scope:organ_pipe, boundary:reversed, scope:sawtooth, scope:organ_pipe",
+    "ts": 1786391583.65357
+  },
+  {
+    "id": "dec_9666121e95",
+    "step": 15,
+    "context": "critic_falsification",
+    "options": [
+      {
+        "label": "hyp_40df9834c7",
+        "score": 1.0,
+        "reason": "replicated conclusion must survive boundary + unseen-regime probes"
+      }
+    ],
+    "chosen": "hyp_40df9834c7",
+    "reason": "falsification probes: boundary:random, scope:sawtooth, scope:organ_pipe",
+    "ts": 1786391639.9545238
+  },
+  {
+    "id": "dec_730b51cc8d",
+    "step": 16,
+    "context": "critic_falsification",
+    "options": [
+      {
+        "label": "hyp_38e7e1fe16",
+        "score": 1.0,
+        "reason": "replicated conclusion must survive boundary + unseen-regime probes"
+      }
+    ],
+    "chosen": "hyp_38e7e1fe16",
+    "reason": "falsification probes: boundary:random, scope:sawtooth, scope:organ_pipe, boundary:nearly_sorted, scope:sawtooth, scope:organ_pipe",
+    "ts": 1786391674.6780627
+  }
+]

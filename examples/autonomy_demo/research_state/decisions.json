@@ -1,0 +1,47 @@
+[
+  {
+    "id": "dec_8177decada",
+    "step": 0,
+    "context": "select_investigation",
+    "options": [
+      {
+        "label": "hyp_48de48fcea",
+        "score": 1.0,
+        "reason": "importance 1.0, evidence 0, cost 1.0"
+      },
+      {
+        "label": "hyp_fc15d13b1b",
+        "score": 1.0,
+        "reason": "importance 1.0, evidence 0, cost 1.0"
+      },
+      {
+        "label": "hyp_2be7e87921",
+        "score": 0.9,
+        "reason": "importance 0.9, evidence 0, cost 1.0"
+      },
+      {
+        "label": "hyp_db14df8458",
+        "score": 0.8,
+        "reason": "importance 0.8, evidence 0, cost 1.0"
+      }
+    ],
+    "chosen": "hyp_48de48fcea",
+    "reason": "highest expected information gain per unit cost; experiment co-tests 4 hypothesis(es)",
+    "ts": 1786481373.2121215
+  },
+  {
+    "id": "dec_22cfc60e53",
+    "step": 1,
+    "context": "select_investigation",
+    "options": [
+      {
+        "label": "hyp_5542e8d61c",
+        "score": 1.0,
+        "reason": "importance 1.2, evidence 0, cost 1.2"
+      }
+    ],
+    "chosen": "hyp_5542e8d61c",
+    "reason": "highest expected information gain per unit cost; experiment co-tests 1 hypothesis(es)",
+    "ts": 1786481373.2935493
+  }
+]

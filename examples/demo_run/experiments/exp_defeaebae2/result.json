@@ -1,0 +1,260 @@
+{
+  "rows": [
+    {
+      "algorithm": "insertion_sort",
+      "regime": "random",
+      "n": 400,
+      "mean_s": 0.001965665333311032,
+      "stdev_s": 0.0002360199436763549,
+      "trials": 3
+    },
+    {
+      "algorithm": "insertion_sort",
+      "regime": "random",
+      "n": 1600,
+      "mean_s": 0.038459777666654794,
+      "stdev_s": 0.0018328128738476874,
+      "trials": 3
+    },
+    {
+      "algorithm": "insertion_sort",
+      "regime": "nearly_sorted",
+      "n": 400,
+      "mean_s": 2.735333333703238e-05,
+      "stdev_s": 4.41419710916965e-06,
+      "trials": 3
+    },
+    {
+      "algorithm": "insertion_sort",
+      "regime": "nearly_sorted",
+      "n": 1600,
+      "mean_s": 0.00012010233333133631,
+      "stdev_s": 8.571683475383148e-06,
+      "trials": 3
+    },
+    {
+      "algorithm": "insertion_sort",
+      "regime": "reversed",
+      "n": 400,
+      "mean_s": 0.003254200333325722,
+      "stdev_s": 5.043265835994769e-05,
+      "trials": 3
+    },
+    {
+      "algorithm": "insertion_sort",
+      "regime": "reversed",
+      "n": 1600,
+      "mean_s": 0.07419833799999272,
+      "stdev_s": 0.008824148527980927,
+      "trials": 3
+    },
+    {
+      "algorithm": "insertion_sort",
+      "regime": "few_unique",
+      "n": 400,
+      "mean_s": 0.0014315926666578587,
+      "stdev_s": 4.6425247340185954e-05,
+      "trials": 3
+    },
+    {
+      "algorithm": "insertion_sort",
+      "regime": "few_unique",
+      "n": 1600,
+      "mean_s": 0.029318680999987617,
+      "stdev_s": 0.0007941940376540972,
+      "trials": 3
+    },
+    {
+      "algorithm": "merge_sort",
+      "regime": "random",
+      "n": 400,
+      "mean_s": 0.0005108650000048934,
+      "stdev_s": 3.0124872027381543e-05,
+      "trials": 3
+    },
+    {
+      "algorithm": "merge_sort",
+      "regime": "random",
+      "n": 1600,
+      "mean_s": 0.002312479666670697,
+      "stdev_s": 6.406789045288644e-05,
+      "trials": 3
+    },
+    {
+      "algorithm": "merge_sort",
+      "regime": "nearly_sorted",
+      "n": 400,
+      "mean_s": 0.0003510066666573645,
+      "stdev_s": 1.811140439412824e-05,
+      "trials": 3
+    },
+    {
+      "algorithm": "merge_sort",
+      "regime": "nearly_sorted",
+      "n": 1600,
+      "mean_s": 0.0019617636666756275,
+      "stdev_s": 0.0005278451591990026,
+      "trials": 3
+    },
+    {
+      "algorithm": "merge_sort",
+      "regime": "reversed",
+      "n": 400,
+      "mean_s": 0.0004571329999976115,
+      "stdev_s": 6.200557922611912e-05,
+      "trials": 3
+    },
+    {
+      "algorithm": "merge_sort",
+      "regime": "reversed",
+      "n": 1600,
+      "mean_s": 0.001793348333346027,
+      "stdev_s": 0.00023885489761211554,
+      "trials": 3
+    },
+    {
+      "algorithm": "merge_sort",
+      "regime": "few_unique",
+      "n": 400,
+      "mean_s": 0.00046035766666818745,
+      "stdev_s": 2.0009379037161634e-05,
+      "trials": 3
+    },
+    {
+      "algorithm": "merge_sort",
+      "regime": "few_unique",
+      "n": 1600,
+      "mean_s": 0.0021890929999888917,
+      "stdev_s": 0.00012807414643121524,
+      "trials": 3
+    },
+    {
+      "algorithm": "quick_sort",
+      "regime": "random",
+      "n": 400,
+      "mean_s": 0.00042761533334593577,
+      "stdev_s": 2.106072958479669e-05,
+      "trials": 3
+    },
+    {
+      "algorithm": "quick_sort",
+      "regime": "random",
+      "n": 1600,
+      "mean_s": 0.0014493139999937437,
+      "stdev_s": 2.413625838330683e-05,
+      "trials": 3
+    },
+    {
+      "algorithm": "quick_sort",
+      "regime": "nearly_sorted",
+      "n": 400,
+      "mean_s": 0.00019062266666954505,
+      "stdev_s": 7.9039683020334e-06,
+      "trials": 3
+    },
+    {
+      "algorithm": "quick_sort",
+      "regime": "nearly_sorted",
+      "n": 1600,
+      "mean_s": 0.0009465893333526765,
+      "stdev_s": 3.113788855361132e-05,
+      "trials": 3
+    },
+    {
+      "algorithm": "quick_sort",
+      "regime": "reversed",
+      "n": 400,
+      "mean_s": 0.0002291760000237749,
+      "stdev_s": 3.220244502169687e-05,
+      "trials": 3
+    },
+    {
+      "algorithm": "quick_sort",
+      "regime": "reversed",
+      "n": 1600,
+      "mean_s": 0.0009683150000038646,
+      "stdev_s": 1.130317799288976e-05,
+      "trials": 3
+    },
+    {
+      "algorithm": "quick_sort",
+      "regime": "few_unique",
+      "n": 400,
+      "mean_s": 0.000264661333346794,
+      "stdev_s": 2.2277584426121155e-05,
+      "trials": 3
+    },
+    {
+      "algorithm": "quick_sort",
+      "regime": "few_unique",
+      "n": 1600,
+      "mean_s": 0.0012278860000189222,
+      "stdev_s": 1.209840090127556e-05,
+      "trials": 3
+    },
+    {
+      "algorithm": "heap_sort",
+      "regime": "random",
+      "n": 400,
+      "mean_s": 0.00046823500000906887,
+      "stdev_s": 1.1592379771280223e-05,
+      "trials": 3
+    },
+    {
+      "algorithm": "heap_sort",
+      "regime": "random",
+      "n": 1600,
+      "mean_s": 0.0024381043333126704,
+      "stdev_s": 4.0959165410374924e-05,
+      "trials": 3
+    },
+    {
+      "algorithm": "heap_sort",
+      "regime": "nearly_sorted",
+      "n": 400,
+      "mean_s": 0.0004639009999891641,
+      "stdev_s": 1.556412600447379e-05,
+      "trials": 3
+    },
+    {
+      "algorithm": "heap_sort",
+      "regime": "nearly_sorted",
+      "n": 1600,
+      "mean_s": 0.0024450140000074803,
+      "stdev_s": 2.1827015692318663e-05,
+      "trials": 3
+    },
+    {
+      "algorithm": "heap_sort",
+      "regime": "reversed",
+      "n": 400,
+      "mean_s": 0.00040563666667973547,
+      "stdev_s": 1.9901429248416313e-05,
+      "trials": 3
+    },
+    {
+      "algorithm": "heap_sort",
+      "regime": "reversed",
+      "n": 1600,
+      "mean_s": 0.002130730333324967,
+      "stdev_s": 2.482614508977216e-05,
+      "trials": 3
+    },
+    {
+      "algorithm": "heap_sort",
+      "regime": "few_unique",
+      "n": 400,
+      "mean_s": 0.0003934936666306991,
+      "stdev_s": 1.2562486375253247e-05,
+      "trials": 3
+    },
+    {
+      "algorithm": "heap_sort",
+      "regime": "few_unique",
+      "n": 1600,
+      "mean_s": 0.002081025333325215,
+      "stdev_s": 5.0121550077669e-05,
+      "trials": 3
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "benchmark",
+  "round": 2,
+  "algorithms": [
+    "dijkstra_heap",
+    "dijkstra_array",
+    "bellman_ford",
+    "spfa",
+    "bfs_unit"
+  ],
+  "regimes": [
+    "sparse_random",
+    "dense_random",
+    "grid_2d",
+    "unit_weight"
+  ],
+  "sizes": [
+    512
+  ],
+  "trials": 5,
+  "seed": 5242,
+  "timeout_s": 600,
+  "hypothesis_ids": [
+    "hyp_e6bc85dbcd"
+  ],
+  "origin_version": "1.5.0"
+}

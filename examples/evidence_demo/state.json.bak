@@ -1,0 +1,410 @@
+{
+  "schema_version": 3,
+  "meta": {
+    "question": "What source-backed conditions are commonly associated with algorithmic performance tradeoffs, and which of those claims can ORIGIN test in its own controlled benchmark domain?",
+    "domain": "algobench",
+    "domain_config": {
+      "sizes": [
+        64,
+        128
+      ],
+      "trials": 5,
+      "seed": 1234,
+      "regimes": [
+        "random",
+        "nearly_sorted",
+        "reversed",
+        "few_unique"
+      ],
+      "timeout_s": 120
+    },
+    "profile": "fast",
+    "phase": "CREATED",
+    "created_at": 1786453254.1707733,
+    "origin_version": "1.0.0",
+    "brain": "none"
+  },
+  "budget": {
+    "experiments_total": 12,
+    "experiments_used": 0,
+    "compute_seconds_total": 1800.0,
+    "compute_seconds_used": 0.0,
+    "searches_total": 0,
+    "searches_used": 0,
+    "elapsed_seconds_total": 0.0,
+    "elapsed_seconds_used": 0.0,
+    "provider_calls_total": 0,
+    "provider_calls_used": 0,
+    "retries_total": 8,
+    "retries_used": 0
+  },
+  "plan": {},
+  "sources": {
+    "src_17018df8e4": {
+      "id": "src_17018df8e4",
+      "kind": "web_document",
+      "title": "Intro",
+      "locator": "https://raw.githubusercontent.com/python/cpython/main/Objects/listsort.txt",
+      "reliability": 0.45,
+      "added_at": 1786453255.3176935,
+      "canonical_url": "https://raw.githubusercontent.com/python/cpython/main/Objects/listsort.txt",
+      "requested_url": "https://raw.githubusercontent.com/python/cpython/main/Objects/listsort.txt",
+      "final_url": "https://raw.githubusercontent.com/python/cpython/main/Objects/listsort.txt",
+      "author": "",
+      "published": "",
+      "retrieved_at": 1786453255.3176684,
+      "content_type": "text/plain; charset=utf-8",
+      "http_status": 200,
+      "content_hash": "674d514b968e2a9b6f785ca2cbd99e09edc63bbc0f3698033391c27f53757512",
+      "cache_ref": "sources/674d514b968e2a9b.txt",
+      "extraction_method": "plain text passthrough",
+      "provider": "https",
+      "redirect_chain": [],
+      "reliability_basis": [
+        {
+          "reason": "retrieved external source (baseline)",
+          "delta": 0.1
+        },
+        {
+          "reason": "https transport",
+          "delta": 0.1
+        },
+        {
+          "reason": "primary source repository (project's own code/docs)",
+          "delta": 0.2
+        },
+        {
+          "reason": "content served as plain text or markdown (no rendering layer)",
+          "delta": 0.05
+        },
+        {
+          "reason": "hard ceiling for retrieved sources",
+          "cap": 0.6
+        }
+      ],
+      "license_note": "not verified by ORIGIN; check the source's own terms",
+      "retrieval_notes": "44051 bytes in 1.14s; robots: absent; connection pinned to 185.199.108.133",
+      "robots_status": "absent",
+      "pinned_address": "185.199.108.133"
+    },
+    "src_32c45cedaa": {
+      "id": "src_32c45cedaa",
+      "kind": "web_document",
+      "title": ".. _sortinghowto:",
+      "locator": "https://raw.githubusercontent.com/python/cpython/main/Doc/howto/sorting.rst",
+      "reliability": 0.45,
+      "added_at": 1786453256.2988377,
+      "canonical_url": "https://raw.githubusercontent.com/python/cpython/main/Doc/howto/sorting.rst",
+      "requested_url": "https://raw.githubusercontent.com/python/cpython/main/Doc/howto/sorting.rst",
+      "final_url": "https://raw.githubusercontent.com/python/cpython/main/Doc/howto/sorting.rst",
+      "author": "",
+      "published": "",
+      "retrieved_at": 1786453256.298813,
+      "content_type": "text/plain; charset=utf-8",
+      "http_status": 200,
+      "content_hash": "69254a51e3b70df1037388f4887e54d8b78f2c6d64e2a4c58a796309d25bd1f3",
+      "cache_ref": "sources/69254a51e3b70df1.txt",
+      "extraction_method": "plain text passthrough",
+      "provider": "https",
+      "redirect_chain": [],
+      "reliability_basis": [
+        {
+          "reason": "retrieved external source (baseline)",
+          "delta": 0.1
+        },
+        {
+          "reason": "https transport",
+          "delta": 0.1
+        },
+        {
+          "reason": "primary source repository (project's own code/docs)",
+          "delta": 0.2
+        },
+        {
+          "reason": "content served as plain text or markdown (no rendering layer)",
+          "delta": 0.05
+        },
+        {
+          "reason": "hard ceiling for retrieved sources",
+          "cap": 0.6
+        }
+      ],
+      "license_note": "not verified by ORIGIN; check the source's own terms",
+      "retrieval_notes": "14563 bytes in 0.98s; robots: absent; connection pinned to 185.199.108.133",
+      "robots_status": "absent",
+      "pinned_address": "185.199.108.133"
+    }
+  },
+  "claims": {
+    "clm_d489588de1": {
+      "id": "clm_d489588de1",
+      "text": "It has supernatural performance on many\nkinds of partially ordered arrays (less than lg(N!) comparisons needed, and\nas few as N-1), yet as fast as Python's previous highly tuned samplesort\nhybrid on random arrays.",
+      "status": "speculation",
+      "confidence": 0.25,
+      "source_ids": [
+        "src_17018df8e4"
+      ],
+      "notes": "external claim; not measured by ORIGIN",
+      "created_at": 1786453255.3186352,
+      "passage": "Intro\n-----\nThis describes an adaptive, stable, natural mergesort, modestly called\ntimsort (hey, I earned it <wink>).  It has supernatural performance on many\nkinds of partially ordered arrays (less than lg(N!) comparisons needed, and\nas few as N-1), yet as fast as Python's previous highly tuned samplesort\nhybrid on random arrays.",
+      "passage_offset": 0,
+      "extraction_method": "deterministic declarative-sentence extractor",
+      "extracted_at": 1786453255.3186278,
+      "claim_type": "descriptive",
+      "limitations": "extracted from external text; not measured by ORIGIN"
+    },
+    "clm_0c6ffe35fb": {
+      "id": "clm_0c6ffe35fb",
+      "text": "In a nutshell, the main routine marches over the array once, left to right,\nalternately identifying the next run, then merging it into the previous\nruns \"intelligently\".",
+      "status": "speculation",
+      "confidence": 0.25,
+      "source_ids": [
+        "src_17018df8e4"
+      ],
+      "notes": "external claim; not measured by ORIGIN",
+      "created_at": 1786453255.3187835,
+      "passage": "In a nutshell, the main routine marches over the array once, left to right,\nalternately identifying the next run, then merging it into the previous\nruns \"intelligently\".  Everything else is complication for speed, and some\nhard-won measure of memory efficiency.",
+      "passage_offset": 334,
+      "extraction_method": "deterministic declarative-sentence extractor",
+      "extracted_at": 1786453255.3187807,
+      "claim_type": "descriptive",
+      "limitations": "extracted from external text; not measured by ORIGIN"
+    },
+    "clm_5b231232f4": {
+      "id": "clm_5b231232f4",
+      "text": "Everything else is complication for speed, and some\nhard-won measure of memory efficiency.",
+      "status": "speculation",
+      "confidence": 0.25,
+      "source_ids": [
+        "src_17018df8e4"
+      ],
+      "notes": "external claim; not measured by ORIGIN",
+      "created_at": 1786453255.318866,
+      "passage": "In a nutshell, the main routine marches over the array once, left to right,\nalternately identifying the next run, then merging it into the previous\nruns \"intelligently\".  Everything else is complication for speed, and some\nhard-won measure of memory efficiency.",
+      "passage_offset": 334,
+      "extraction_method": "deterministic declarative-sentence extractor",
+      "extracted_at": 1786453255.318864,
+      "claim_type": "descriptive",
+      "limitations": "extracted from external text; not measured by ORIGIN"
+    },
+    "clm_cb1e8fa367": {
+      "id": "clm_cb1e8fa367",
+      "text": "Comparison with Python's Samplesort Hybrid\n------------------------------------------\n+ timsort can require a temp array containing as many as N//2 pointers,\n  which means as many as 2*N extra bytes on 32-bit boxes.",
+      "status": "speculation",
+      "confidence": 0.25,
+      "source_ids": [
+        "src_17018df8e4"
+      ],
+      "notes": "external claim; not measured by ORIGIN",
+      "created_at": 1786453255.3189452,
+      "passage": "Comparison with Python's Samplesort Hybrid\n------------------------------------------\n+ timsort can require a temp array containing as many as N//2 pointers,\n  which means as many as 2*N extra bytes on 32-bit boxes.  It can be\n  expected to require a temp array this large when sorting random data; on\n  data with significant structure, it may get away without using any extra\n  heap memory.  This appears to be the strongest argument against it, but\n  compared to the size of an object, 2 temp bytes worst-case (also expected-\n  case for random data) doesn't scare me much.",
+      "passage_offset": 598,
+      "extraction_method": "deterministic declarative-sentence extractor",
+      "extracted_at": 1786453255.3189435,
+      "claim_type": "descriptive",
+      "limitations": "extracted from external text; not measured by ORIGIN"
+    },
+    "clm_8529c70fc7": {
+      "id": "clm_8529c70fc7",
+      "text": "It can be\n  expected to require a temp array this large when sorting random data; on\n  data with significant structure, it may get away without using any extra\n  heap memory.",
+      "status": "speculation",
+      "confidence": 0.25,
+      "source_ids": [
+        "src_17018df8e4"
+      ],
+      "notes": "external claim; not measured by ORIGIN",
+      "created_at": 1786453255.319057,
+      "passage": "Comparison with Python's Samplesort Hybrid\n------------------------------------------\n+ timsort can require a temp array containing as many as N//2 pointers,\n  which means as many as 2*N extra bytes on 32-bit boxes.  It can be\n  expected to require a temp array this large when sorting random data; on\n  data with significant structure, it may get away without using any extra\n  heap memory.  This appears to be the strongest argument against it, but\n  compared to the size of an object, 2 temp bytes worst-case (also expected-\n  case for random data) doesn't scare me much.",
+      "passage_offset": 598,
+      "extraction_method": "deterministic declarative-sentence extractor",
+      "extracted_at": 1786453255.3190548,
+      "claim_type": "descriptive",
+      "limitations": "extracted from external text; not measured by ORIGIN"
+    },
+    "clm_e6bbe45bb1": {
+      "id": "clm_e6bbe45bb1",
+      "text": "Python lists have a built-in :meth:`list.sort` method that modifies the list\nin-place.",
+      "status": "speculation",
+      "confidence": 0.25,
+      "source_ids": [
+        "src_32c45cedaa"
+      ],
+      "notes": "external claim; not measured by ORIGIN",
+      "created_at": 1786453256.2991974,
+      "passage": "Python lists have a built-in :meth:`list.sort` method that modifies the list\nin-place.  There is also a :func:`sorted` built-in function that builds a new\nsorted list from an iterable.",
+      "passage_offset": 58,
+      "extraction_method": "deterministic declarative-sentence extractor",
+      "extracted_at": 1786453256.2991927,
+      "claim_type": "descriptive",
+      "limitations": "extracted from external text; not measured by ORIGIN"
+    },
+    "clm_4c61ec43a9": {
+      "id": "clm_4c61ec43a9",
+      "text": "There is also a :func:`sorted` built-in function that builds a new\nsorted list from an iterable.",
+      "status": "speculation",
+      "confidence": 0.25,
+      "source_ids": [
+        "src_32c45cedaa"
+      ],
+      "notes": "external claim; not measured by ORIGIN",
+      "created_at": 1786453256.2993002,
+      "passage": "Python lists have a built-in :meth:`list.sort` method that modifies the list\nin-place.  There is also a :func:`sorted` built-in function that builds a new\nsorted list from an iterable.",
+      "passage_offset": 58,
+      "extraction_method": "deterministic declarative-sentence extractor",
+      "extracted_at": 1786453256.299298,
+      "claim_type": "descriptive",
+      "limitations": "extracted from external text; not measured by ORIGIN"
+    },
+    "clm_3e714d60d6": {
+      "id": "clm_3e714d60d6",
+      "text": "A simple ascending sort is very easy: just call the :func:`sorted` function.",
+      "status": "speculation",
+      "confidence": 0.25,
+      "source_ids": [
+        "src_32c45cedaa"
+      ],
+      "notes": "external claim; not measured by ORIGIN",
+      "created_at": 1786453256.2993705,
+      "passage": "A simple ascending sort is very easy: just call the :func:`sorted` function. It\nreturns a new sorted list:",
+      "passage_offset": 360,
+      "extraction_method": "deterministic declarative-sentence extractor",
+      "extracted_at": 1786453256.2993686,
+      "claim_type": "descriptive",
+      "limitations": "extracted from external text; not measured by ORIGIN"
+    },
+    "clm_d56eda771a": {
+      "id": "clm_d56eda771a",
+      "text": "You can also use the :meth:`list.sort` method.",
+      "status": "speculation",
+      "confidence": 0.25,
+      "source_ids": [
+        "src_32c45cedaa"
+      ],
+      "notes": "external claim; not measured by ORIGIN",
+      "created_at": 1786453256.2994325,
+      "passage": "You can also use the :meth:`list.sort` method. It modifies the list\nin-place (and returns ``None`` to avoid confusion). Usually it's less convenient\nthan :func:`sorted` - but if you don't need the original list, it's slightly\nmore efficient.",
+      "passage_offset": 535,
+      "extraction_method": "deterministic declarative-sentence extractor",
+      "extracted_at": 1786453256.299431,
+      "claim_type": "descriptive",
+      "limitations": "extracted from external text; not measured by ORIGIN"
+    },
+    "clm_488f4d0cfc": {
+      "id": "clm_488f4d0cfc",
+      "text": "Another difference is that the :meth:`list.sort` method is only defined for\nlists.",
+      "status": "speculation",
+      "confidence": 0.25,
+      "source_ids": [
+        "src_32c45cedaa"
+      ],
+      "notes": "external claim; not measured by ORIGIN",
+      "created_at": 1786453256.2994905,
+      "passage": "Another difference is that the :meth:`list.sort` method is only defined for\nlists. In contrast, the :func:`sorted` function accepts any iterable.",
+      "passage_offset": 868,
+      "extraction_method": "deterministic declarative-sentence extractor",
+      "extracted_at": 1786453256.2994893,
+      "claim_type": "descriptive",
+      "limitations": "extracted from external text; not measured by ORIGIN"
+    }
+  },
+  "hypotheses": {},
+  "evidence": {},
+  "experiments": {},
+  "decisions": [],
+  "graph": {
+    "entities": {},
+    "relations": {},
+    "contradictions": []
+  },
+  "assumptions": [],
+  "cautions": [],
+  "failures": [],
+  "falsifications": {},
+  "confidence_history": [
+    {
+      "ts": 1786453255.318642,
+      "kind": "claim",
+      "id": "clm_d489588de1",
+      "old": null,
+      "new": 0.25,
+      "reason": "extracted from untrusted source src_17018df8e4 (SPECULATION)"
+    },
+    {
+      "ts": 1786453255.318787,
+      "kind": "claim",
+      "id": "clm_0c6ffe35fb",
+      "old": null,
+      "new": 0.25,
+      "reason": "extracted from untrusted source src_17018df8e4 (SPECULATION)"
+    },
+    {
+      "ts": 1786453255.318868,
+      "kind": "claim",
+      "id": "clm_5b231232f4",
+      "old": null,
+      "new": 0.25,
+      "reason": "extracted from untrusted source src_17018df8e4 (SPECULATION)"
+    },
+    {
+      "ts": 1786453255.318947,
+      "kind": "claim",
+      "id": "clm_cb1e8fa367",
+      "old": null,
+      "new": 0.25,
+      "reason": "extracted from untrusted source src_17018df8e4 (SPECULATION)"
+    },
+    {
+      "ts": 1786453255.3190594,
+      "kind": "claim",
+      "id": "clm_8529c70fc7",
+      "old": null,
+      "new": 0.25,
+      "reason": "extracted from untrusted source src_17018df8e4 (SPECULATION)"
+    },
+    {
+      "ts": 1786453256.2992017,
+      "kind": "claim",
+      "id": "clm_e6bbe45bb1",
+      "old": null,
+      "new": 0.25,
+      "reason": "extracted from untrusted source src_32c45cedaa (SPECULATION)"
+    },
+    {
+      "ts": 1786453256.2993028,
+      "kind": "claim",
+      "id": "clm_4c61ec43a9",
+      "old": null,
+      "new": 0.25,
+      "reason": "extracted from untrusted source src_32c45cedaa (SPECULATION)"
+    },
+    {
+      "ts": 1786453256.299373,
+      "kind": "claim",
+      "id": "clm_3e714d60d6",
+      "old": null,
+      "new": 0.25,
+      "reason": "extracted from untrusted source src_32c45cedaa (SPECULATION)"
+    },
+    {
+      "ts": 1786453256.299434,
+      "kind": "claim",
+      "id": "clm_d56eda771a",
+      "old": null,
+      "new": 0.25,
+      "reason": "extracted from untrusted source src_32c45cedaa (SPECULATION)"
+    },
+    {
+      "ts": 1786453256.2994924,
+      "kind": "claim",
+      "id": "clm_488f4d0cfc",
+      "old": null,
+      "new": 0.25,
+      "reason": "extracted from untrusted source src_32c45cedaa (SPECULATION)"
+    }
+  ],
+  "recommendations": [],
+  "flags": {
+    "retrievals_used": 2
+  },
+  "step": 0
+}

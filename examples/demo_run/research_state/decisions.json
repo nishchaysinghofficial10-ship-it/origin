@@ -1,0 +1,107 @@
+[
+  {
+    "id": "dec_77c21ab82d",
+    "step": 2,
+    "context": "select_investigation",
+    "options": [
+      {
+        "label": "hyp_d4e20c8a29",
+        "score": 1.0,
+        "reason": "importance 1.0, evidence 0, cost 1.0"
+      },
+      {
+        "label": "hyp_e8add5b17c",
+        "score": 1.0,
+        "reason": "importance 1.0, evidence 0, cost 1.0"
+      },
+      {
+        "label": "hyp_c8cb718328",
+        "score": 0.9,
+        "reason": "importance 0.9, evidence 0, cost 1.0"
+      },
+      {
+        "label": "hyp_a2e585909f",
+        "score": 0.8,
+        "reason": "importance 0.8, evidence 0, cost 1.0"
+      }
+    ],
+    "chosen": "hyp_d4e20c8a29",
+    "reason": "highest expected information gain per unit cost; experiment co-tests 4 hypothesis(es)",
+    "ts": 1786190849.166226
+  },
+  {
+    "id": "dec_885756cdcb",
+    "step": 3,
+    "context": "select_investigation",
+    "options": [
+      {
+        "label": "hyp_7850a311fa",
+        "score": 1.0,
+        "reason": "importance 1.2, evidence 0, cost 1.2"
+      }
+    ],
+    "chosen": "hyp_7850a311fa",
+    "reason": "highest expected information gain per unit cost; experiment co-tests 1 hypothesis(es)",
+    "ts": 1786190849.7528532
+  },
+  {
+    "id": "dec_9b1c7c6d71",
+    "step": 4,
+    "context": "critic_replication",
+    "options": [
+      {
+        "label": "hyp_d4e20c8a29",
+        "score": 1.0,
+        "reason": "supported by a single experiment only"
+      }
+    ],
+    "chosen": "hyp_d4e20c8a29",
+    "reason": "critic refuses single-experiment support; independent replication with new seeds",
+    "ts": 1786190850.3192813
+  },
+  {
+    "id": "dec_ea8fc2a967",
+    "step": 5,
+    "context": "critic_replication",
+    "options": [
+      {
+        "label": "hyp_c8cb718328",
+        "score": 1.0,
+        "reason": "supported by a single experiment only"
+      }
+    ],
+    "chosen": "hyp_c8cb718328",
+    "reason": "critic refuses single-experiment support; independent replication with new seeds",
+    "ts": 1786190850.8365412
+  },
+  {
+    "id": "dec_075268e700",
+    "step": 6,
+    "context": "critic_replication",
+    "options": [
+      {
+        "label": "hyp_a2e585909f",
+        "score": 1.0,
+        "reason": "supported by a single experiment only"
+      }
+    ],
+    "chosen": "hyp_a2e585909f",
+    "reason": "critic refuses single-experiment support; independent replication with new seeds",
+    "ts": 1786190851.3475301
+  },
+  {
+    "id": "dec_ee83e90483",
+    "step": 7,
+    "context": "critic_replication",
+    "options": [
+      {
+        "label": "hyp_7850a311fa",
+        "score": 1.0,
+        "reason": "supported by a single experiment only"
+      }
+    ],
+    "chosen": "hyp_7850a311fa",
+    "reason": "critic refuses single-experiment support; independent replication with new seeds",
+    "ts": 1786190851.8719995
+  }
+]

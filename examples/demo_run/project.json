@@ -1,0 +1,23 @@
+{
+  "question": "Which comparison-sort strategy is most efficient across input regimes (random, nearly-sorted, reversed, few-unique) in pure Python at n<=1600, and can a hybrid synthesized from the evidence beat the base algorithms?",
+  "domain": "algobench",
+  "domain_config": {
+    "sizes": [
+      400,
+      1600
+    ],
+    "trials": 3,
+    "seed": 1234,
+    "regimes": [
+      "random",
+      "nearly_sorted",
+      "reversed",
+      "few_unique"
+    ],
+    "timeout_s": 600
+  },
+  "profile": "standard",
+  "phase": "initialized",
+  "created_at": 1786190849.0999637,
+  "origin_version": "0.1.0"
+}

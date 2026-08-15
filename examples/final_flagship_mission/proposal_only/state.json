@@ -1,0 +1,61 @@
+{
+  "schema_version": 3,
+  "meta": {
+    "question": "Which single-source shortest-path method wins on which graph topology at n<=512, does the machine-independent relaxation count agree with the wall-clock ranking, and under what precondition is the BFS candidate correct?",
+    "domain": "graphbench",
+    "domain_config": {
+      "sizes": [
+        128,
+        512
+      ],
+      "trials": 5,
+      "seed": 4242,
+      "regimes": [
+        "sparse_random",
+        "dense_random",
+        "grid_2d",
+        "unit_weight"
+      ],
+      "timeout_s": 600
+    },
+    "profile": "graph_standard",
+    "phase": "CREATED",
+    "created_at": 1786627905.1712978,
+    "origin_version": "1.0.0",
+    "brain": "mock"
+  },
+  "budget": {
+    "experiments_total": 40,
+    "experiments_used": 0,
+    "compute_seconds_total": 1800,
+    "compute_seconds_used": 0.0,
+    "searches_total": 0,
+    "searches_used": 0,
+    "elapsed_seconds_total": 0.0,
+    "elapsed_seconds_used": 0.0,
+    "provider_calls_total": 0,
+    "provider_calls_used": 0,
+    "retries_total": 8,
+    "retries_used": 0
+  },
+  "plan": {},
+  "sources": {},
+  "claims": {},
+  "hypotheses": {},
+  "evidence": {},
+  "experiments": {},
+  "decisions": [],
+  "graph": {
+    "entities": {},
+    "relations": {},
+    "contradictions": []
+  },
+  "assumptions": [],
+  "cautions": [],
+  "failures": [],
+  "falsifications": {},
+  "confidence_history": [],
+  "recommendations": [],
+  "flags": {},
+  "step": 0
+}

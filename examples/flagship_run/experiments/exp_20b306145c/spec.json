@@ -1,0 +1,95 @@
+{
+  "kind": "falsification",
+  "round": 9,
+  "algorithms": [
+    "insertion_sort",
+    "merge_sort",
+    "quick_sort",
+    "heap_sort",
+    "shell_sort",
+    "hybrid_sort"
+  ],
+  "regimes": [
+    "nearly_sorted",
+    "organ_pipe",
+    "random",
+    "sawtooth"
+  ],
+  "sizes": [
+    8192
+  ],
+  "trials": 7,
+  "seed": 20268586,
+  "timeout_s": 600,
+  "hypothesis_ids": [
+    "hyp_38e7e1fe16"
+  ],
+  "probe_checks": [
+    {
+      "label": "boundary:random",
+      "check": {
+        "type": "beats",
+        "algorithm": "hybrid_sort",
+        "than": "merge_sort",
+        "regime": "random",
+        "min_pct": 5
+      },
+      "role": "boundary"
+    },
+    {
+      "label": "scope:sawtooth",
+      "check": {
+        "type": "beats",
+        "algorithm": "hybrid_sort",
+        "than": "merge_sort",
+        "regime": "sawtooth",
+        "min_pct": 5
+      },
+      "role": "scope"
+    },
+    {
+      "label": "scope:organ_pipe",
+      "check": {
+        "type": "beats",
+        "algorithm": "hybrid_sort",
+        "than": "merge_sort",
+        "regime": "organ_pipe",
+        "min_pct": 5
+      },
+      "role": "scope"
+    },
+    {
+      "label": "boundary:nearly_sorted",
+      "check": {
+        "type": "beats",
+        "algorithm": "hybrid_sort",
+        "than": "merge_sort",
+        "regime": "nearly_sorted",
+        "min_pct": 0
+      },
+      "role": "boundary"
+    },
+    {
+      "label": "scope:sawtooth",
+      "check": {
+        "type": "beats",
+        "algorithm": "hybrid_sort",
+        "than": "merge_sort",
+        "regime": "sawtooth",
+        "min_pct": 0
+      },
+      "role": "scope"
+    },
+    {
+      "label": "scope:organ_pipe",
+      "check": {
+        "type": "beats",
+        "algorithm": "hybrid_sort",
+        "than": "merge_sort",
+        "regime": "organ_pipe",
+        "min_pct": 0
+      },
+      "role": "scope"
+    }
+  ]
+}

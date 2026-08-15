@@ -1,0 +1,84 @@
+{"ts": 1786627905.177408, "kind": "init", "msg": "Research project initialized: Which single-source shortest-path method wins on which graph topology at n<=512, does the machine-independent relaxation count agree with the wall-clock ranking, and under what precondition is the BFS candidate correct?"}
+{"ts": 1786627905.1807299, "kind": "transition", "msg": "CREATED -> VALIDATING"}
+{"ts": 1786627905.180819, "kind": "transition", "msg": "VALIDATING -> PLANNING (mission spec validated)"}
+{"ts": 1786627905.1808827, "kind": "heartbeat", "msg": "step 0 phase PLANNING | hyp 0 exp 0 evd 0 fail 0 | budget exp 0/40 compute 0.0s retries 0/8"}
+{"ts": 1786627905.1831634, "kind": "seeded", "msg": "prior complexity results recorded as FACT with an explicit constant-factor caveat"}
+{"ts": 1786627905.1832361, "kind": "planned", "msg": "Question decomposed into research tree; prior knowledge seeded"}
+{"ts": 1786627905.1833053, "kind": "transition", "msg": "PLANNING -> FORMING_HYPOTHESES"}
+{"ts": 1786627905.1833615, "kind": "heartbeat", "msg": "step 1 phase FORMING_HYPOTHESES | hyp 0 exp 0 evd 0 fail 0 | budget exp 0/40 compute 0.0s retries 0/8"}
+{"ts": 1786627905.185648, "kind": "hypothesis", "msg": "hyp_47f59f38cd: Dijkstra with a binary heap is fastest on sparse random graphs at the tested sizes.", "refs": {"hypothesis": "hyp_47f59f38cd"}}
+{"ts": 1786627905.1857305, "kind": "hypothesis", "msg": "hyp_df0b968ddf: The array-scan Dijkstra beats the heap variant on dense graphs, where the scan cost is amortised.", "refs": {"hypothesis": "hyp_df0b968ddf"}}
+{"ts": 1786627905.1857884, "kind": "hypothesis", "msg": "hyp_a155973991: Bellman-Ford performs the most edge relaxations of any candidate on every tested topology.", "refs": {"hypothesis": "hyp_a155973991"}}
+{"ts": 1786627905.1858451, "kind": "hypothesis", "msg": "hyp_ff3e742ca3: SPFA performs fewer relaxations than Bellman-Ford on sparse random graphs.", "refs": {"hypothesis": "hyp_ff3e742ca3"}}
+{"ts": 1786627905.1858916, "kind": "hypothesis", "msg": "hyp_dfa38e8bf8: The BFS candidate returns correct distances on unit-weight graphs and incorrect distances on every weighted topology.", "refs": {"hypothesis": "hyp_dfa38e8bf8"}}
+{"ts": 1786627905.1863012, "kind": "experiment_proposal", "msg": "prop_e31021938f: candidate design accepted (algorithms=['dijkstra_heap', 'dijkstra_array', 'bellman_ford', 'spfa', 'bfs_unit'], regimes=['sparse_random', 'dense_random']); ORIGIN sets seed, timeout and scope at execution time"}
+{"ts": 1786627905.1865134, "kind": "counterargument", "msg": "prop_39c13e9d1b against hyp_47f59f38cd: Timing rankings at these sizes may be dominated by interpreter overhead rather than algorithmic behaviour."}
+{"ts": 1786627905.186636, "kind": "knowledge_gap", "msg": "prop_a466f66485: Comparison and move counts are not measured, so rankings cannot be separated from constant factors."}
+{"ts": 1786627905.1867557, "kind": "proposals_reviewed", "msg": "3 accepted, 0 rejected from mock; full audit in logs/proposals.jsonl"}
+{"ts": 1786627905.1868093, "kind": "transition", "msg": "FORMING_HYPOTHESES -> SELECTING_NEXT_ACTION"}
+{"ts": 1786627905.1868615, "kind": "heartbeat", "msg": "step 2 phase SELECTING_NEXT_ACTION | hyp 5 exp 0 evd 0 fail 0 | budget exp 0/40 compute 0.0s retries 0/8"}
+{"ts": 1786627905.1896708, "kind": "transition", "msg": "SELECTING_NEXT_ACTION -> DESIGNING_EXPERIMENT"}
+{"ts": 1786627905.1897852, "kind": "decision", "msg": "[select_investigation] chose: hyp_dfa38e8bf8 \u2014 highest expected information gain per unit cost; experiment co-tests 5 hypothesis(es)"}
+{"ts": 1786627905.1898458, "kind": "transition", "msg": "DESIGNING_EXPERIMENT -> EXECUTING"}
+{"ts": 1786627905.1924562, "kind": "experiment_started", "msg": "exp_f6219e9785: Benchmark round 1 covering 5 hypothesis(es)", "refs": {"experiment": "exp_f6219e9785"}}
+{"ts": 1786627908.1120307, "kind": "experiment_completed", "msg": "exp_f6219e9785 completed in 2.9s (40 measurements)", "refs": {"experiment": "exp_f6219e9785"}}
+{"ts": 1786627908.1125329, "kind": "transition", "msg": "EXECUTING -> ANALYZING"}
+{"ts": 1786627908.1136851, "kind": "correctness_boundary", "msg": "bfs_unit is INCORRECT on 'dense_random'; it is excluded from rankings there", "refs": {"experiment": "exp_f6219e9785"}}
+{"ts": 1786627908.1138275, "kind": "correctness_boundary", "msg": "bfs_unit is INCORRECT on 'grid_2d'; it is excluded from rankings there", "refs": {"experiment": "exp_f6219e9785"}}
+{"ts": 1786627908.1139297, "kind": "correctness_boundary", "msg": "bfs_unit is INCORRECT on 'sparse_random'; it is excluded from rankings there", "refs": {"experiment": "exp_f6219e9785"}}
+{"ts": 1786627908.1146958, "kind": "analysis", "msg": "exp_f6219e9785 analyzed; regime winners: {'sparse_random': 'spfa', 'dense_random': 'dijkstra_heap', 'grid_2d': 'spfa', 'unit_weight': 'spfa'}", "refs": {"experiment": "exp_f6219e9785"}}
+{"ts": 1786627908.1147912, "kind": "transition", "msg": "ANALYZING -> UPDATING_KNOWLEDGE"}
+{"ts": 1786627908.1148462, "kind": "transition", "msg": "UPDATING_KNOWLEDGE -> SELECTING_NEXT_ACTION"}
+{"ts": 1786627908.114978, "kind": "heartbeat", "msg": "step 3 phase SELECTING_NEXT_ACTION | hyp 5 exp 1 evd 6 fail 5 | budget exp 1/40 compute 2.9s retries 0/8"}
+{"ts": 1786627908.1185846, "kind": "transition", "msg": "SELECTING_NEXT_ACTION -> CRITICIZING (no pending hypotheses remain)"}
+{"ts": 1786627908.1186604, "kind": "heartbeat", "msg": "step 4 phase CRITICIZING | hyp 5 exp 1 evd 6 fail 5 | budget exp 1/40 compute 2.9s retries 0/8"}
+{"ts": 1786627908.121944, "kind": "decision", "msg": "[critic_replication] chose: hyp_a155973991 \u2014 critic refuses single-experiment support; independent replication with new seeds"}
+{"ts": 1786627908.1220424, "kind": "transition", "msg": "CRITICIZING -> REPLICATING"}
+{"ts": 1786627908.1245837, "kind": "experiment_started", "msg": "exp_5ddb272042: Replication of hyp_a155973991", "refs": {"experiment": "exp_5ddb272042"}}
+{"ts": 1786627910.7833524, "kind": "experiment_completed", "msg": "exp_5ddb272042 completed in 2.7s (20 measurements)", "refs": {"experiment": "exp_5ddb272042"}}
+{"ts": 1786627910.7848475, "kind": "replicated", "msg": "hyp_a155973991 survived independent replication"}
+{"ts": 1786627910.7850237, "kind": "transition", "msg": "REPLICATING -> UPDATING_KNOWLEDGE"}
+{"ts": 1786627910.7850864, "kind": "transition", "msg": "UPDATING_KNOWLEDGE -> CRITICIZING"}
+{"ts": 1786627910.785172, "kind": "heartbeat", "msg": "step 5 phase CRITICIZING | hyp 5 exp 2 evd 7 fail 5 | budget exp 2/40 compute 5.6s retries 0/8"}
+{"ts": 1786627910.7891734, "kind": "decision", "msg": "[critic_replication] chose: hyp_ff3e742ca3 \u2014 critic refuses single-experiment support; independent replication with new seeds"}
+{"ts": 1786627910.789251, "kind": "transition", "msg": "CRITICIZING -> REPLICATING"}
+{"ts": 1786627910.7919197, "kind": "experiment_started", "msg": "exp_4ef2060bc4: Replication of hyp_ff3e742ca3", "refs": {"experiment": "exp_4ef2060bc4"}}
+{"ts": 1786627913.4757018, "kind": "experiment_completed", "msg": "exp_4ef2060bc4 completed in 2.7s (20 measurements)", "refs": {"experiment": "exp_4ef2060bc4"}}
+{"ts": 1786627913.4771106, "kind": "replicated", "msg": "hyp_ff3e742ca3 survived independent replication"}
+{"ts": 1786627913.4772124, "kind": "transition", "msg": "REPLICATING -> UPDATING_KNOWLEDGE"}
+{"ts": 1786627913.477272, "kind": "transition", "msg": "UPDATING_KNOWLEDGE -> CRITICIZING"}
+{"ts": 1786627913.4773488, "kind": "heartbeat", "msg": "step 6 phase CRITICIZING | hyp 5 exp 3 evd 8 fail 5 | budget exp 3/40 compute 8.3s retries 0/8"}
+{"ts": 1786627913.4814236, "kind": "decision", "msg": "[critic_replication] chose: hyp_dfa38e8bf8 \u2014 critic refuses single-experiment support; independent replication with new seeds"}
+{"ts": 1786627913.4815025, "kind": "transition", "msg": "CRITICIZING -> REPLICATING"}
+{"ts": 1786627913.4840188, "kind": "experiment_started", "msg": "exp_e36d780531: Replication of hyp_dfa38e8bf8", "refs": {"experiment": "exp_e36d780531"}}
+{"ts": 1786627916.0565908, "kind": "experiment_completed", "msg": "exp_e36d780531 completed in 2.6s (20 measurements)", "refs": {"experiment": "exp_e36d780531"}}
+{"ts": 1786627916.05784, "kind": "replicated", "msg": "hyp_dfa38e8bf8 survived independent replication"}
+{"ts": 1786627916.0579453, "kind": "transition", "msg": "REPLICATING -> UPDATING_KNOWLEDGE"}
+{"ts": 1786627916.058, "kind": "transition", "msg": "UPDATING_KNOWLEDGE -> CRITICIZING"}
+{"ts": 1786627916.0580688, "kind": "heartbeat", "msg": "step 7 phase CRITICIZING | hyp 5 exp 4 evd 10 fail 5 | budget exp 4/40 compute 10.8s retries 0/8"}
+{"ts": 1786627916.0619113, "kind": "falsification", "msg": "hyp_a155973991: no probeable predictions for this hypothesis (its prediction types cannot be evaluated at boundary/unseen conditions)"}
+{"ts": 1786627916.061988, "kind": "heartbeat", "msg": "step 8 phase CRITICIZING | hyp 5 exp 4 evd 10 fail 5 | budget exp 4/40 compute 10.8s retries 0/8"}
+{"ts": 1786627916.0652063, "kind": "decision", "msg": "[critic_falsification] chose: hyp_ff3e742ca3 \u2014 falsification probes: boundary:sparse_random, scope:long_chain, scope:scale_free"}
+{"ts": 1786627916.0652828, "kind": "transition", "msg": "CRITICIZING -> FALSIFYING"}
+{"ts": 1786627916.0675845, "kind": "experiment_started", "msg": "exp_549fb806e7: Falsification probe of hyp_ff3e742ca3", "refs": {"experiment": "exp_549fb806e7"}}
+{"ts": 1786627917.0535326, "kind": "experiment_completed", "msg": "exp_549fb806e7 completed in 1.0s (15 measurements)", "refs": {"experiment": "exp_549fb806e7"}}
+{"ts": 1786627917.0539393, "kind": "falsification", "msg": "hyp_ff3e742ca3 probe survived: [boundary:sparse_random] confirmed: spfa performed 9,907 relaxations vs bellman_ford 42,980 on 'sparse_random' (+77%); exact counts, machine-independent [n=1024", "refs": {"hypothesis": "hyp_ff3e742ca3", "experiment": "exp_549fb806e7"}}
+{"ts": 1786627917.054025, "kind": "transition", "msg": "FALSIFYING -> UPDATING_KNOWLEDGE"}
+{"ts": 1786627917.0540788, "kind": "transition", "msg": "UPDATING_KNOWLEDGE -> CRITICIZING"}
+{"ts": 1786627917.0541449, "kind": "heartbeat", "msg": "step 9 phase CRITICIZING | hyp 5 exp 5 evd 10 fail 5 | budget exp 5/40 compute 11.8s retries 0/8"}
+{"ts": 1786627917.0584018, "kind": "decision", "msg": "[critic_falsification] chose: hyp_dfa38e8bf8 \u2014 falsification probes: boundary:unit_weight, scope:long_chain, scope:scale_free"}
+{"ts": 1786627917.0584757, "kind": "transition", "msg": "CRITICIZING -> FALSIFYING"}
+{"ts": 1786627917.060789, "kind": "experiment_started", "msg": "exp_9b2777924f: Falsification probe of hyp_dfa38e8bf8", "refs": {"experiment": "exp_9b2777924f"}}
+{"ts": 1786627918.0266714, "kind": "experiment_completed", "msg": "exp_9b2777924f completed in 1.0s (15 measurements)", "refs": {"experiment": "exp_9b2777924f"}}
+{"ts": 1786627918.0270393, "kind": "falsification", "msg": "hyp_dfa38e8bf8 probe survived: [boundary:unit_weight] confirmed: bfs_unit on 'unit_weight' returned correct distances [n=1024, 5 trials] | [scope:long_chain] refuted: bfs_unit on 'long_chain'", "refs": {"hypothesis": "hyp_dfa38e8bf8", "experiment": "exp_9b2777924f"}}
+{"ts": 1786627918.0271165, "kind": "transition", "msg": "FALSIFYING -> UPDATING_KNOWLEDGE"}
+{"ts": 1786627918.0271652, "kind": "transition", "msg": "UPDATING_KNOWLEDGE -> CRITICIZING"}
+{"ts": 1786627918.0272276, "kind": "heartbeat", "msg": "step 10 phase CRITICIZING | hyp 5 exp 6 evd 10 fail 5 | budget exp 6/40 compute 12.8s retries 0/8"}
+{"ts": 1786627918.0312345, "kind": "accepted", "msg": "hyp_ff3e742ca3 ACCEPTED_WITH_SCOPE \u2014 holds at n<=2x tested sizes on its original topology; extends to ['long_chain', 'scale_free']", "refs": {"hypothesis": "hyp_ff3e742ca3"}}
+{"ts": 1786627918.0313134, "kind": "accepted", "msg": "hyp_dfa38e8bf8 ACCEPTED_WITH_SCOPE \u2014 holds at n<=2x tested sizes on its original topology; does NOT extend to ['long_chain', 'scale_free']", "refs": {"hypothesis": "hyp_dfa38e8bf8"}}
+{"ts": 1786627918.0313768, "kind": "critic_review", "msg": "Critic pass complete: 6 assumptions on record, 9 cautions, 4 recommended follow-ups"}
+{"ts": 1786627918.03143, "kind": "heartbeat", "msg": "step 11 phase CRITICIZING | hyp 5 exp 6 evd 10 fail 5 | budget exp 6/40 compute 12.8s retries 0/8"}
+{"ts": 1786627918.038267, "kind": "synthesis", "msg": "Research dossier and timeline written to reports/"}
+{"ts": 1786627918.0383391, "kind": "transition", "msg": "CRITICIZING -> COMPLETED (no high-value next experiment remained)"}
+{"ts": 1786627918.0383885, "kind": "stopped", "msg": "Mission COMPLETED: no high-value next experiment remained"}
+{"ts": 1786627918.038438, "kind": "heartbeat", "msg": "step 12 phase COMPLETED | hyp 5 exp 6 evd 10 fail 5 | budget exp 6/40 compute 12.8s retries 0/8"}

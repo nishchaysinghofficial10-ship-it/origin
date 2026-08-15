@@ -1,0 +1,88 @@
+{
+  "kind": "falsification",
+  "round": 9,
+  "algorithms": [
+    "insertion_sort",
+    "merge_sort",
+    "quick_sort",
+    "heap_sort",
+    "shell_sort"
+  ],
+  "regimes": [
+    "organ_pipe",
+    "random",
+    "reversed",
+    "sawtooth"
+  ],
+  "sizes": [
+    8192
+  ],
+  "trials": 7,
+  "seed": 20268586,
+  "timeout_s": 600,
+  "hypothesis_ids": [
+    "hyp_cae1c60f85"
+  ],
+  "probe_checks": [
+    {
+      "label": "boundary:random",
+      "check": {
+        "type": "within_pct_of_best",
+        "algorithm": "quick_sort",
+        "regime": "random",
+        "pct": 25
+      },
+      "role": "boundary"
+    },
+    {
+      "label": "scope:sawtooth",
+      "check": {
+        "type": "within_pct_of_best",
+        "algorithm": "quick_sort",
+        "regime": "sawtooth",
+        "pct": 25
+      },
+      "role": "scope"
+    },
+    {
+      "label": "scope:organ_pipe",
+      "check": {
+        "type": "within_pct_of_best",
+        "algorithm": "quick_sort",
+        "regime": "organ_pipe",
+        "pct": 25
+      },
+      "role": "scope"
+    },
+    {
+      "label": "boundary:reversed",
+      "check": {
+        "type": "within_pct_of_best",
+        "algorithm": "quick_sort",
+        "regime": "reversed",
+        "pct": 200
+      },
+      "role": "boundary"
+    },
+    {
+      "label": "scope:sawtooth",
+      "check": {
+        "type": "within_pct_of_best",
+        "algorithm": "quick_sort",
+        "regime": "sawtooth",
+        "pct": 200
+      },
+      "role": "scope"
+    },
+    {
+      "label": "scope:organ_pipe",
+      "check": {
+        "type": "within_pct_of_best",
+        "algorithm": "quick_sort",
+        "regime": "organ_pipe",
+        "pct": 200
+      },
+      "role": "scope"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "kind": "falsification",
+  "round": 9,
+  "algorithms": [
+    "dijkstra_heap",
+    "dijkstra_array",
+    "bellman_ford",
+    "spfa",
+    "bfs_unit"
+  ],
+  "regimes": [
+    "long_chain",
+    "scale_free",
+    "sparse_random"
+  ],
+  "sizes": [
+    1024
+  ],
+  "trials": 5,
+  "seed": 12019,
+  "timeout_s": 600,
+  "hypothesis_ids": [
+    "hyp_ff3e742ca3"
+  ],
+  "probe_checks": [
+    {
+      "label": "boundary:sparse_random",
+      "check": {
+        "type": "fewer_relaxations",
+        "algorithm": "spfa",
+        "than": "bellman_ford",
+        "regime": "sparse_random"
+      },
+      "role": "boundary"
+    },
+    {
+      "label": "scope:long_chain",
+      "check": {
+        "type": "fewer_relaxations",
+        "algorithm": "spfa",
+        "than": "bellman_ford",
+        "regime": "long_chain"
+      },
+      "role": "scope"
+    },
+    {
+      "label": "scope:scale_free",
+      "check": {
+        "type": "fewer_relaxations",
+        "algorithm": "spfa",
+        "than": "bellman_ford",
+        "regime": "scale_free"
+      },
+      "role": "scope"
+    }
+  ],
+  "origin_version": "1.5.0"
+}

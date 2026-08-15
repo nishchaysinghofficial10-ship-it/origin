@@ -1,0 +1,1006 @@
+{
+  "schema_version": 3,
+  "meta": {
+    "question": "Which sorting strategy wins under which input regime, and what does the published literature claim about those tradeoffs?",
+    "domain": "algobench",
+    "domain_config": {
+      "sizes": [
+        64,
+        128
+      ],
+      "trials": 5,
+      "seed": 1234,
+      "regimes": [
+        "random",
+        "nearly_sorted",
+        "reversed",
+        "few_unique"
+      ],
+      "timeout_s": 120
+    },
+    "profile": "fast",
+    "phase": "CRITICIZING",
+    "created_at": 1786481373.1730704,
+    "origin_version": "1.0.0",
+    "brain": "none"
+  },
+  "budget": {
+    "experiments_total": 8,
+    "experiments_used": 2,
+    "compute_seconds_total": 600,
+    "compute_seconds_used": 0.14856242700000166,
+    "searches_total": 0,
+    "searches_used": 0,
+    "elapsed_seconds_total": 0.0,
+    "elapsed_seconds_used": 0.15881872177124023,
+    "provider_calls_total": 0,
+    "provider_calls_used": 0,
+    "retries_total": 8,
+    "retries_used": 0
+  },
+  "plan": {
+    "question": "Which sorting strategy wins under which input regime, and what does the published literature claim about those tradeoffs?",
+    "branches": {
+      "input_regimes": [
+        "random",
+        "nearly_sorted",
+        "reversed",
+        "few_unique"
+      ],
+      "metrics": {
+        "wall_time": "measured in v0.1",
+        "memory": "gap (untested)",
+        "comparison_count": "gap (untested)"
+      },
+      "candidates": {
+        "base": [
+          "insertion_sort",
+          "merge_sort",
+          "quick_sort",
+          "heap_sort",
+          "shell_sort"
+        ],
+        "generated": "to be synthesized from evidence"
+      },
+      "scales": {
+        "tested": [
+          64,
+          128
+        ],
+        "large_n": "gap (untested)"
+      }
+    }
+  },
+  "sources": {
+    "src_b2481390ad": {
+      "id": "src_b2481390ad",
+      "kind": "web_document",
+      "title": "Adaptive Sorting Notes",
+      "locator": "https://fixtures.invalid/adaptive-sorting",
+      "reliability": 0.25,
+      "added_at": 1786481373.1801252,
+      "canonical_url": "https://fixtures.invalid/adaptive-sorting",
+      "requested_url": "https://fixtures.invalid/adaptive-sorting",
+      "final_url": "https://fixtures.invalid/adaptive-sorting",
+      "author": "",
+      "published": "",
+      "retrieved_at": 1786481373.180006,
+      "content_type": "text/plain; charset=utf-8",
+      "http_status": 200,
+      "content_hash": "382f1a33ea66412f6d173cc01b47db612c5c5eac9f87542cccb1924f033c5fa1",
+      "cache_ref": "sources/382f1a33ea66412f.txt",
+      "extraction_method": "plain text passthrough",
+      "provider": "fixture",
+      "redirect_chain": [],
+      "reliability_basis": [
+        {
+          "reason": "retrieved external source (baseline)",
+          "delta": 0.1
+        },
+        {
+          "reason": "https transport",
+          "delta": 0.1
+        },
+        {
+          "reason": "content served as plain text or markdown (no rendering layer)",
+          "delta": 0.05
+        },
+        {
+          "reason": "hard ceiling for retrieved sources",
+          "cap": 0.6
+        }
+      ],
+      "license_note": "not verified by ORIGIN; check the source's own terms",
+      "retrieval_notes": "265 bytes in 0.00s; robots: not_checked; connection not address-pinned",
+      "robots_status": "not_checked",
+      "pinned_address": ""
+    },
+    "src_0e8bf0b6a1": {
+      "id": "src_0e8bf0b6a1",
+      "kind": "prior_knowledge",
+      "title": "Standard algorithm-analysis results (seeded; Phase 2 replaces with live source acquisition)",
+      "locator": "",
+      "reliability": 0.95,
+      "added_at": 1786481373.1888616,
+      "canonical_url": "",
+      "requested_url": "",
+      "final_url": "",
+      "author": "",
+      "published": "",
+      "retrieved_at": 0.0,
+      "content_type": "",
+      "http_status": 0,
+      "content_hash": "",
+      "cache_ref": "",
+      "extraction_method": "",
+      "provider": "",
+      "redirect_chain": [],
+      "reliability_basis": [],
+      "license_note": "",
+      "retrieval_notes": "",
+      "robots_status": "",
+      "pinned_address": ""
+    }
+  },
+  "claims": {
+    "clm_9ba0267aea": {
+      "id": "clm_9ba0267aea",
+      "text": "Insertion sort is faster than merge sort on nearly-sorted input because the number of inversions is small and the work approaches linear.",
+      "status": "speculation",
+      "confidence": 0.25,
+      "source_ids": [
+        "src_b2481390ad"
+      ],
+      "notes": "external claim; not measured by ORIGIN",
+      "created_at": 1786481373.1805656,
+      "passage": "Insertion sort is faster than merge sort on nearly-sorted input because the number of inversions is small and the work approaches linear.",
+      "passage_offset": 24,
+      "extraction_method": "deterministic declarative-sentence extractor",
+      "extracted_at": 1786481373.180562,
+      "claim_type": "comparative",
+      "limitations": "extracted from external text; not measured by ORIGIN"
+    },
+    "clm_cdef10f89c": {
+      "id": "clm_cdef10f89c",
+      "text": "Merge sort is a stable comparison sort with guaranteed n log n behaviour on every input distribution.",
+      "status": "speculation",
+      "confidence": 0.25,
+      "source_ids": [
+        "src_b2481390ad"
+      ],
+      "notes": "external claim; not measured by ORIGIN",
+      "created_at": 1786481373.180655,
+      "passage": "Merge sort is a stable comparison sort with guaranteed n log n behaviour on every input distribution.",
+      "passage_offset": 163,
+      "extraction_method": "deterministic declarative-sentence extractor",
+      "extracted_at": 1786481373.1806529,
+      "claim_type": "descriptive",
+      "limitations": "extracted from external text; not measured by ORIGIN"
+    },
+    "clm_209c9e93ec": {
+      "id": "clm_209c9e93ec",
+      "text": "Any comparison sort requires Omega(n log n) comparisons in the worst case.",
+      "status": "fact",
+      "confidence": 0.97,
+      "source_ids": [
+        "src_0e8bf0b6a1"
+      ],
+      "notes": "",
+      "created_at": 1786481373.1888733,
+      "passage": "",
+      "passage_offset": -1,
+      "extraction_method": "",
+      "extracted_at": 0.0,
+      "claim_type": "",
+      "limitations": ""
+    },
+    "clm_141746f697": {
+      "id": "clm_141746f697",
+      "text": "Insertion sort runs in O(n + inversions); it is linear on nearly-sorted input.",
+      "status": "fact",
+      "confidence": 0.97,
+      "source_ids": [
+        "src_0e8bf0b6a1"
+      ],
+      "notes": "",
+      "created_at": 1786481373.188879,
+      "passage": "",
+      "passage_offset": -1,
+      "extraction_method": "",
+      "extracted_at": 0.0,
+      "claim_type": "",
+      "limitations": ""
+    },
+    "clm_230b5bae2f": {
+      "id": "clm_230b5bae2f",
+      "text": "Quicksort's worst case is O(n^2), but median-of-three pivoting avoids it on sorted/reversed inputs.",
+      "status": "fact",
+      "confidence": 0.97,
+      "source_ids": [
+        "src_0e8bf0b6a1"
+      ],
+      "notes": "",
+      "created_at": 1786481373.1888833,
+      "passage": "",
+      "passage_offset": -1,
+      "extraction_method": "",
+      "extracted_at": 0.0,
+      "claim_type": "",
+      "limitations": ""
+    }
+  },
+  "hypotheses": {
+    "hyp_48de48fcea": {
+      "id": "hyp_48de48fcea",
+      "statement": "Insertion sort is the fastest candidate on nearly-sorted input, and the slowest on random input, at the tested sizes.",
+      "rationale": "Adaptive O(n + inversions) behavior dominates on low-inversion input; O(n^2) dominates on random input.",
+      "status": "weakened",
+      "predictions": [
+        {
+          "id": "pred_b2e040c3ad",
+          "text": "insertion_sort is fastest on nearly_sorted",
+          "check": {
+            "type": "fastest_on",
+            "algorithm": "insertion_sort",
+            "regime": "nearly_sorted"
+          },
+          "outcome": "confirmed",
+          "detail": "fastest_on on 'nearly_sorted' is insertion_sort (0.0 ms, margin 407% over shell_sort, separation 0.02 ms > required 0.00 ms) [n=128, 5 trials]"
+        },
+        {
+          "id": "pred_2a821b3ce3",
+          "text": "insertion_sort is slowest on random",
+          "check": {
+            "type": "slowest_on",
+            "algorithm": "insertion_sort",
+            "regime": "random"
+          },
+          "outcome": "inconclusive",
+          "detail": "insertion_sort has the lowest mean on 'random' (0.1 ms) but is not decisively slower than merge_sort: uncertainty_overlap (gap 0.025 ms <= 3x combined SEM 0.033 ms) [n=128, 5 trials]"
+        }
+      ],
+      "supporting_evidence": [
+        "evd_ca511be854"
+      ],
+      "contradicting_evidence": [],
+      "importance": 1.0,
+      "cost_estimate": 1.0,
+      "tags": [
+        "base"
+      ],
+      "tested_in": [
+        "exp_066779c791"
+      ],
+      "assumptions": [],
+      "scope": "",
+      "revisions": [
+        {
+          "ts": 1786481373.2872107,
+          "from": "under_test",
+          "to": "weakened",
+          "reason": "predictions were not resolvable at 5 trials in exp_066779c791 (differences within measurement uncertainty)"
+        }
+      ],
+      "created_at": 1786481373.1970222,
+      "updated_at": 1786481373.287224
+    },
+    "hyp_fc15d13b1b": {
+      "id": "hyp_fc15d13b1b",
+      "statement": "Merge sort is the fastest pure-Python candidate on random input.",
+      "rationale": "Guaranteed n log n with sequential memory access; no pathological cases.",
+      "status": "rejected",
+      "predictions": [
+        {
+          "id": "pred_5a25c251ef",
+          "text": "merge_sort is fastest on random",
+          "check": {
+            "type": "fastest_on",
+            "algorithm": "merge_sort",
+            "regime": "random"
+          },
+          "outcome": "refuted",
+          "detail": "fastest_on on 'random' is quick_sort, not merge_sort (85% apart, decisive) [n=128, 5 trials]"
+        }
+      ],
+      "supporting_evidence": [],
+      "contradicting_evidence": [
+        "evd_46423b4e3e"
+      ],
+      "importance": 1.0,
+      "cost_estimate": 1.0,
+      "tags": [
+        "base"
+      ],
+      "tested_in": [
+        "exp_066779c791"
+      ],
+      "assumptions": [],
+      "scope": "",
+      "revisions": [
+        {
+          "ts": 1786481373.2874188,
+          "from": "under_test",
+          "to": "rejected",
+          "reason": "all predictions refuted in exp_066779c791"
+        }
+      ],
+      "created_at": 1786481373.1970317,
+      "updated_at": 1786481373.2874248
+    },
+    "hyp_2be7e87921": {
+      "id": "hyp_2be7e87921",
+      "statement": "Quick sort (median-of-three, Hoare) stays within 25% of the best candidate on random input and does not collapse on reversed input.",
+      "rationale": "MO3 pivoting neutralizes ordered-input pathologies; constant factors are low.",
+      "status": "weakened",
+      "predictions": [
+        {
+          "id": "pred_506f3ad96a",
+          "text": "quick_sort within 25% of best on random",
+          "check": {
+            "type": "within_pct_of_best",
+            "algorithm": "quick_sort",
+            "regime": "random",
+            "pct": 25
+          },
+          "outcome": "inconclusive",
+          "detail": "quick_sort is 0% off best on 'random' (limit 25%), within the \u00b129% uncertainty of the threshold [n=128, 5 trials]"
+        },
+        {
+          "id": "pred_2e400467ca",
+          "text": "quick_sort within 200% of best on reversed",
+          "check": {
+            "type": "within_pct_of_best",
+            "algorithm": "quick_sort",
+            "regime": "reversed",
+            "pct": 200
+          },
+          "outcome": "confirmed",
+          "detail": "quick_sort is 0% off best on 'reversed' (limit 200%, uncertainty \u00b15%) [n=128, 5 trials]"
+        }
+      ],
+      "supporting_evidence": [
+        "evd_1c7f1f9c74"
+      ],
+      "contradicting_evidence": [],
+      "importance": 0.9,
+      "cost_estimate": 1.0,
+      "tags": [
+        "base"
+      ],
+      "tested_in": [
+        "exp_066779c791"
+      ],
+      "assumptions": [],
+      "scope": "",
+      "revisions": [
+        {
+          "ts": 1786481373.2876832,
+          "from": "under_test",
+          "to": "weakened",
+          "reason": "predictions were not resolvable at 5 trials in exp_066779c791 (differences within measurement uncertainty)"
+        }
+      ],
+      "created_at": 1786481373.1970427,
+      "updated_at": 1786481373.287688
+    },
+    "hyp_db14df8458": {
+      "id": "hyp_db14df8458",
+      "statement": "Heap sort is the most consistent candidate (lowest relative timing variance across regimes) but is never the fastest in any regime.",
+      "rationale": "Input-oblivious n log n behavior; poor cache locality keeps constants high.",
+      "status": "weakened",
+      "predictions": [
+        {
+          "id": "pred_dc857e8537",
+          "text": "heap_sort has lowest mean relative stdev",
+          "check": {
+            "type": "lowest_mean_rel_stdev",
+            "algorithm": "heap_sort"
+          },
+          "outcome": "inconclusive",
+          "detail": "lowest mean relative stdev is quick_sort (0.069) but heap_sort is within 25% \u2014 dispersion ranking is not separable here [n=128, 5 trials]"
+        },
+        {
+          "id": "pred_13fbb118fc",
+          "text": "heap_sort is never fastest in any regime",
+          "check": {
+            "type": "never_fastest",
+            "algorithm": "heap_sort"
+          },
+          "outcome": "confirmed",
+          "detail": "regime winners: ['insertion_sort', 'quick_sort', 'shell_sort'] (decisively separated in: ['nearly_sorted']) [n=128, 5 trials]"
+        }
+      ],
+      "supporting_evidence": [
+        "evd_df3c7a378a"
+      ],
+      "contradicting_evidence": [],
+      "importance": 0.8,
+      "cost_estimate": 1.0,
+      "tags": [
+        "base"
+      ],
+      "tested_in": [
+        "exp_066779c791"
+      ],
+      "assumptions": [],
+      "scope": "",
+      "revisions": [
+        {
+          "ts": 1786481373.2877588,
+          "from": "under_test",
+          "to": "weakened",
+          "reason": "predictions were not resolvable at 5 trials in exp_066779c791 (differences within measurement uncertainty)"
+        }
+      ],
+      "created_at": 1786481373.197051,
+      "updated_at": 1786481373.2877612
+    },
+    "hyp_5542e8d61c": {
+      "id": "hyp_5542e8d61c",
+      "statement": "A hybrid algorithm (merge sort with insertion-sort cutoff <= 32) beats plain merge sort on random AND nearly-sorted input at the tested sizes.",
+      "rationale": "Round-1 evidence: 'insertion_sort' won nearly_sorted and 'quick_sort' won random. Combining merge structure with insertion's strength on short/ordered runs should reduce recursion overhead without losing n log n guarantees. Derived from experiment exp_066779c791.",
+      "status": "weakened",
+      "predictions": [
+        {
+          "id": "pred_f51ad6316b",
+          "text": "hybrid_sort beats merge_sort on random by >= 5%",
+          "check": {
+            "type": "beats",
+            "algorithm": "hybrid_sort",
+            "than": "merge_sort",
+            "regime": "random",
+            "min_pct": 5
+          },
+          "outcome": "inconclusive",
+          "detail": "hybrid_sort vs merge_sort on 'random': -0% but not decisive (uncertainty_overlap (gap 0.000 ms <= 3x combined SEM 0.172 ms)) [n=128, 5 trials]"
+        },
+        {
+          "id": "pred_6819dc9dcf",
+          "text": "hybrid_sort beats merge_sort on nearly_sorted",
+          "check": {
+            "type": "beats",
+            "algorithm": "hybrid_sort",
+            "than": "merge_sort",
+            "regime": "nearly_sorted",
+            "min_pct": 0
+          },
+          "outcome": "confirmed",
+          "detail": "hybrid_sort vs merge_sort on 'nearly_sorted': +190% (needs >= 0%, decisive: gap 0.06 ms > required 0.06 ms) [n=128, 5 trials]"
+        }
+      ],
+      "supporting_evidence": [
+        "evd_039b16766b"
+      ],
+      "contradicting_evidence": [],
+      "importance": 1.2,
+      "cost_estimate": 1.2,
+      "tags": [
+        "generated"
+      ],
+      "tested_in": [
+        "exp_a582f67436"
+      ],
+      "assumptions": [],
+      "scope": "",
+      "revisions": [
+        {
+          "ts": 1786481373.3750577,
+          "from": "under_test",
+          "to": "weakened",
+          "reason": "predictions were not resolvable at 5 trials in exp_a582f67436 (differences within measurement uncertainty)"
+        }
+      ],
+      "created_at": 1786481373.2878284,
+      "updated_at": 1786481373.3750715
+    }
+  },
+  "evidence": {
+    "evd_ca511be854": {
+      "id": "evd_ca511be854",
+      "target_id": "hyp_48de48fcea",
+      "direction": "supports",
+      "strength": 0.85,
+      "kind": "experiment",
+      "summary": "[test] insertion_sort is fastest on nearly_sorted: confirmed (fastest_on on 'nearly_sorted' is insertion_sort (0.0 ms, margin 407% over shell_sort, separation 0.02 ms > required 0.00 ms) [n=128, 5 trials])",
+      "experiment_id": "exp_066779c791",
+      "source_id": "",
+      "payload": {
+        "margin": 4.0729
+      },
+      "created_at": 1786481373.2870984
+    },
+    "evd_cdbc203596": {
+      "id": "evd_cdbc203596",
+      "target_id": "hyp_48de48fcea",
+      "direction": "inconclusive",
+      "strength": 0.2,
+      "kind": "experiment",
+      "summary": "[test] insertion_sort is slowest on random: inconclusive (insertion_sort has the lowest mean on 'random' (0.1 ms) but is not decisively slower than merge_sort: uncertainty_overlap (gap 0.025 ms <= 3x combined SEM 0.033 ms) [n=128, 5 trials])",
+      "experiment_id": "exp_066779c791",
+      "source_id": "",
+      "payload": {
+        "margin": 0.1005
+      },
+      "created_at": 1786481373.2871985
+    },
+    "evd_46423b4e3e": {
+      "id": "evd_46423b4e3e",
+      "target_id": "hyp_fc15d13b1b",
+      "direction": "contradicts",
+      "strength": 0.85,
+      "kind": "experiment",
+      "summary": "[test] merge_sort is fastest on random: refuted (fastest_on on 'random' is quick_sort, not merge_sort (85% apart, decisive) [n=128, 5 trials])",
+      "experiment_id": "exp_066779c791",
+      "source_id": "",
+      "payload": {
+        "margin": 0.8506
+      },
+      "created_at": 1786481373.2874086
+    },
+    "evd_c779c2b620": {
+      "id": "evd_c779c2b620",
+      "target_id": "hyp_2be7e87921",
+      "direction": "inconclusive",
+      "strength": 0.2,
+      "kind": "experiment",
+      "summary": "[test] quick_sort within 25% of best on random: inconclusive (quick_sort is 0% off best on 'random' (limit 25%), within the \u00b129% uncertainty of the threshold [n=128, 5 trials])",
+      "experiment_id": "exp_066779c791",
+      "source_id": "",
+      "payload": {
+        "margin": 0.05
+      },
+      "created_at": 1786481373.287546
+    },
+    "evd_1c7f1f9c74": {
+      "id": "evd_1c7f1f9c74",
+      "target_id": "hyp_2be7e87921",
+      "direction": "supports",
+      "strength": 0.85,
+      "kind": "experiment",
+      "summary": "[test] quick_sort within 200% of best on reversed: confirmed (quick_sort is 0% off best on 'reversed' (limit 200%, uncertainty \u00b15%) [n=128, 5 trials])",
+      "experiment_id": "exp_066779c791",
+      "source_id": "",
+      "payload": {
+        "margin": 2.0
+      },
+      "created_at": 1786481373.2876558
+    },
+    "evd_d3e9b766be": {
+      "id": "evd_d3e9b766be",
+      "target_id": "hyp_db14df8458",
+      "direction": "inconclusive",
+      "strength": 0.2,
+      "kind": "experiment",
+      "summary": "[test] heap_sort has lowest mean relative stdev: inconclusive (lowest mean relative stdev is quick_sort (0.069) but heap_sort is within 25% \u2014 dispersion ranking is not separable here [n=128, 5 trials])",
+      "experiment_id": "exp_066779c791",
+      "source_id": "",
+      "payload": {
+        "margin": 0.05
+      },
+      "created_at": 1786481373.2877324
+    },
+    "evd_df3c7a378a": {
+      "id": "evd_df3c7a378a",
+      "target_id": "hyp_db14df8458",
+      "direction": "supports",
+      "strength": 0.45,
+      "kind": "experiment",
+      "summary": "[test] heap_sort is never fastest in any regime: confirmed (regime winners: ['insertion_sort', 'quick_sort', 'shell_sort'] (decisively separated in: ['nearly_sorted']) [n=128, 5 trials])",
+      "experiment_id": "exp_066779c791",
+      "source_id": "",
+      "payload": {
+        "margin": 0.1
+      },
+      "created_at": 1786481373.287755
+    },
+    "evd_9daf73081b": {
+      "id": "evd_9daf73081b",
+      "target_id": "hyp_5542e8d61c",
+      "direction": "inconclusive",
+      "strength": 0.2,
+      "kind": "experiment",
+      "summary": "[test] hybrid_sort beats merge_sort on random by >= 5%: inconclusive (hybrid_sort vs merge_sort on 'random': -0% but not decisive (uncertainty_overlap (gap 0.000 ms <= 3x combined SEM 0.172 ms)) [n=128, 5 trials])",
+      "experiment_id": "exp_a582f67436",
+      "source_id": "",
+      "payload": {
+        "margin": 0.0001
+      },
+      "created_at": 1786481373.3749547
+    },
+    "evd_039b16766b": {
+      "id": "evd_039b16766b",
+      "target_id": "hyp_5542e8d61c",
+      "direction": "supports",
+      "strength": 0.85,
+      "kind": "experiment",
+      "summary": "[test] hybrid_sort beats merge_sort on nearly_sorted: confirmed (hybrid_sort vs merge_sort on 'nearly_sorted': +190% (needs >= 0%, decisive: gap 0.06 ms > required 0.06 ms) [n=128, 5 trials])",
+      "experiment_id": "exp_a582f67436",
+      "source_id": "",
+      "payload": {
+        "margin": 1.9001
+      },
+      "created_at": 1786481373.3750486
+    }
+  },
+  "experiments": {
+    "exp_066779c791": {
+      "id": "exp_066779c791",
+      "title": "Benchmark round 1 covering 4 hypothesis(es)",
+      "hypothesis_ids": [
+        "hyp_48de48fcea",
+        "hyp_fc15d13b1b",
+        "hyp_2be7e87921",
+        "hyp_db14df8458"
+      ],
+      "design": {
+        "kind": "benchmark",
+        "round": 1,
+        "algorithms": [
+          "insertion_sort",
+          "merge_sort",
+          "quick_sort",
+          "heap_sort",
+          "shell_sort"
+        ],
+        "regimes": [
+          "random",
+          "nearly_sorted",
+          "reversed",
+          "few_unique"
+        ],
+        "sizes": [
+          64,
+          128
+        ],
+        "trials": 5,
+        "seed": 1234,
+        "timeout_s": 120,
+        "hypothesis_ids": [
+          "hyp_48de48fcea",
+          "hyp_fc15d13b1b",
+          "hyp_2be7e87921",
+          "hyp_db14df8458"
+        ]
+      },
+      "status": "completed",
+      "dir": "experiments/exp_066779c791",
+      "duration_s": 0.07091097400007129,
+      "summary": {
+        "measurements": 40
+      },
+      "error": "",
+      "created_at": 1786481373.2123032,
+      "finished_at": 1786481373.2857099
+    },
+    "exp_a582f67436": {
+      "id": "exp_a582f67436",
+      "title": "Benchmark round 2 covering 1 hypothesis(es)",
+      "hypothesis_ids": [
+        "hyp_5542e8d61c"
+      ],
+      "design": {
+        "kind": "benchmark",
+        "round": 2,
+        "algorithms": [
+          "insertion_sort",
+          "merge_sort",
+          "quick_sort",
+          "heap_sort",
+          "shell_sort",
+          "hybrid_sort"
+        ],
+        "regimes": [
+          "random",
+          "nearly_sorted",
+          "reversed",
+          "few_unique"
+        ],
+        "sizes": [
+          64,
+          128
+        ],
+        "trials": 5,
+        "seed": 1234,
+        "timeout_s": 120,
+        "hypothesis_ids": [
+          "hyp_5542e8d61c"
+        ]
+      },
+      "status": "completed",
+      "dir": "experiments/exp_a582f67436",
+      "duration_s": 0.07765145299993037,
+      "summary": {
+        "measurements": 48
+      },
+      "error": "",
+      "created_at": 1786481373.2936394,
+      "finished_at": 1786481373.3734837
+    }
+  },
+  "decisions": [
+    {
+      "id": "dec_8177decada",
+      "step": 0,
+      "context": "select_investigation",
+      "options": [
+        {
+          "label": "hyp_48de48fcea",
+          "score": 1.0,
+          "reason": "importance 1.0, evidence 0, cost 1.0"
+        },
+        {
+          "label": "hyp_fc15d13b1b",
+          "score": 1.0,
+          "reason": "importance 1.0, evidence 0, cost 1.0"
+        },
+        {
+          "label": "hyp_2be7e87921",
+          "score": 0.9,
+          "reason": "importance 0.9, evidence 0, cost 1.0"
+        },
+        {
+          "label": "hyp_db14df8458",
+          "score": 0.8,
+          "reason": "importance 0.8, evidence 0, cost 1.0"
+        }
+      ],
+      "chosen": "hyp_48de48fcea",
+      "reason": "highest expected information gain per unit cost; experiment co-tests 4 hypothesis(es)",
+      "ts": 1786481373.2121215
+    },
+    {
+      "id": "dec_22cfc60e53",
+      "step": 1,
+      "context": "select_investigation",
+      "options": [
+        {
+          "label": "hyp_5542e8d61c",
+          "score": 1.0,
+          "reason": "importance 1.2, evidence 0, cost 1.2"
+        }
+      ],
+      "chosen": "hyp_5542e8d61c",
+      "reason": "highest expected information gain per unit cost; experiment co-tests 1 hypothesis(es)",
+      "ts": 1786481373.2935493
+    }
+  ],
+  "graph": {
+    "entities": {
+      "ent_b094551198": {
+        "id": "ent_b094551198",
+        "name": "quick_sort",
+        "kind": "algorithm"
+      },
+      "ent_d2028181c5": {
+        "id": "ent_d2028181c5",
+        "name": "random",
+        "kind": "input_regime"
+      },
+      "ent_f12494b972": {
+        "id": "ent_f12494b972",
+        "name": "insertion_sort",
+        "kind": "algorithm"
+      },
+      "ent_28bb1cb246": {
+        "id": "ent_28bb1cb246",
+        "name": "nearly_sorted",
+        "kind": "input_regime"
+      },
+      "ent_57e8bd1f36": {
+        "id": "ent_57e8bd1f36",
+        "name": "reversed",
+        "kind": "input_regime"
+      },
+      "ent_bcb37f8555": {
+        "id": "ent_bcb37f8555",
+        "name": "shell_sort",
+        "kind": "algorithm"
+      },
+      "ent_f9a3251c9a": {
+        "id": "ent_f9a3251c9a",
+        "name": "few_unique",
+        "kind": "input_regime"
+      },
+      "ent_e1e43890c3": {
+        "id": "ent_e1e43890c3",
+        "name": "hybrid_sort",
+        "kind": "algorithm"
+      },
+      "ent_b53202ab68": {
+        "id": "ent_b53202ab68",
+        "name": "merge_sort",
+        "kind": "algorithm"
+      }
+    },
+    "relations": {
+      "rel_ffd094abe6": {
+        "id": "rel_ffd094abe6",
+        "subj": "ent_b094551198",
+        "pred": "fastest_on",
+        "obj": "ent_d2028181c5",
+        "confidence": 0.5672374189407815,
+        "evidence_ids": [
+          "evd_ca511be854",
+          "evd_cdbc203596",
+          "evd_46423b4e3e",
+          "evd_9daf73081b",
+          "evd_039b16766b"
+        ],
+        "created_at": 1786481373.2877808
+      },
+      "rel_4afec4ab98": {
+        "id": "rel_4afec4ab98",
+        "subj": "ent_f12494b972",
+        "pred": "fastest_on",
+        "obj": "ent_28bb1cb246",
+        "confidence": 0.9,
+        "evidence_ids": [
+          "evd_ca511be854",
+          "evd_cdbc203596",
+          "evd_46423b4e3e",
+          "evd_9daf73081b",
+          "evd_039b16766b"
+        ],
+        "created_at": 1786481373.2877936
+      },
+      "rel_18b36a585e": {
+        "id": "rel_18b36a585e",
+        "subj": "ent_b094551198",
+        "pred": "fastest_on",
+        "obj": "ent_57e8bd1f36",
+        "confidence": 0.624,
+        "evidence_ids": [
+          "evd_ca511be854",
+          "evd_cdbc203596",
+          "evd_46423b4e3e",
+          "evd_9daf73081b",
+          "evd_039b16766b"
+        ],
+        "created_at": 1786481373.2878022
+      },
+      "rel_a2c3a7fc7c": {
+        "id": "rel_a2c3a7fc7c",
+        "subj": "ent_bcb37f8555",
+        "pred": "fastest_on",
+        "obj": "ent_f9a3251c9a",
+        "confidence": 0.4604340589000738,
+        "evidence_ids": [
+          "evd_ca511be854",
+          "evd_cdbc203596",
+          "evd_46423b4e3e",
+          "evd_9daf73081b",
+          "evd_039b16766b"
+        ],
+        "created_at": 1786481373.2878113
+      },
+      "rel_2ef7622d17": {
+        "id": "rel_2ef7622d17",
+        "subj": "ent_e1e43890c3",
+        "pred": "derived_from",
+        "obj": "ent_b53202ab68",
+        "confidence": 0.99,
+        "evidence_ids": [],
+        "created_at": 1786481373.2878394
+      },
+      "rel_0dcb2a94dc": {
+        "id": "rel_0dcb2a94dc",
+        "subj": "ent_e1e43890c3",
+        "pred": "derived_from",
+        "obj": "ent_f12494b972",
+        "confidence": 0.99,
+        "evidence_ids": [],
+        "created_at": 1786481373.2878442
+      }
+    },
+    "contradictions": []
+  },
+  "assumptions": [
+    "Wall-clock time on a single machine/interpreter is an acceptable proxy for algorithmic cost at these sizes.",
+    "Pure-Python implementations are compared against each other only; C-accelerated builtins are out of scope for fairness.",
+    "The four tested input regimes are representative of the distributions of interest.",
+    "All timings come from a single machine and interpreter; absolute numbers will not transfer, only rankings might.",
+    "Conclusions hold only for the tested input regimes and sizes; extrapolation beyond them is speculation, not inference."
+  ],
+  "cautions": [
+    "Regime 'random' at n=128 in exp_066779c791: quick_sort has the lowest mean but is not statistically separable from shell_sort at 5 trials \u2014 no winner is claimed.",
+    "Regime 'reversed' at n=128 in exp_066779c791: quick_sort has the lowest mean but is not statistically separable from shell_sort at 5 trials \u2014 no winner is claimed.",
+    "Regime 'few_unique' at n=128 in exp_066779c791: shell_sort has the lowest mean but is not statistically separable from quick_sort at 5 trials \u2014 no winner is claimed.",
+    "hyp_48de48fcea: no prediction could be resolved at this trial count; treat as untested rather than disproved.",
+    "hyp_2be7e87921: no prediction could be resolved at this trial count; treat as untested rather than disproved.",
+    "hyp_db14df8458: no prediction could be resolved at this trial count; treat as untested rather than disproved.",
+    "Regime 'random' at n=128 in exp_a582f67436: quick_sort has the lowest mean but is not statistically separable from hybrid_sort, shell_sort at 5 trials \u2014 no winner is claimed.",
+    "Regime 'nearly_sorted' at n=128 in exp_a582f67436: insertion_sort has the lowest mean but is not statistically separable from hybrid_sort at 5 trials \u2014 no winner is claimed.",
+    "Regime 'few_unique' at n=128 in exp_a582f67436: shell_sort has the lowest mean but is not statistically separable from hybrid_sort, quick_sort at 5 trials \u2014 no winner is claimed.",
+    "hyp_5542e8d61c: no prediction could be resolved at this trial count; treat as untested rather than disproved."
+  ],
+  "failures": [
+    {
+      "experiment": "exp_066779c791",
+      "hypothesis": "hyp_fc15d13b1b",
+      "prediction": "merge_sort is fastest on random",
+      "expected": "merge_sort is fastest on random",
+      "observed": "fastest_on on 'random' is quick_sort, not merge_sort (85% apart, decisive) [n=128, 5 trials]",
+      "action": "hypothesis status re-evaluated from evidence",
+      "ts": 1786481373.287412
+    }
+  ],
+  "falsifications": {},
+  "confidence_history": [
+    {
+      "ts": 1786481373.1805696,
+      "kind": "claim",
+      "id": "clm_9ba0267aea",
+      "old": null,
+      "new": 0.25,
+      "reason": "extracted from untrusted source src_b2481390ad (SPECULATION)"
+    },
+    {
+      "ts": 1786481373.180658,
+      "kind": "claim",
+      "id": "clm_cdef10f89c",
+      "old": null,
+      "new": 0.25,
+      "reason": "extracted from untrusted source src_b2481390ad (SPECULATION)"
+    },
+    {
+      "ts": 1786481373.2872229,
+      "kind": "hypothesis",
+      "id": "hyp_48de48fcea",
+      "old": "under_test",
+      "new": "weakened",
+      "reason": "evidence from exp_066779c791"
+    },
+    {
+      "ts": 1786481373.287424,
+      "kind": "hypothesis",
+      "id": "hyp_fc15d13b1b",
+      "old": "under_test",
+      "new": "rejected",
+      "reason": "evidence from exp_066779c791"
+    },
+    {
+      "ts": 1786481373.287687,
+      "kind": "hypothesis",
+      "id": "hyp_2be7e87921",
+      "old": "under_test",
+      "new": "weakened",
+      "reason": "evidence from exp_066779c791"
+    },
+    {
+      "ts": 1786481373.287761,
+      "kind": "hypothesis",
+      "id": "hyp_db14df8458",
+      "old": "under_test",
+      "new": "weakened",
+      "reason": "evidence from exp_066779c791"
+    },
+    {
+      "ts": 1786481373.3750699,
+      "kind": "hypothesis",
+      "id": "hyp_5542e8d61c",
+      "old": "under_test",
+      "new": "weakened",
+      "reason": "evidence from exp_a582f67436"
+    }
+  ],
+  "recommendations": [
+    "Investigate knowledge gap: Scaling behavior beyond n=128 is untested (asymptotic crossovers may differ).",
+    "Investigate knowledge gap: Memory usage and comparison/move counts were not measured (wall time only).",
+    "Investigate knowledge gap: Adversarial input patterns (sawtooth, organ-pipe, quicksort-killer) are untested.",
+    "Investigate knowledge gap: Only one machine/interpreter was used; hardware sensitivity is unknown.",
+    "Investigate knowledge gap: Stability of the sorts (equal-key ordering) was not evaluated.",
+    "Revise or split hyp_48de48fcea: mixed evidence (1 for / 0 against).",
+    "Revise or split hyp_2be7e87921: mixed evidence (1 for / 0 against).",
+    "Revise or split hyp_db14df8458: mixed evidence (1 for / 0 against).",
+    "Revise or split hyp_5542e8d61c: mixed evidence (1 for / 0 against)."
+  ],
+  "flags": {
+    "retrievals_used": 4,
+    "current": "Critic: final review of conclusions",
+    "base_hypotheses_done": true,
+    "hybrid_proposed": true,
+    "stagnation": 0,
+    "critic_finalized": true
+  },
+  "step": 4
+}

@@ -1,0 +1,236 @@
+{
+  "hyp_d4e20c8a29": {
+    "id": "hyp_d4e20c8a29",
+    "statement": "Insertion sort is the fastest candidate on nearly-sorted input, and the slowest on random input, at the tested sizes.",
+    "rationale": "Adaptive O(n + inversions) behavior dominates on low-inversion input; O(n^2) dominates on random input.",
+    "status": "provisionally_supported",
+    "predictions": [
+      {
+        "id": "pred_a175a4af8e",
+        "text": "insertion_sort is fastest on nearly_sorted",
+        "check": {
+          "type": "fastest_on",
+          "algorithm": "insertion_sort",
+          "regime": "nearly_sorted"
+        },
+        "outcome": "confirmed",
+        "detail": "fastest_on 'nearly_sorted' at n=1600 is insertion_sort (0.1 ms, margin 688%)"
+      },
+      {
+        "id": "pred_7ca4886e5e",
+        "text": "insertion_sort is slowest on random",
+        "check": {
+          "type": "slowest_on",
+          "algorithm": "insertion_sort",
+          "regime": "random"
+        },
+        "outcome": "confirmed",
+        "detail": "slowest_on 'random' at n=1600 is insertion_sort (38.5 ms, margin 94%)"
+      }
+    ],
+    "supporting_evidence": [
+      "evd_2fea229d76",
+      "evd_4123fdf67e",
+      "evd_1e11eec28f",
+      "evd_490aa8e2a0"
+    ],
+    "contradicting_evidence": [],
+    "importance": 1.0,
+    "cost_estimate": 1.0,
+    "tags": [
+      "base",
+      "replicated"
+    ],
+    "tested_in": [
+      "exp_defeaebae2",
+      "exp_d6590ff7d6"
+    ],
+    "created_at": 1786190849.1643965,
+    "updated_at": 1786190850.834122
+  },
+  "hyp_e8add5b17c": {
+    "id": "hyp_e8add5b17c",
+    "statement": "Merge sort is the fastest pure-Python candidate on random input.",
+    "rationale": "Guaranteed n log n with sequential memory access; no pathological cases.",
+    "status": "rejected",
+    "predictions": [
+      {
+        "id": "pred_8cb9d5dc8a",
+        "text": "merge_sort is fastest on random",
+        "check": {
+          "type": "fastest_on",
+          "algorithm": "merge_sort",
+          "regime": "random"
+        },
+        "outcome": "refuted",
+        "detail": "fastest_on 'random' at n=1600 is quick_sort (1.4 ms, margin 60%)"
+      }
+    ],
+    "supporting_evidence": [],
+    "contradicting_evidence": [
+      "evd_ecff8ca42b"
+    ],
+    "importance": 1.0,
+    "cost_estimate": 1.0,
+    "tags": [
+      "base"
+    ],
+    "tested_in": [
+      "exp_defeaebae2"
+    ],
+    "created_at": 1786190849.1644065,
+    "updated_at": 1786190849.750162
+  },
+  "hyp_c8cb718328": {
+    "id": "hyp_c8cb718328",
+    "statement": "Quick sort (median-of-three, Hoare) stays within 25% of the best candidate on random input and does not collapse on reversed input.",
+    "rationale": "MO3 pivoting neutralizes ordered-input pathologies; constant factors are low.",
+    "status": "provisionally_supported",
+    "predictions": [
+      {
+        "id": "pred_efc4cc628c",
+        "text": "quick_sort within 25% of best on random",
+        "check": {
+          "type": "within_pct_of_best",
+          "algorithm": "quick_sort",
+          "regime": "random",
+          "pct": 25
+        },
+        "outcome": "confirmed",
+        "detail": "quick_sort is 0% off best on 'random' (limit 25%)"
+      },
+      {
+        "id": "pred_0147ba7e83",
+        "text": "quick_sort within 200% of best on reversed",
+        "check": {
+          "type": "within_pct_of_best",
+          "algorithm": "quick_sort",
+          "regime": "reversed",
+          "pct": 200
+        },
+        "outcome": "confirmed",
+        "detail": "quick_sort is 0% off best on 'reversed' (limit 200%)"
+      }
+    ],
+    "supporting_evidence": [
+      "evd_a1d005597b",
+      "evd_8d2ba961c2",
+      "evd_28bb3b3b86",
+      "evd_5f82290575"
+    ],
+    "contradicting_evidence": [],
+    "importance": 0.9,
+    "cost_estimate": 1.0,
+    "tags": [
+      "base",
+      "replicated"
+    ],
+    "tested_in": [
+      "exp_defeaebae2",
+      "exp_21ee7d3058"
+    ],
+    "created_at": 1786190849.1644177,
+    "updated_at": 1786190851.3449533
+  },
+  "hyp_a2e585909f": {
+    "id": "hyp_a2e585909f",
+    "statement": "Heap sort is the most consistent candidate (lowest relative timing variance across regimes) but is never the fastest in any regime.",
+    "rationale": "Input-oblivious n log n behavior; poor cache locality keeps constants high.",
+    "status": "weakened",
+    "predictions": [
+      {
+        "id": "pred_785d191955",
+        "text": "heap_sort has lowest mean relative stdev",
+        "check": {
+          "type": "lowest_mean_rel_stdev",
+          "algorithm": "heap_sort"
+        },
+        "outcome": "unstable",
+        "detail": "failed replication: lowest mean relative stdev: merge_sort (0.029)"
+      },
+      {
+        "id": "pred_e6b6de2cfc",
+        "text": "heap_sort is never fastest in any regime",
+        "check": {
+          "type": "never_fastest",
+          "algorithm": "heap_sort"
+        },
+        "outcome": "confirmed",
+        "detail": "regime winners: ['insertion_sort', 'quick_sort']"
+      }
+    ],
+    "supporting_evidence": [
+      "evd_304a774f32",
+      "evd_4810a89e89",
+      "evd_53a94f6c16"
+    ],
+    "contradicting_evidence": [
+      "evd_f665ee410f"
+    ],
+    "importance": 0.8,
+    "cost_estimate": 1.0,
+    "tags": [
+      "base",
+      "needs_replication"
+    ],
+    "tested_in": [
+      "exp_defeaebae2",
+      "exp_89bfcf883b"
+    ],
+    "created_at": 1786190849.164427,
+    "updated_at": 1786190851.869048
+  },
+  "hyp_7850a311fa": {
+    "id": "hyp_7850a311fa",
+    "statement": "A hybrid algorithm (merge sort with insertion-sort cutoff <= 32) beats plain merge sort on random AND nearly-sorted input at the tested sizes.",
+    "rationale": "Round-1 evidence: 'insertion_sort' won nearly_sorted and 'quick_sort' won random. Combining merge structure with insertion's strength on short/ordered runs should reduce recursion overhead without losing n log n guarantees. Derived from experiment exp_defeaebae2.",
+    "status": "provisionally_supported",
+    "predictions": [
+      {
+        "id": "pred_d9d2ad270d",
+        "text": "hybrid_sort beats merge_sort on random by >= 5%",
+        "check": {
+          "type": "beats",
+          "algorithm": "hybrid_sort",
+          "than": "merge_sort",
+          "regime": "random",
+          "min_pct": 5
+        },
+        "outcome": "confirmed",
+        "detail": "hybrid_sort vs merge_sort on 'random': +61% (needs >= 5%)"
+      },
+      {
+        "id": "pred_6199194e88",
+        "text": "hybrid_sort beats merge_sort on nearly_sorted",
+        "check": {
+          "type": "beats",
+          "algorithm": "hybrid_sort",
+          "than": "merge_sort",
+          "regime": "nearly_sorted",
+          "min_pct": 0
+        },
+        "outcome": "confirmed",
+        "detail": "hybrid_sort vs merge_sort on 'nearly_sorted': +190% (needs >= 0%)"
+      }
+    ],
+    "supporting_evidence": [
+      "evd_18282bca36",
+      "evd_87203c261b",
+      "evd_329ca057d1",
+      "evd_8a8a927b4a"
+    ],
+    "contradicting_evidence": [],
+    "importance": 1.2,
+    "cost_estimate": 1.2,
+    "tags": [
+      "generated",
+      "replicated"
+    ],
+    "tested_in": [
+      "exp_dfae537d8f",
+      "exp_03c68e9b8c"
+    ],
+    "created_at": 1786190849.7503667,
+    "updated_at": 1786190852.3957338
+  }
+}

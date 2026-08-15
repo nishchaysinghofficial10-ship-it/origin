@@ -1,0 +1,95 @@
+{
+  "exp_066779c791": {
+    "id": "exp_066779c791",
+    "title": "Benchmark round 1 covering 4 hypothesis(es)",
+    "hypothesis_ids": [
+      "hyp_48de48fcea",
+      "hyp_fc15d13b1b",
+      "hyp_2be7e87921",
+      "hyp_db14df8458"
+    ],
+    "design": {
+      "kind": "benchmark",
+      "round": 1,
+      "algorithms": [
+        "insertion_sort",
+        "merge_sort",
+        "quick_sort",
+        "heap_sort",
+        "shell_sort"
+      ],
+      "regimes": [
+        "random",
+        "nearly_sorted",
+        "reversed",
+        "few_unique"
+      ],
+      "sizes": [
+        64,
+        128
+      ],
+      "trials": 5,
+      "seed": 1234,
+      "timeout_s": 120,
+      "hypothesis_ids": [
+        "hyp_48de48fcea",
+        "hyp_fc15d13b1b",
+        "hyp_2be7e87921",
+        "hyp_db14df8458"
+      ]
+    },
+    "status": "completed",
+    "dir": "experiments/exp_066779c791",
+    "duration_s": 0.07091097400007129,
+    "summary": {
+      "measurements": 40
+    },
+    "error": "",
+    "created_at": 1786481373.2123032,
+    "finished_at": 1786481373.2857099
+  },
+  "exp_a582f67436": {
+    "id": "exp_a582f67436",
+    "title": "Benchmark round 2 covering 1 hypothesis(es)",
+    "hypothesis_ids": [
+      "hyp_5542e8d61c"
+    ],
+    "design": {
+      "kind": "benchmark",
+      "round": 2,
+      "algorithms": [
+        "insertion_sort",
+        "merge_sort",
+        "quick_sort",
+        "heap_sort",
+        "shell_sort",
+        "hybrid_sort"
+      ],
+      "regimes": [
+        "random",
+        "nearly_sorted",
+        "reversed",
+        "few_unique"
+      ],
+      "sizes": [
+        64,
+        128
+      ],
+      "trials": 5,
+      "seed": 1234,
+      "timeout_s": 120,
+      "hypothesis_ids": [
+        "hyp_5542e8d61c"
+      ]
+    },
+    "status": "completed",
+    "dir": "experiments/exp_a582f67436",
+    "duration_s": 0.07765145299993037,
+    "summary": {
+      "measurements": 48
+    },
+    "error": "",
+    "created_at": 1786481373.2936394,
+    "finished_at": 1786481373.3734837
+  }
+}

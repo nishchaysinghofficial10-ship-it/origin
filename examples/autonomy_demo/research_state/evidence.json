@@ -1,0 +1,128 @@
+{
+  "evd_ca511be854": {
+    "id": "evd_ca511be854",
+    "target_id": "hyp_48de48fcea",
+    "direction": "supports",
+    "strength": 0.85,
+    "kind": "experiment",
+    "summary": "[test] insertion_sort is fastest on nearly_sorted: confirmed (fastest_on on 'nearly_sorted' is insertion_sort (0.0 ms, margin 407% over shell_sort, separation 0.02 ms > required 0.00 ms) [n=128, 5 trials])",
+    "experiment_id": "exp_066779c791",
+    "source_id": "",
+    "payload": {
+      "margin": 4.0729
+    },
+    "created_at": 1786481373.2870984
+  },
+  "evd_cdbc203596": {
+    "id": "evd_cdbc203596",
+    "target_id": "hyp_48de48fcea",
+    "direction": "inconclusive",
+    "strength": 0.2,
+    "kind": "experiment",
+    "summary": "[test] insertion_sort is slowest on random: inconclusive (insertion_sort has the lowest mean on 'random' (0.1 ms) but is not decisively slower than merge_sort: uncertainty_overlap (gap 0.025 ms <= 3x combined SEM 0.033 ms) [n=128, 5 trials])",
+    "experiment_id": "exp_066779c791",
+    "source_id": "",
+    "payload": {
+      "margin": 0.1005
+    },
+    "created_at": 1786481373.2871985
+  },
+  "evd_46423b4e3e": {
+    "id": "evd_46423b4e3e",
+    "target_id": "hyp_fc15d13b1b",
+    "direction": "contradicts",
+    "strength": 0.85,
+    "kind": "experiment",
+    "summary": "[test] merge_sort is fastest on random: refuted (fastest_on on 'random' is quick_sort, not merge_sort (85% apart, decisive) [n=128, 5 trials])",
+    "experiment_id": "exp_066779c791",
+    "source_id": "",
+    "payload": {
+      "margin": 0.8506
+    },
+    "created_at": 1786481373.2874086
+  },
+  "evd_c779c2b620": {
+    "id": "evd_c779c2b620",
+    "target_id": "hyp_2be7e87921",
+    "direction": "inconclusive",
+    "strength": 0.2,
+    "kind": "experiment",
+    "summary": "[test] quick_sort within 25% of best on random: inconclusive (quick_sort is 0% off best on 'random' (limit 25%), within the \u00b129% uncertainty of the threshold [n=128, 5 trials])",
+    "experiment_id": "exp_066779c791",
+    "source_id": "",
+    "payload": {
+      "margin": 0.05
+    },
+    "created_at": 1786481373.287546
+  },
+  "evd_1c7f1f9c74": {
+    "id": "evd_1c7f1f9c74",
+    "target_id": "hyp_2be7e87921",
+    "direction": "supports",
+    "strength": 0.85,
+    "kind": "experiment",
+    "summary": "[test] quick_sort within 200% of best on reversed: confirmed (quick_sort is 0% off best on 'reversed' (limit 200%, uncertainty \u00b15%) [n=128, 5 trials])",
+    "experiment_id": "exp_066779c791",
+    "source_id": "",
+    "payload": {
+      "margin": 2.0
+    },
+    "created_at": 1786481373.2876558
+  },
+  "evd_d3e9b766be": {
+    "id": "evd_d3e9b766be",
+    "target_id": "hyp_db14df8458",
+    "direction": "inconclusive",
+    "strength": 0.2,
+    "kind": "experiment",
+    "summary": "[test] heap_sort has lowest mean relative stdev: inconclusive (lowest mean relative stdev is quick_sort (0.069) but heap_sort is within 25% \u2014 dispersion ranking is not separable here [n=128, 5 trials])",
+    "experiment_id": "exp_066779c791",
+    "source_id": "",
+    "payload": {
+      "margin": 0.05
+    },
+    "created_at": 1786481373.2877324
+  },
+  "evd_df3c7a378a": {
+    "id": "evd_df3c7a378a",
+    "target_id": "hyp_db14df8458",
+    "direction": "supports",
+    "strength": 0.45,
+    "kind": "experiment",
+    "summary": "[test] heap_sort is never fastest in any regime: confirmed (regime winners: ['insertion_sort', 'quick_sort', 'shell_sort'] (decisively separated in: ['nearly_sorted']) [n=128, 5 trials])",
+    "experiment_id": "exp_066779c791",
+    "source_id": "",
+    "payload": {
+      "margin": 0.1
+    },
+    "created_at": 1786481373.287755
+  },
+  "evd_9daf73081b": {
+    "id": "evd_9daf73081b",
+    "target_id": "hyp_5542e8d61c",
+    "direction": "inconclusive",
+    "strength": 0.2,
+    "kind": "experiment",
+    "summary": "[test] hybrid_sort beats merge_sort on random by >= 5%: inconclusive (hybrid_sort vs merge_sort on 'random': -0% but not decisive (uncertainty_overlap (gap 0.000 ms <= 3x combined SEM 0.172 ms)) [n=128, 5 trials])",
+    "experiment_id": "exp_a582f67436",
+    "source_id": "",
+    "payload": {
+      "margin": 0.0001
+    },
+    "created_at": 1786481373.3749547
+  },
+  "evd_039b16766b": {
+    "id": "evd_039b16766b",
+    "target_id": "hyp_5542e8d61c",
+    "direction": "supports",
+    "strength": 0.85,
+    "kind": "experiment",
+    "summary": "[test] hybrid_sort beats merge_sort on nearly_sorted: confirmed (hybrid_sort vs merge_sort on 'nearly_sorted': +190% (needs >= 0%, decisive: gap 0.06 ms > required 0.06 ms) [n=128, 5 trials])",
+    "experiment_id": "exp_a582f67436",
+    "source_id": "",
+    "payload": {
+      "margin": 1.9001
+    },
+    "created_at": 1786481373.3750486
+  }
+}
