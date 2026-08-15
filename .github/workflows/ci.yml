@@ -159,6 +159,20 @@ jobs:
           printf '%s\n' 'ci-admin-token-with-32-characters' > deploy/secrets/admin_token.txt
           docker compose --env-file deploy/production.env.example \
             --file compose.production.yaml config >/tmp/origin-production-compose.yaml
+          docker compose --env-file deploy/production.env.example \
+            --file compose.production.yaml --file compose.funnel.yaml \
+            config --format json >/tmp/origin-funnel-compose.json
+          python - <<'PY'
+          import json
+          with open("/tmp/origin-funnel-compose.json", encoding="utf-8") as source:
+              config = json.load(source)
+          ports = config["services"]["api"].get("ports", [])
+          assert len(ports) == 1, ports
+          assert ports[0].get("host_ip") == "127.0.0.1", ports
+          assert ports[0].get("target") == 8080, ports
+          assert str(ports[0].get("published")) == "8080", ports
+          assert config["services"]["worker"].get("network_mode") == "none"
+          PY
           docker run --rm \
             --env ORIGIN_BETA_HOST=beta.example.test \
             --volume "$PWD/deploy/Caddyfile:/etc/caddy/Caddyfile:ro" \

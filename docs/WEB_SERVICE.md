@@ -43,6 +43,9 @@ explicit manual dispatch.
 The exact single-host TLS deployment, launch gate, site connection, backup,
 restore, rollback, and monitoring sequence is in
 [`BETA_DEPLOYMENT_RUNBOOK.md`](BETA_DEPLOYMENT_RUNBOOK.md).
+For a no-domain, no-VPS controlled beta hosted from an always-awake Mac, use
+[`MAC_FUNNEL_BETA_RUNBOOK.md`](MAC_FUNNEL_BETA_RUNBOOK.md); its Compose overlay
+publishes the API only on host loopback and leaves the worker network-disabled.
 
 ## Run the controlled beta locally
 

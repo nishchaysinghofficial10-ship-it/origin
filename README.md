@@ -16,6 +16,12 @@ traceable to a stored experiment.
 The optional interactive service is a controlled, token-gated computational
 beta; it is not an open code-execution service.
 
+Deployment paths: a persistent Linux host with Caddy is documented in
+[`docs/BETA_DEPLOYMENT_RUNBOOK.md`](docs/BETA_DEPLOYMENT_RUNBOOK.md). A
+zero-domain, zero-hosting-cost small beta can instead run from an always-awake
+Mac through a loopback-only Tailscale Funnel, documented in
+[`docs/MAC_FUNNEL_BETA_RUNBOOK.md`](docs/MAC_FUNNEL_BETA_RUNBOOK.md).
+
 ---
 
 ## Why it exists
@@ -189,6 +195,7 @@ evaluation), `autonomy_demo`, `evidence_demo`, `demo_run`.
 [`docs/OPERATIONS.md`](docs/OPERATIONS.md) ·
 [`docs/WEB_SERVICE.md`](docs/WEB_SERVICE.md) ·
 [`docs/BETA_DEPLOYMENT_RUNBOOK.md`](docs/BETA_DEPLOYMENT_RUNBOOK.md) ·
+[`docs/MAC_FUNNEL_BETA_RUNBOOK.md`](docs/MAC_FUNNEL_BETA_RUNBOOK.md) ·
 [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md) ·
 [`docs/SECURITY.md`](docs/SECURITY.md) ·
 [`docs/DECISIONS.md`](docs/DECISIONS.md)

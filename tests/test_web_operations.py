@@ -206,6 +206,13 @@ class TestProductionDeploymentArtifacts(unittest.TestCase):
         self.assertIn("origin-beta-data:/data:ro", backup)
         self.assertIn("network_mode: none", backup)
 
+        funnel = (ROOT / "compose.funnel.yaml").read_text()
+        self.assertIn('"127.0.0.1:${ORIGIN_FUNNEL_LOCAL_PORT:-8080}:8080"',
+                      funnel)
+        self.assertNotIn("0.0.0.0", funnel)
+        self.assertNotIn('"8080:8080"', funnel)
+        self.assertNotIn("worker:", funnel)
+
     def test_caddy_boundary_has_https_security_and_health_policy(self):
         caddy = (ROOT / "deploy" / "Caddyfile").read_text()
         for expected in (
