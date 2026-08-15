@@ -253,8 +253,10 @@ def restore_backup(archive_path: Path, target: Path) -> dict:
     if target.exists() and (not target.is_dir() or any(target.iterdir())):
         raise BackupError("restore target must be absent or an empty directory")
     target.parent.mkdir(parents=True, exist_ok=True)
+    target_existed = target.exists()
+    staging_parent = target if target_existed else target.parent
     staging = Path(tempfile.mkdtemp(prefix=f".{target.name}-restore-",
-                                    dir=target.parent))
+                                    dir=staging_parent))
     try:
         with tarfile.open(archive_path, "r:gz") as archive:
             members = {member.name: member for member in archive.getmembers()}
@@ -280,7 +282,7 @@ def restore_backup(archive_path: Path, target: Path) -> dict:
                 os.replace(temporary, destination)
         _integrity_check(staging / DATABASE_NAME)
         staging.chmod(0o700)
-        if target.exists():
+        if target_existed:
             # A Docker named-volume mount point cannot itself be replaced. It is
             # safe to populate because the precondition above proved it empty.
             for child in staging.iterdir():
@@ -317,7 +319,7 @@ def main(argv: list[str] | None = None) -> int:
         else:
             manifest = restore_backup(args.archive, args.target)
             print(f"Restored backup with {len(manifest['files'])} files: {args.target}")
-    except BackupError as exc:
+    except (BackupError, OSError) as exc:
         print(f"BACKUP ERROR: {exc}")
         return 2
     return 0

@@ -69,7 +69,11 @@ class TestBetaBackup(unittest.TestCase):
         self.assertTrue(verified["worker_quiescence_required"])
         target = self.root / "restored"
         target.mkdir()
-        restore_backup(self.archive, target)
+        self.root.chmod(0o500)
+        try:
+            restore_backup(self.archive, target)
+        finally:
+            self.root.chmod(0o700)
         restored = Store(target / "origin_web.sqlite3")
         try:
             mission = restored.get_mission(self.mission["id"], self.owner)
