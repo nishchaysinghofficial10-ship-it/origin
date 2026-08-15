@@ -1,0 +1,43 @@
+{
+  "question": "Which single-source shortest-path method wins on which graph topology at n<=512, does the machine-independent relaxation count agree with the wall-clock ranking, and under what precondition is the BFS candidate correct?",
+  "domain": "graphbench",
+  "baselines": [
+    "dijkstra_heap",
+    "dijkstra_array",
+    "bellman_ford",
+    "spfa",
+    "bfs_unit"
+  ],
+  "metrics": [
+    "correctness vs a reference Dijkstra (exact)",
+    "wall-clock mean per cell (host-specific)",
+    "edge relaxations (machine-independent count)"
+  ],
+  "input_generation": "deterministic generators seeded from the mission config: sparse_random, dense_random, grid_2d, unit_weight for the main rounds",
+  "held_out_conditions": [
+    "long_chain",
+    "scale_free"
+  ],
+  "sizes": [
+    128,
+    512
+  ],
+  "trials_per_cell": 5,
+  "budget": {
+    "experiments": 40,
+    "compute_minutes": 30
+  },
+  "replication_rule": "any provisionally supported hypothesis must be re-tested with seed+1000 in a separately spawned experiment before it can be accepted",
+  "falsification_rule": "a replicated hypothesis must survive a probe at 2x the largest tested size on its own topology plus the two held-out topologies",
+  "significance_rule": "timing comparisons need >=5 trials per side, separation > 3x combined SEM, and >=10% relative margin; relaxation counts are exact and need none",
+  "evaluation_criteria": [
+    "correctness: does any workflow report a wrong candidate as a winner?",
+    "efficiency: experiments spent per accepted conclusion",
+    "self-correction: hypotheses rejected or weakened by own evidence",
+    "replication agreement",
+    "held-out behaviour: do conclusions survive unseen topologies?",
+    "overclaiming: conclusions asserted without scope"
+  ],
+  "registered_at": "2026-08-13T13:31:42Z",
+  "note": "Registered before any workflow was run. ORIGIN was not steered toward an answer: the hypotheses are the domain's standing templates plus whatever the proposal layer generated."
+}

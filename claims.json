@@ -1,172 +1,44 @@
 {
-  "clm_d489588de1": {
-    "id": "clm_d489588de1",
-    "text": "It has supernatural performance on many\nkinds of partially ordered arrays (less than lg(N!) comparisons needed, and\nas few as N-1), yet as fast as Python's previous highly tuned samplesort\nhybrid on random arrays.",
-    "status": "speculation",
-    "confidence": 0.25,
+  "clm_bbc4b6ecee": {
+    "id": "clm_bbc4b6ecee",
+    "text": "Any comparison sort requires Omega(n log n) comparisons in the worst case.",
+    "status": "fact",
+    "confidence": 0.97,
     "source_ids": [
-      "src_17018df8e4"
+      "src_4c8df7ee3c"
     ],
-    "notes": "external claim; not measured by ORIGIN",
-    "created_at": 1786453255.3186352,
-    "passage": "Intro\n-----\nThis describes an adaptive, stable, natural mergesort, modestly called\ntimsort (hey, I earned it <wink>).  It has supernatural performance on many\nkinds of partially ordered arrays (less than lg(N!) comparisons needed, and\nas few as N-1), yet as fast as Python's previous highly tuned samplesort\nhybrid on random arrays.",
-    "passage_offset": 0,
-    "extraction_method": "deterministic declarative-sentence extractor",
-    "extracted_at": 1786453255.3186278,
-    "claim_type": "descriptive",
-    "limitations": "extracted from external text; not measured by ORIGIN"
+    "notes": "",
+    "created_at": 1786391465.6624563
   },
-  "clm_0c6ffe35fb": {
-    "id": "clm_0c6ffe35fb",
-    "text": "In a nutshell, the main routine marches over the array once, left to right,\nalternately identifying the next run, then merging it into the previous\nruns \"intelligently\".",
-    "status": "speculation",
-    "confidence": 0.25,
+  "clm_2a22e5624c": {
+    "id": "clm_2a22e5624c",
+    "text": "Insertion sort runs in O(n + inversions); it is linear on nearly-sorted input.",
+    "status": "fact",
+    "confidence": 0.97,
     "source_ids": [
-      "src_17018df8e4"
+      "src_4c8df7ee3c"
     ],
-    "notes": "external claim; not measured by ORIGIN",
-    "created_at": 1786453255.3187835,
-    "passage": "In a nutshell, the main routine marches over the array once, left to right,\nalternately identifying the next run, then merging it into the previous\nruns \"intelligently\".  Everything else is complication for speed, and some\nhard-won measure of memory efficiency.",
-    "passage_offset": 334,
-    "extraction_method": "deterministic declarative-sentence extractor",
-    "extracted_at": 1786453255.3187807,
-    "claim_type": "descriptive",
-    "limitations": "extracted from external text; not measured by ORIGIN"
+    "notes": "",
+    "created_at": 1786391465.6624653
   },
-  "clm_5b231232f4": {
-    "id": "clm_5b231232f4",
-    "text": "Everything else is complication for speed, and some\nhard-won measure of memory efficiency.",
-    "status": "speculation",
-    "confidence": 0.25,
+  "clm_6241b012d7": {
+    "id": "clm_6241b012d7",
+    "text": "Quicksort's worst case is O(n^2), but median-of-three pivoting avoids it on sorted/reversed inputs.",
+    "status": "fact",
+    "confidence": 0.97,
     "source_ids": [
-      "src_17018df8e4"
+      "src_4c8df7ee3c"
     ],
-    "notes": "external claim; not measured by ORIGIN",
-    "created_at": 1786453255.318866,
-    "passage": "In a nutshell, the main routine marches over the array once, left to right,\nalternately identifying the next run, then merging it into the previous\nruns \"intelligently\".  Everything else is complication for speed, and some\nhard-won measure of memory efficiency.",
-    "passage_offset": 334,
-    "extraction_method": "deterministic declarative-sentence extractor",
-    "extracted_at": 1786453255.318864,
-    "claim_type": "descriptive",
-    "limitations": "extracted from external text; not measured by ORIGIN"
+    "notes": "",
+    "created_at": 1786391465.6624715
   },
-  "clm_cb1e8fa367": {
-    "id": "clm_cb1e8fa367",
-    "text": "Comparison with Python's Samplesort Hybrid\n------------------------------------------\n+ timsort can require a temp array containing as many as N//2 pointers,\n  which means as many as 2*N extra bytes on 32-bit boxes.",
-    "status": "speculation",
-    "confidence": 0.25,
-    "source_ids": [
-      "src_17018df8e4"
-    ],
-    "notes": "external claim; not measured by ORIGIN",
-    "created_at": 1786453255.3189452,
-    "passage": "Comparison with Python's Samplesort Hybrid\n------------------------------------------\n+ timsort can require a temp array containing as many as N//2 pointers,\n  which means as many as 2*N extra bytes on 32-bit boxes.  It can be\n  expected to require a temp array this large when sorting random data; on\n  data with significant structure, it may get away without using any extra\n  heap memory.  This appears to be the strongest argument against it, but\n  compared to the size of an object, 2 temp bytes worst-case (also expected-\n  case for random data) doesn't scare me much.",
-    "passage_offset": 598,
-    "extraction_method": "deterministic declarative-sentence extractor",
-    "extracted_at": 1786453255.3189435,
-    "claim_type": "descriptive",
-    "limitations": "extracted from external text; not measured by ORIGIN"
-  },
-  "clm_8529c70fc7": {
-    "id": "clm_8529c70fc7",
-    "text": "It can be\n  expected to require a temp array this large when sorting random data; on\n  data with significant structure, it may get away without using any extra\n  heap memory.",
-    "status": "speculation",
-    "confidence": 0.25,
-    "source_ids": [
-      "src_17018df8e4"
-    ],
-    "notes": "external claim; not measured by ORIGIN",
-    "created_at": 1786453255.319057,
-    "passage": "Comparison with Python's Samplesort Hybrid\n------------------------------------------\n+ timsort can require a temp array containing as many as N//2 pointers,\n  which means as many as 2*N extra bytes on 32-bit boxes.  It can be\n  expected to require a temp array this large when sorting random data; on\n  data with significant structure, it may get away without using any extra\n  heap memory.  This appears to be the strongest argument against it, but\n  compared to the size of an object, 2 temp bytes worst-case (also expected-\n  case for random data) doesn't scare me much.",
-    "passage_offset": 598,
-    "extraction_method": "deterministic declarative-sentence extractor",
-    "extracted_at": 1786453255.3190548,
-    "claim_type": "descriptive",
-    "limitations": "extracted from external text; not measured by ORIGIN"
-  },
-  "clm_e6bbe45bb1": {
-    "id": "clm_e6bbe45bb1",
-    "text": "Python lists have a built-in :meth:`list.sort` method that modifies the list\nin-place.",
-    "status": "speculation",
-    "confidence": 0.25,
-    "source_ids": [
-      "src_32c45cedaa"
-    ],
-    "notes": "external claim; not measured by ORIGIN",
-    "created_at": 1786453256.2991974,
-    "passage": "Python lists have a built-in :meth:`list.sort` method that modifies the list\nin-place.  There is also a :func:`sorted` built-in function that builds a new\nsorted list from an iterable.",
-    "passage_offset": 58,
-    "extraction_method": "deterministic declarative-sentence extractor",
-    "extracted_at": 1786453256.2991927,
-    "claim_type": "descriptive",
-    "limitations": "extracted from external text; not measured by ORIGIN"
-  },
-  "clm_4c61ec43a9": {
-    "id": "clm_4c61ec43a9",
-    "text": "There is also a :func:`sorted` built-in function that builds a new\nsorted list from an iterable.",
-    "status": "speculation",
-    "confidence": 0.25,
-    "source_ids": [
-      "src_32c45cedaa"
-    ],
-    "notes": "external claim; not measured by ORIGIN",
-    "created_at": 1786453256.2993002,
-    "passage": "Python lists have a built-in :meth:`list.sort` method that modifies the list\nin-place.  There is also a :func:`sorted` built-in function that builds a new\nsorted list from an iterable.",
-    "passage_offset": 58,
-    "extraction_method": "deterministic declarative-sentence extractor",
-    "extracted_at": 1786453256.299298,
-    "claim_type": "descriptive",
-    "limitations": "extracted from external text; not measured by ORIGIN"
-  },
-  "clm_3e714d60d6": {
-    "id": "clm_3e714d60d6",
-    "text": "A simple ascending sort is very easy: just call the :func:`sorted` function.",
-    "status": "speculation",
-    "confidence": 0.25,
-    "source_ids": [
-      "src_32c45cedaa"
-    ],
-    "notes": "external claim; not measured by ORIGIN",
-    "created_at": 1786453256.2993705,
-    "passage": "A simple ascending sort is very easy: just call the :func:`sorted` function. It\nreturns a new sorted list:",
-    "passage_offset": 360,
-    "extraction_method": "deterministic declarative-sentence extractor",
-    "extracted_at": 1786453256.2993686,
-    "claim_type": "descriptive",
-    "limitations": "extracted from external text; not measured by ORIGIN"
-  },
-  "clm_d56eda771a": {
-    "id": "clm_d56eda771a",
-    "text": "You can also use the :meth:`list.sort` method.",
-    "status": "speculation",
-    "confidence": 0.25,
-    "source_ids": [
-      "src_32c45cedaa"
-    ],
-    "notes": "external claim; not measured by ORIGIN",
-    "created_at": 1786453256.2994325,
-    "passage": "You can also use the :meth:`list.sort` method. It modifies the list\nin-place (and returns ``None`` to avoid confusion). Usually it's less convenient\nthan :func:`sorted` - but if you don't need the original list, it's slightly\nmore efficient.",
-    "passage_offset": 535,
-    "extraction_method": "deterministic declarative-sentence extractor",
-    "extracted_at": 1786453256.299431,
-    "claim_type": "descriptive",
-    "limitations": "extracted from external text; not measured by ORIGIN"
-  },
-  "clm_488f4d0cfc": {
-    "id": "clm_488f4d0cfc",
-    "text": "Another difference is that the :meth:`list.sort` method is only defined for\nlists.",
-    "status": "speculation",
-    "confidence": 0.25,
-    "source_ids": [
-      "src_32c45cedaa"
-    ],
-    "notes": "external claim; not measured by ORIGIN",
-    "created_at": 1786453256.2994905,
-    "passage": "Another difference is that the :meth:`list.sort` method is only defined for\nlists. In contrast, the :func:`sorted` function accepts any iterable.",
-    "passage_offset": 868,
-    "extraction_method": "deterministic declarative-sentence extractor",
-    "extracted_at": 1786453256.2994893,
-    "claim_type": "descriptive",
-    "limitations": "extracted from external text; not measured by ORIGIN"
+  "clm_7060fe4c45": {
+    "id": "clm_7060fe4c45",
+    "text": "Hybrid insertion-cutoff optima at n=4096 (7 trials, CPython 3.12.3 on Linux/x86_64): random=16 (indistinguishable from [8, 32]), nearly_sorted=64 (indistinguishable from [32]), reversed=8 (indistinguishable from [16]), few_unique=16 (indistinguishable from [8, 32])",
+    "status": "experimental_result",
+    "confidence": 0.6,
+    "source_ids": [],
+    "notes": "",
+    "created_at": 1786391490.8288174
   }
 }

@@ -1,27 +1,26 @@
 {
   "kind": "benchmark",
-  "round": 2,
+  "round": 1,
   "algorithms": [
-    "insertion_sort",
-    "merge_sort",
-    "quick_sort",
-    "heap_sort",
-    "hybrid_sort"
+    "dijkstra_heap",
+    "dijkstra_array",
+    "bellman_ford",
+    "spfa",
+    "bfs_unit"
   ],
   "regimes": [
-    "random",
-    "nearly_sorted",
-    "reversed",
-    "few_unique"
+    "sparse_random",
+    "dense_random",
+    "grid_2d",
+    "unit_weight"
   ],
   "sizes": [
-    400,
-    1600
+    128,
+    512
   ],
-  "trials": 3,
-  "seed": 1234,
+  "trials": 5,
+  "seed": 4242,
   "timeout_s": 600,
-  "hypothesis_ids": [
-    "hyp_7850a311fa"
-  ]
+  "hypothesis_ids": [],
+  "origin_version": "1.5.0"
 }

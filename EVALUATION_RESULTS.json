@@ -1,0 +1,170 @@
+{
+  "pre_registration": {
+    "question": "Which single-source shortest-path method wins on which graph topology at n<=512, does the machine-independent relaxation count agree with the wall-clock ranking, and under what precondition is the BFS candidate correct?",
+    "domain": "graphbench",
+    "baselines": [
+      "dijkstra_heap",
+      "dijkstra_array",
+      "bellman_ford",
+      "spfa",
+      "bfs_unit"
+    ],
+    "metrics": [
+      "correctness vs a reference Dijkstra (exact)",
+      "wall-clock mean per cell (host-specific)",
+      "edge relaxations (machine-independent count)"
+    ],
+    "input_generation": "deterministic generators seeded from the mission config: sparse_random, dense_random, grid_2d, unit_weight for the main rounds",
+    "held_out_conditions": [
+      "long_chain",
+      "scale_free"
+    ],
+    "sizes": [
+      128,
+      512
+    ],
+    "trials_per_cell": 5,
+    "budget": {
+      "experiments": 40,
+      "compute_minutes": 30
+    },
+    "replication_rule": "any provisionally supported hypothesis must be re-tested with seed+1000 in a separately spawned experiment before it can be accepted",
+    "falsification_rule": "a replicated hypothesis must survive a probe at 2x the largest tested size on its own topology plus the two held-out topologies",
+    "significance_rule": "timing comparisons need >=5 trials per side, separation > 3x combined SEM, and >=10% relative margin; relaxation counts are exact and need none",
+    "evaluation_criteria": [
+      "correctness: does any workflow report a wrong candidate as a winner?",
+      "efficiency: experiments spent per accepted conclusion",
+      "self-correction: hypotheses rejected or weakened by own evidence",
+      "replication agreement",
+      "held-out behaviour: do conclusions survive unseen topologies?",
+      "overclaiming: conclusions asserted without scope"
+    ],
+    "registered_at": "2026-08-13T13:31:42Z",
+    "note": "Registered before any workflow was run. ORIGIN was not steered toward an answer: the hypotheses are the domain's standing templates plus whatever the proposal layer generated."
+  },
+  "workflows": {
+    "baseline": {
+      "workflow": "baseline",
+      "experiments": 1,
+      "wall_s": 2.7,
+      "conclusions": [
+        "fastest on sparse_random is bfs_unit",
+        "fastest on dense_random is bfs_unit",
+        "fastest on grid_2d is bfs_unit",
+        "fastest on unit_weight is spfa"
+      ],
+      "winners": {
+        "sparse_random": "bfs_unit",
+        "dense_random": "bfs_unit",
+        "grid_2d": "bfs_unit",
+        "unit_weight": "spfa"
+      },
+      "incorrect_candidates_reported_as_winners": [
+        "bfs_unit on sparse_random",
+        "bfs_unit on dense_random",
+        "bfs_unit on grid_2d"
+      ],
+      "hypotheses_tested": 0,
+      "replications": 0,
+      "falsifications": 0,
+      "self_corrections": 0,
+      "scoped_conclusions": 0,
+      "significance_gated": false
+    },
+    "proposal_only": {
+      "workflow": "proposal_only",
+      "experiments": 0,
+      "wall_s": 0.0,
+      "conclusions": [
+        "Re-measure the full roster on the two most discriminating regimes with extra trials.",
+        "Comparison and move counts are not measured, so rankings cannot be separated from constant factors."
+      ],
+      "proposals_accepted": 2,
+      "proposals_rejected": [],
+      "hypotheses_tested": 0,
+      "replications": 0,
+      "falsifications": 0,
+      "self_corrections": 0,
+      "scoped_conclusions": 0,
+      "significance_gated": false,
+      "note": "These are proposals, not findings. Nothing here was measured; any that survived validation would still have to earn their status through experiments."
+    },
+    "origin_full": {
+      "workflow": "origin_full",
+      "experiments": 6,
+      "wall_s": 12.9,
+      "conclusions": [
+        "SPFA performs fewer relaxations than Bellman-Ford on sparse random graphs. [scope: holds at n<=2x tested sizes on its original topology; extends to ['long_chain', 'scale_free']]",
+        "The BFS candidate returns correct distances on unit-weight graphs and incorrect distances on every weighted topology. [scope: holds at n<=2x tested sizes on its original topology; does NOT extend to ['long_chain', 'scale_free']]"
+      ],
+      "hypotheses_total": 5,
+      "hypotheses_tested": 5,
+      "accepted_with_scope": 2,
+      "rejected_by_own_evidence": [
+        "Dijkstra with a binary heap is fastest on sparse random graphs at the tested sizes.",
+        "The array-scan Dijkstra beats the heap variant on dense graphs, where the scan cost is amo"
+      ],
+      "weakened": 0,
+      "self_corrections": 2,
+      "inconclusive_predictions": 0,
+      "replications": 3,
+      "falsifications": 2,
+      "scoped_conclusions": 2,
+      "significance_gated": true,
+      "incorrect_candidates_reported_as_winners": [],
+      "correctness_boundaries_found": [
+        "bfs_unit"
+      ],
+      "cautions": 9,
+      "compute_s": 12.8,
+      "mission_dir": "origin_full",
+      "stop_reason": "no high-value next experiment remained"
+    }
+  },
+  "comparison": {
+    "experiments_spent": {
+      "baseline": 1,
+      "proposal_only": 0,
+      "origin_full": 6
+    },
+    "conclusions_produced": {
+      "baseline": 4,
+      "proposal_only": 2,
+      "origin_full": 2
+    },
+    "scoped_conclusions": {
+      "baseline": 0,
+      "proposal_only": 0,
+      "origin_full": 2
+    },
+    "replications": {
+      "baseline": 0,
+      "proposal_only": 0,
+      "origin_full": 3
+    },
+    "falsification_probes": {
+      "baseline": 0,
+      "proposal_only": 0,
+      "origin_full": 2
+    },
+    "self_corrections": {
+      "baseline": 0,
+      "proposal_only": 0,
+      "origin_full": 2
+    },
+    "significance_gated": {
+      "baseline": false,
+      "proposal_only": false,
+      "origin_full": true
+    },
+    "incorrect_candidate_named_a_winner": {
+      "baseline": [
+        "bfs_unit on sparse_random",
+        "bfs_unit on dense_random",
+        "bfs_unit on grid_2d"
+      ],
+      "proposal_only": [],
+      "origin_full": []
+    }
+  }
+}
