@@ -15,7 +15,7 @@ COPY origin ./origin
 COPY origin_web ./origin_web
 RUN python -m pip install --no-cache-dir .
 
-RUN mkdir -p /data && chown origin:origin /data
+RUN mkdir -p /data /backup /restore && chown origin:origin /data /backup /restore
 USER origin
 VOLUME ["/data"]
 EXPOSE 8080

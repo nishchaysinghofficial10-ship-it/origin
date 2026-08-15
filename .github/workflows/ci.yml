@@ -146,9 +146,23 @@ jobs:
         with:
           python-version: "3.14"
       - name: Site, API, and worker integration tests
-        run: python -m unittest tests.test_web_site tests.test_web_api -v
+        run: >-
+          python -m unittest tests.test_web_site tests.test_web_api
+          tests.test_web_operations -v
       - name: Build static site from versioned evidence
         run: python tools/build_web.py --out build/web
+      - name: Validate production Compose and TLS proxy configuration
+        run: |
+          set -euo pipefail
+          mkdir -p deploy/secrets
+          printf '%s\n' 'ci-beta-token-with-32-characters' > deploy/secrets/beta_token.txt
+          printf '%s\n' 'ci-admin-token-with-32-characters' > deploy/secrets/admin_token.txt
+          docker compose --env-file deploy/production.env.example \
+            --file compose.production.yaml config >/tmp/origin-production-compose.yaml
+          docker run --rm \
+            --env ORIGIN_BETA_HOST=beta.example.test \
+            --volume "$PWD/deploy/Caddyfile:/etc/caddy/Caddyfile:ro" \
+            caddy:2.11.4-alpine validate --config /etc/caddy/Caddyfile
       - name: Build the non-root beta container
         run: docker build --tag origin-beta:ci .
       - name: Smoke-test the containerized API boundary
@@ -171,3 +185,14 @@ jobs:
           STATUS=$(curl --silent --output /tmp/origin-unauthorized.json \
             --write-out '%{http_code}' http://127.0.0.1:18080/api/v1/missions)
           test "$STATUS" = "401"
+          python tools/verify_beta_deployment.py \
+            --api-origin http://127.0.0.1:18080 \
+            --beta-token-file deploy/secrets/beta_token.txt \
+            --admin-token-file deploy/secrets/admin_token.txt \
+            --allow-http-local
+          docker exec origin-beta-ci python -m origin_web.backup create \
+            --data-dir /data --out /backup/ci-backup.tar.gz
+          docker exec origin-beta-ci python -m origin_web.backup verify \
+            --archive /backup/ci-backup.tar.gz
+          docker exec origin-beta-ci python -m origin_web.backup restore \
+            --archive /backup/ci-backup.tar.gz --target /restore

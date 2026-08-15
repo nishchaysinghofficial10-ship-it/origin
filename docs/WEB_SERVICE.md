@@ -40,6 +40,10 @@ GitHub Pages deployment is defined in `.github/workflows/pages.yml`. It runs the
 site tests before uploading `build/web` and deploys only from `main` or an
 explicit manual dispatch.
 
+The exact single-host TLS deployment, launch gate, site connection, backup,
+restore, rollback, and monitoring sequence is in
+[`BETA_DEPLOYMENT_RUNBOOK.md`](BETA_DEPLOYMENT_RUNBOOK.md).
+
 ## Run the controlled beta locally
 
 Create separate random tester and administrator tokens without placing either in
@@ -160,11 +164,11 @@ curl -fsS -X POST https://BETA_API/api/v1/admin/intake \
 ```
 
 Back up the entire stopped `/data` volume, including the SQLite database, WAL
-files if present, and mission directories. For an online database snapshot, use
-SQLite's backup API rather than copying one file while writes continue. Restore
-into a fresh volume, start only the API, inspect `/api/v1/admin/health`, then
-start the exclusive worker. A rollback must keep the database and mission
-artifacts together; never deploy an older schema blindly over newer data.
+files if present, and mission directories. `python -m origin_web.backup` uses
+SQLite's backup API, archives mission artifacts with a SHA-256 manifest, rejects
+unsafe members, and restores only into an empty target. The production runbook
+uses a separate restored volume so the live volume remains available for
+rollback. Never deploy an older schema blindly over newer data.
 
 ## Release gate
 

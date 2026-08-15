@@ -6,6 +6,7 @@ build
 dist
 runs
 deploy/secrets
+.env.production
 __pycache__
 *.pyc
 *.sqlite3*

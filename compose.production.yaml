@@ -1,0 +1,134 @@
+name: origin-beta
+
+services:
+  proxy:
+    image: caddy:2.11.4-alpine
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+    environment:
+      ORIGIN_BETA_HOST: ${ORIGIN_BETA_HOST:?set ORIGIN_BETA_HOST to the public API hostname}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=32m
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    networks: [edge]
+    cap_drop: [ALL]
+    cap_add: [NET_BIND_SERVICE]
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 128
+    mem_limit: 256m
+    cpus: 0.50
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "5"
+
+  api:
+    image: origin-beta:2.1.2-web-beta
+    build: .
+    command: ["python", "-m", "origin_web", "api"]
+    restart: unless-stopped
+    init: true
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=32m
+    volumes:
+      - origin-beta-data:/data
+    expose: ["8080"]
+    environment:
+      ORIGIN_WEB_BETA_TOKEN_FILE: /run/secrets/beta_token
+      ORIGIN_WEB_ADMIN_TOKEN_FILE: /run/secrets/admin_token
+      ORIGIN_WEB_ALLOWED_ORIGINS: ${ORIGIN_PUBLIC_SITE_ORIGIN:?set the exact HTTPS site origin}
+      ORIGIN_WEB_PUBLIC_SITE_URL: ${ORIGIN_PUBLIC_SITE_ORIGIN:?set the exact HTTPS site origin}
+      ORIGIN_WEB_ACCEPT_JOBS: ${ORIGIN_WEB_ACCEPT_JOBS:-1}
+    secrets:
+      - beta_token
+      - admin_token
+    networks: [edge]
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 64
+    mem_limit: 256m
+    cpus: 0.50
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "5"
+
+  worker:
+    image: origin-beta:2.1.2-web-beta
+    build: .
+    command: ["python", "-m", "origin_web", "worker"]
+    restart: unless-stopped
+    init: true
+    read_only: true
+    network_mode: none
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=128m
+    volumes:
+      - origin-beta-data:/data
+    environment:
+      ORIGIN_WEB_ACCEPT_JOBS: ${ORIGIN_WEB_ACCEPT_JOBS:-1}
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 128
+    mem_limit: 1g
+    cpus: 1.0
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "5"
+
+  backup:
+    image: origin-beta:2.1.2-web-beta
+    build: .
+    profiles: [ops]
+    entrypoint: ["python", "-m", "origin_web.backup"]
+    command: ["--help"]
+    read_only: true
+    network_mode: none
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=32m
+    volumes:
+      - origin-beta-data:/data:ro
+      - origin-beta-backups:/backup
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 64
+    mem_limit: 256m
+    cpus: 0.50
+
+networks:
+  edge:
+
+volumes:
+  origin-beta-data:
+    name: ${ORIGIN_DATA_VOLUME:-origin-beta-data}
+  origin-beta-backups:
+    name: ${ORIGIN_BACKUP_VOLUME:-origin-beta-backups}
+  caddy-data:
+    name: ${ORIGIN_CADDY_DATA_VOLUME:-origin-beta-caddy-data}
+  caddy-config:
+    name: ${ORIGIN_CADDY_CONFIG_VOLUME:-origin-beta-caddy-config}
+
+secrets:
+  beta_token:
+    file: ./deploy/secrets/beta_token.txt
+  admin_token:
+    file: ./deploy/secrets/admin_token.txt

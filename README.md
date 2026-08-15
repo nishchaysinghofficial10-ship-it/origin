@@ -66,7 +66,7 @@ python3 -m origin status --dir runs/demo
 python3 -m origin report --dir runs/demo         # the research dossier
 ```
 
-The repository contains 298 test cases, including the public site and controlled
+The repository contains 311 test cases, including the public site and controlled
 beta boundary. The complete suite passes locally on native macOS/arm64 and in
 hosted Linux CI with CPython 3.10–3.14. The release
 workflow also checks macOS on stable CPython 3.14, portability, archive
@@ -188,6 +188,7 @@ evaluation), `autonomy_demo`, `evidence_demo`, `demo_run`.
 [`docs/EVIDENCE_ACQUISITION.md`](docs/EVIDENCE_ACQUISITION.md) ·
 [`docs/OPERATIONS.md`](docs/OPERATIONS.md) ·
 [`docs/WEB_SERVICE.md`](docs/WEB_SERVICE.md) ·
+[`docs/BETA_DEPLOYMENT_RUNBOOK.md`](docs/BETA_DEPLOYMENT_RUNBOOK.md) ·
 [`docs/REPRODUCIBILITY.md`](docs/REPRODUCIBILITY.md) ·
 [`docs/SECURITY.md`](docs/SECURITY.md) ·
 [`docs/DECISIONS.md`](docs/DECISIONS.md)

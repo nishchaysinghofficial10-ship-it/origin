@@ -1,0 +1,37 @@
+{
+	admin off
+	grace_period 10s
+}
+
+{$ORIGIN_BETA_HOST} {
+	encode zstd gzip
+
+	header {
+		-Server
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "no-referrer"
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+	}
+
+	request_body {
+		max_size 16KB
+	}
+
+	reverse_proxy api:8080 {
+		health_uri /api/v1/health
+		health_interval 30s
+		health_timeout 3s
+		lb_try_duration 5s
+		transport http {
+			dial_timeout 2s
+			response_header_timeout 30s
+		}
+	}
+
+	log {
+		output stdout
+		format json
+	}
+}
