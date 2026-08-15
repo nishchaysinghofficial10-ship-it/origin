@@ -162,7 +162,7 @@ jobs:
           docker run --rm \
             --env ORIGIN_BETA_HOST=beta.example.test \
             --volume "$PWD/deploy/Caddyfile:/etc/caddy/Caddyfile:ro" \
-            caddy:2.11.4-alpine validate --config /etc/caddy/Caddyfile
+            caddy:2.11.4-alpine caddy validate --config /etc/caddy/Caddyfile
       - name: Build the non-root beta container
         run: docker build --tag origin-beta:ci .
       - name: Smoke-test the containerized API boundary
