@@ -159,7 +159,7 @@ jobs:
           printf '%s\n' 'ci-admin-token-with-32-characters' > deploy/secrets/admin_token.txt
           docker compose --env-file deploy/production.env.example \
             --file compose.production.yaml config >/tmp/origin-production-compose.yaml
-          docker compose --env-file deploy/production.env.example \
+          docker compose --profile ops --env-file deploy/production.env.example \
             --file compose.production.yaml --file compose.funnel.yaml \
             config --format json >/tmp/origin-funnel-compose.json
           python - <<'PY'
