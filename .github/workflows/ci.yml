@@ -22,8 +22,8 @@ jobs:
           - runner: macos-14
             python-version: "3.14"
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
       - name: Show interpreter and OS
@@ -43,8 +43,8 @@ jobs:
     name: portability (relocated + archived artifacts)
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
@@ -98,8 +98,8 @@ jobs:
     name: end-to-end mission from a clean checkout
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
       - name: Init, run, verify, report
@@ -136,3 +136,38 @@ jobs:
           python -m origin run --dir "$RUNNER_TEMP/ci_resume" --steps 2
           python -m origin run --dir "$RUNNER_TEMP/ci_resume"
           python -m origin verify --dir "$RUNNER_TEMP/ci_resume"
+
+  web-boundary:
+    name: public site + interactive boundary
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+      - name: Site, API, and worker integration tests
+        run: python -m unittest tests.test_web_site tests.test_web_api -v
+      - name: Build static site from versioned evidence
+        run: python tools/build_web.py --out build/web
+      - name: Build the non-root beta container
+        run: docker build --tag origin-beta:ci .
+      - name: Smoke-test the containerized API boundary
+        run: |
+          set -euo pipefail
+          docker run --detach --name origin-beta-ci \
+            --publish 127.0.0.1:18080:8080 \
+            --env ORIGIN_WEB_BETA_TOKEN=ci-beta-token-with-32-characters \
+            --env ORIGIN_WEB_ADMIN_TOKEN=ci-admin-token-with-32-characters \
+            origin-beta:ci
+          trap 'docker rm --force origin-beta-ci >/dev/null 2>&1 || true' EXIT
+          for attempt in {1..20}; do
+            if curl --fail --silent --show-error \
+              http://127.0.0.1:18080/api/v1/health >/tmp/origin-health.json; then
+              break
+            fi
+            sleep 1
+          done
+          python -c 'import json; assert json.load(open("/tmp/origin-health.json"))["status"] == "ok"'
+          STATUS=$(curl --silent --output /tmp/origin-unauthorized.json \
+            --write-out '%{http_code}' http://127.0.0.1:18080/api/v1/missions)
+          test "$STATUS" = "401"

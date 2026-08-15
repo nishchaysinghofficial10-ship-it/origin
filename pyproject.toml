@@ -21,6 +21,7 @@ classifiers = [
 
 [project.scripts]
 origin = "origin.cli:main"
+origin-web = "origin_web.__main__:main"
 
 [tool.setuptools.packages.find]
 include = ["origin*"]

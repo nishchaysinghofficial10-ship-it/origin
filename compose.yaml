@@ -1,0 +1,57 @@
+services:
+  api:
+    build: .
+    command: ["python", "-m", "origin_web", "api"]
+    restart: unless-stopped
+    init: true
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=32m
+    volumes:
+      - origin-beta-data:/data
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      ORIGIN_WEB_BETA_TOKEN_FILE: /run/secrets/beta_token
+      ORIGIN_WEB_ADMIN_TOKEN_FILE: /run/secrets/admin_token
+      ORIGIN_WEB_ALLOWED_ORIGINS: ${ORIGIN_WEB_ALLOWED_ORIGINS:-http://127.0.0.1:4173}
+      ORIGIN_WEB_PUBLIC_SITE_URL: ${ORIGIN_WEB_PUBLIC_SITE_URL:-http://127.0.0.1:4173}
+      ORIGIN_WEB_ACCEPT_JOBS: ${ORIGIN_WEB_ACCEPT_JOBS:-1}
+    secrets:
+      - beta_token
+      - admin_token
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 64
+    mem_limit: 256m
+    cpus: 0.50
+
+  worker:
+    build: .
+    command: ["python", "-m", "origin_web", "worker"]
+    restart: unless-stopped
+    init: true
+    read_only: true
+    network_mode: none
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=128m
+    volumes:
+      - origin-beta-data:/data
+    environment:
+      ORIGIN_WEB_ACCEPT_JOBS: ${ORIGIN_WEB_ACCEPT_JOBS:-1}
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 128
+    mem_limit: 1g
+    cpus: 1.0
+
+volumes:
+  origin-beta-data:
+
+secrets:
+  beta_token:
+    file: ./deploy/secrets/beta_token.txt
+  admin_token:
+    file: ./deploy/secrets/admin_token.txt

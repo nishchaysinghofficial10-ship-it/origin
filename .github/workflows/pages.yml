@@ -1,0 +1,54 @@
+name: Deploy public website
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "web/**"
+      - "tools/build_web.py"
+      - "examples/final_flagship_mission/**"
+      - "tests/test_web_site.py"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+      - name: Verify website
+        run: python -m unittest tests.test_web_site -v
+      - name: Build website from versioned evidence
+        run: python tools/build_web.py --out build/web --api-base "${{ vars.ORIGIN_BETA_API_URL }}"
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: build/web
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    runs-on: ubuntu-24.04
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

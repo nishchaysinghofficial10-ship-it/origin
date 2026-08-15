@@ -1,0 +1,15 @@
+.git
+.github
+.venv
+venv
+build
+dist
+runs
+deploy/secrets
+__pycache__
+*.pyc
+*.sqlite3*
+docs
+examples
+tests
+web

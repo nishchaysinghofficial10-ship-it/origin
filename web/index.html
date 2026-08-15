@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="ORIGIN is a persistent computational research engine that tests competing hypotheses, reproduces experiments, and records every conclusion.">
+  <meta name="theme-color" content="#07110f">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; form-action 'self'; object-src 'none'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'">
+  <meta property="og:title" content="ORIGIN — Evidence before answers">
+  <meta property="og:description" content="A persistent computational research engine with reproducible experiments and scoped conclusions.">
+  <meta property="og:type" content="website">
+  <title>ORIGIN — Evidence before answers</title>
+  <link rel="icon" href="assets/origin-mark.svg" type="image/svg+xml">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+  <script src="runtime-config.js" defer></script>
+  <script src="beta.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" data-header>
+    <a class="brand" href="#top" aria-label="ORIGIN home">
+      <img src="assets/origin-mark.svg" width="34" height="34" alt="">
+      <span>ORIGIN</span>
+      <small>v2.1.2</small>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>
+      <span class="sr-only">Toggle navigation</span>
+      <span></span><span></span>
+    </button>
+    <nav id="site-nav" class="site-nav" aria-label="Primary navigation" data-nav>
+      <a href="#method">Method</a>
+      <a href="#flagship">Flagship mission</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#boundaries">Boundaries</a>
+      <a href="#beta">Beta</a>
+      <a class="nav-cta" href="https://github.com/nishchaysinghofficial10-ship-it/origin">View source</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="hero-orbit orbit-one" aria-hidden="true"></div>
+      <div class="hero-orbit orbit-two" aria-hidden="true"></div>
+      <div class="hero-copy reveal">
+        <p class="eyebrow"><span></span> Open-source computational research engine</p>
+        <h1 id="hero-title">Evidence<br><em>before</em> answers.</h1>
+        <p class="hero-lede">ORIGIN turns a research question into competing hypotheses, machine-checkable predictions, confined experiments, criticism, replication, and a conclusion that says exactly where it applies.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#flagship">Explore a real mission <span aria-hidden="true">↘</span></a>
+          <a class="button button-quiet" href="https://github.com/nishchaysinghofficial10-ship-it/origin/releases/tag/v2.1.2">Download v2.1.2</a>
+        </div>
+        <ul class="proof-line" aria-label="Release verification summary">
+          <li><strong>298</strong> tests</li>
+          <li><strong>CI</strong> gated</li>
+          <li><strong>2</strong> research domains</li>
+          <li><strong>0</strong> runtime dependencies</li>
+        </ul>
+      </div>
+      <div class="hero-instrument reveal" data-delay="120">
+        <div class="instrument-head">
+          <span class="status-dot"></span>
+          <span>MISSION / GRAPHBENCH</span>
+          <span>COMPLETE</span>
+        </div>
+        <div class="instrument-question">Which shortest-path method wins on which graph topology?</div>
+        <div class="signal-map" aria-label="Illustration of ORIGIN's research cycle">
+          <div class="signal-core">
+            <span>ORIGIN</span>
+            <strong>06</strong>
+            <small>experiments</small>
+          </div>
+          <div class="signal-node node-a"><b>5</b><small>hypotheses</small></div>
+          <div class="signal-node node-b"><b>3</b><small>replications</small></div>
+          <div class="signal-node node-c"><b>2</b><small>falsifications</small></div>
+          <div class="signal-node node-d"><b>2</b><small>scoped findings</small></div>
+          <svg viewBox="0 0 600 400" role="presentation">
+            <path d="M300 200 C220 110 125 90 74 116" />
+            <path d="M300 200 C390 110 480 85 530 115" />
+            <path d="M300 200 C390 285 486 312 535 286" />
+            <path d="M300 200 C215 290 115 310 70 280" />
+          </svg>
+        </div>
+        <div class="instrument-foot">
+          <span>STOP REASON</span>
+          <strong>No high-value next experiment remained</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="manifesto section-pad" aria-labelledby="manifesto-title">
+      <div class="section-index">01 / PRINCIPLE</div>
+      <div class="manifesto-copy reveal">
+        <h2 id="manifesto-title">A model can propose.<br>A measurement must decide.</h2>
+        <p>Generated prose never becomes evidence. Every accepted finding in ORIGIN traces back to stored code, inputs, seeds, raw results, criticism, and an independent replication.</p>
+      </div>
+      <div class="manifesto-rule reveal" data-delay="100">
+        <span>PROPOSAL</span><i></i><span>EXPERIMENT</span><i></i><span>CRITIC</span><i></i><span>REPLICATION</span><i></i><b>FINDING</b>
+      </div>
+    </section>
+
+    <section class="method section-pad" id="method" aria-labelledby="method-title">
+      <div class="section-heading reveal">
+        <div>
+          <p class="eyebrow"><span></span> Research lifecycle</p>
+          <h2 id="method-title">A loop designed<br>to prove itself wrong.</h2>
+        </div>
+        <p>ORIGIN does not stop when a result looks persuasive. It searches for boundary conditions, demands replication, preserves contradictions, and records why it stopped.</p>
+      </div>
+      <ol class="method-grid">
+        <li class="method-card reveal">
+          <span>01</span><div class="method-icon">?</div>
+          <h3>Frame</h3><p>Validate the question, domain, assumptions, and finite research budget.</p>
+        </li>
+        <li class="method-card reveal" data-delay="60">
+          <span>02</span><div class="method-icon">◇</div>
+          <h3>Compete</h3><p>Maintain multiple hypotheses instead of committing to the first plausible answer.</p>
+        </li>
+        <li class="method-card reveal" data-delay="120">
+          <span>03</span><div class="method-icon">⌁</div>
+          <h3>Measure</h3><p>Run deterministic domain templates inside a resource-confined subprocess.</p>
+        </li>
+        <li class="method-card reveal" data-delay="180">
+          <span>04</span><div class="method-icon">×</div>
+          <h3>Attack</h3><p>Target the most fragile assumption with held-out regimes and larger boundary cases.</p>
+        </li>
+        <li class="method-card reveal" data-delay="240">
+          <span>05</span><div class="method-icon">↻</div>
+          <h3>Replicate</h3><p>Repeat supported findings with independent seeds before accepting them.</p>
+        </li>
+        <li class="method-card reveal" data-delay="300">
+          <span>06</span><div class="method-icon">⊙</div>
+          <h3>Scope</h3><p>Publish the conclusion, its limits, provenance, cautions, and explicit stop reason.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section class="flagship section-pad" id="flagship" aria-labelledby="flagship-title">
+      <div class="section-heading light reveal">
+        <div>
+          <p class="eyebrow"><span></span> Verified flagship mission</p>
+          <h2 id="flagship-title">One benchmark.<br>Three ways to conclude.</h2>
+        </div>
+        <p>This is not a simulated product demo. Every number below is loaded from the machine-readable evaluation shipped with ORIGIN v2.1.2.</p>
+      </div>
+
+      <div class="comparison" data-comparison>
+        <div class="comparison-controls" role="tablist" aria-label="Select research workflow">
+          <button type="button" role="tab" aria-selected="false" data-workflow="baseline">Benchmark only</button>
+          <button type="button" role="tab" aria-selected="false" data-workflow="proposal_only">Model proposals</button>
+          <button type="button" role="tab" aria-selected="true" data-workflow="origin_full">ORIGIN full loop</button>
+        </div>
+        <div class="comparison-panel">
+          <div class="comparison-summary">
+            <p class="comparison-kicker" data-workflow-label>ORIGIN / FULL LOOP</p>
+            <h3 data-workflow-headline>Fewer conclusions.<br>None falsely crowned.</h3>
+            <p data-workflow-note>Six experiments exposed an invalid speed winner, replicated the surviving findings, and attached explicit scope.</p>
+            <div class="finding-list" data-findings aria-live="polite"></div>
+          </div>
+          <dl class="comparison-metrics" aria-live="polite">
+            <div><dt>Experiments</dt><dd data-metric="experiments">6</dd></div>
+            <div><dt>Conclusions</dt><dd data-metric="conclusions">2</dd></div>
+            <div><dt>Scoped</dt><dd data-metric="scoped">2</dd></div>
+            <div><dt>Replications</dt><dd data-metric="replications">3</dd></div>
+            <div><dt>Self-corrections</dt><dd data-metric="corrections">2</dd></div>
+            <div class="metric-alert"><dt>Incorrect winner</dt><dd data-metric="incorrect">0</dd></div>
+          </dl>
+        </div>
+        <div class="comparison-foot">
+          <span>Source: <code>examples/final_flagship_mission/EVALUATION_RESULTS.json</code></span>
+          <a href="data/flagship-dossier.md">Read the full research dossier →</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="mission section-pad" aria-labelledby="mission-title">
+      <div class="section-heading reveal">
+        <div>
+          <p class="eyebrow"><span></span> Mission record</p>
+          <h2 id="mission-title">The conclusion is only<br>the visible edge.</h2>
+        </div>
+        <p>Inspect the durable trail beneath the result: hypotheses, experiment ledger, evidence, failure records, decisions, and resource budgets.</p>
+      </div>
+      <div class="mission-console reveal" data-mission-console>
+        <div class="console-sidebar">
+          <div class="console-brand"><img src="assets/origin-mark.svg" alt="" width="26" height="26"><b>Mission 01</b></div>
+          <button class="active" type="button" data-console-tab="overview">Overview <span>01</span></button>
+          <button type="button" data-console-tab="hypotheses">Hypotheses <span>05</span></button>
+          <button type="button" data-console-tab="timeline">Timeline <span>42</span></button>
+          <button type="button" data-console-tab="provenance">Provenance <span>✓</span></button>
+          <div class="console-verified"><span>✓</span><small>ARTIFACT<br>VERIFIED</small></div>
+        </div>
+        <div class="console-main" data-console-content aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="architecture section-pad" id="architecture" aria-labelledby="architecture-title">
+      <div class="section-heading reveal">
+        <div>
+          <p class="eyebrow"><span></span> System architecture</p>
+          <h2 id="architecture-title">Persistent by design.<br>Bounded by construction.</h2>
+        </div>
+        <p>The language model is an optional proposer at the edge—not the source of truth. Durable state and domain-controlled experiments remain at the center.</p>
+      </div>
+      <div class="architecture-map reveal">
+        <div class="arch-column">
+          <span>INPUTS</span>
+          <div class="arch-node">Research question</div>
+          <div class="arch-node muted">Optional model proposal</div>
+          <div class="arch-node muted">Approved HTTPS source</div>
+        </div>
+        <div class="arch-arrow" aria-hidden="true">→</div>
+        <div class="arch-column core-column">
+          <span>ORIGIN CORE</span>
+          <div class="core-stack">
+            <div>Controller <small>next action</small></div>
+            <div>Research state <small>single source of truth</small></div>
+            <div>Critic <small>replicate · falsify</small></div>
+            <div>Budget <small>finite by policy</small></div>
+          </div>
+        </div>
+        <div class="arch-arrow" aria-hidden="true">→</div>
+        <div class="arch-column">
+          <span>DURABLE OUTPUTS</span>
+          <div class="arch-node">Experiment artifacts</div>
+          <div class="arch-node">Append-only timeline</div>
+          <div class="arch-node">Scoped dossier</div>
+        </div>
+      </div>
+      <div class="architecture-notes">
+        <div class="reveal"><strong>Zero runtime dependencies</strong><p>The core runs on Python’s standard library across tested CPython 3.10–3.14.</p></div>
+        <div class="reveal" data-delay="80"><strong>Checkpoint after every step</strong><p>State is atomically persisted and independently cross-checked against artifacts.</p></div>
+        <div class="reveal" data-delay="160"><strong>Provider text is untrusted</strong><p>Schema and domain vocabulary gates prevent prose from becoming evidence or executable code.</p></div>
+      </div>
+    </section>
+
+    <section class="boundaries section-pad" id="boundaries" aria-labelledby="boundaries-title">
+      <div class="section-index">06 / HONEST BOUNDARIES</div>
+      <div class="boundaries-grid">
+        <div class="reveal">
+          <h2 id="boundaries-title">What ORIGIN<br>does <em>not</em> claim.</h2>
+          <p>Trust starts by naming the edge of the evidence.</p>
+        </div>
+        <ul class="boundary-list reveal" data-delay="100">
+          <li><span>01</span><div><strong>Not a general autonomous scientist</strong><p>It runs registered computational domains: sorting and shortest-path benchmarks.</p></div></li>
+          <li><span>02</span><div><strong>Not kernel-grade isolation</strong><p>Experiment confinement is user-space. A public worker requires an additional container boundary.</p></div></li>
+          <li><span>03</span><div><strong>Not a source-discovery engine</strong><p>It can retrieve approved HTTPS URLs; it does not search or crawl the web.</p></div></li>
+          <li><span>04</span><div><strong>Not live-provider verified</strong><p>The Anthropic transport remains unverified because no funded API key was available.</p></div></li>
+          <li><span>05</span><div><strong>Not a medical, legal, or financial tool</strong><p>Its evidence applies only to its explicitly supported computational domains.</p></div></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="beta section-pad" id="beta" aria-labelledby="beta-title">
+      <div class="section-heading reveal">
+        <div>
+          <p class="eyebrow"><span></span> Controlled interactive beta</p>
+          <h2 id="beta-title">Run a bounded<br>research mission.</h2>
+        </div>
+        <p>The private beta accepts only two registered computational domains. It has fixed budgets, zero provider calls, zero live retrievals, and a separate network-disabled worker.</p>
+      </div>
+      <div class="beta-grid">
+        <form class="beta-form reveal" data-beta-form>
+          <div class="beta-state" data-beta-connection>
+            <span></span><strong>Checking beta availability</strong>
+          </div>
+          <label>
+            Research question
+            <textarea name="question" rows="4" minlength="12" maxlength="500" required>Which sorting strategy wins under which input regime at small sizes?</textarea>
+          </label>
+          <div class="form-split">
+            <label>
+              Domain
+              <select name="domain">
+                <option value="algobench">Sorting strategies</option>
+                <option value="graphbench">Shortest paths</option>
+              </select>
+            </label>
+            <label>
+              Private beta token
+              <input name="token" type="password" minlength="24" autocomplete="off" spellcheck="false" placeholder="Entered only for this tab" required>
+            </label>
+          </div>
+          <p class="form-privacy">The token stays in this browser tab’s memory, is sent only to the configured beta API, and is never stored by this site.</p>
+          <button class="button button-primary" type="submit" data-beta-submit>Queue bounded mission <span aria-hidden="true">→</span></button>
+          <p class="beta-message" data-beta-message role="status" aria-live="polite"></p>
+        </form>
+        <div class="beta-result reveal" data-delay="100" data-beta-result>
+          <div class="beta-result-empty" data-beta-empty>
+            <span>PRIVATE BETA / EXECUTION CONTRACT</span>
+            <h3>No unrestricted prompt-to-code path.</h3>
+            <ul>
+              <li><b>12</b> maximum experiments</li>
+              <li><b>10 min</b> compute budget</li>
+              <li><b>0</b> provider calls</li>
+              <li><b>0</b> network retrievals</li>
+              <li><b>1</b> active mission per tester</li>
+            </ul>
+          </div>
+          <div class="beta-result-live" data-beta-live hidden>
+            <div class="result-head"><span data-beta-id>MISSION</span><strong data-beta-status>QUEUED</strong></div>
+            <h3 data-beta-question></h3>
+            <div class="result-stats">
+              <div><small>PHASE</small><b data-beta-phase>queued</b></div>
+              <div><small>STEP</small><b data-beta-step>0</b></div>
+              <div><small>EXPERIMENTS</small><b data-beta-experiments>0</b></div>
+            </div>
+            <p data-beta-stop></p>
+            <div class="result-actions">
+              <button type="button" data-beta-action="pause">Pause</button>
+              <button type="button" data-beta-action="resume">Resume</button>
+              <button type="button" data-beta-action="cancel">Cancel</button>
+              <a href="#beta" data-beta-dossier hidden>Open dossier</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="launch-cta section-pad" aria-labelledby="launch-title">
+      <div class="launch-signal" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div class="reveal">
+        <p class="eyebrow"><span></span> Reproduce it yourself</p>
+        <h2 id="launch-title">Don’t take ORIGIN’s<br>word for it.</h2>
+        <p>Clone the repository, run all 298 tests, replay a stored experiment, and verify the flagship mission against its durable artifacts.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="https://github.com/nishchaysinghofficial10-ship-it/origin">Open the repository <span aria-hidden="true">↗</span></a>
+          <a class="button button-quiet" href="https://github.com/nishchaysinghofficial10-ship-it/origin/actions">View CI evidence</a>
+        </div>
+      </div>
+      <div class="terminal-card reveal" data-delay="120">
+        <div><i></i><i></i><i></i><span>terminal</span></div>
+        <pre><code><b>$</b> git clone https://github.com/
+  nishchaysinghofficial10-ship-it/origin
+<b>$</b> cd origin
+<b>$</b> python3 -m unittest discover -s tests
+
+<span>Ran 298 tests</span>
+<strong>OK</strong></code></pre>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a class="brand" href="#top"><img src="assets/origin-mark.svg" width="30" height="30" alt=""><span>ORIGIN</span></a>
+    <p>Persistent computational research.<br>Built in public, bounded by evidence.</p>
+    <nav aria-label="Footer navigation">
+      <a href="https://github.com/nishchaysinghofficial10-ship-it/origin">GitHub</a>
+      <a href="https://github.com/nishchaysinghofficial10-ship-it/origin/blob/main/docs/ARCHITECTURE.md">Docs</a>
+      <a href="https://github.com/nishchaysinghofficial10-ship-it/origin/blob/main/SECURITY.md">Security</a>
+      <a href="https://github.com/nishchaysinghofficial10-ship-it/origin/blob/main/LICENSE">MIT License</a>
+    </nav>
+    <small>Evidence snapshot: ORIGIN v2.1.2 · August 2026</small>
+  </footer>
+</body>
+</html>
