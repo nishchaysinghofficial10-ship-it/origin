@@ -6,7 +6,7 @@
 |---|---|---|
 | CPython 3.10.20 / 3.11.15 / 3.12.3 / 3.13.13 / 3.14.4, Linux x86-64 (Ubuntu 24.04) | **Tested — full suite passes** | `docs/verification/RELIABILITY_AND_PORTABILITY_REPORT.md` §2 |
 | macOS arm64 / CPython 3.15.0rc1 | **Locally tested — full 271-case suite passes.** This pre-release interpreter is diagnostic evidence, not a supported-version claim | native run, 2026-08-16 |
-| macOS / CPython 3.14 | **Release gate — hosted CI must pass before v2.1.2 publication** | `.github/workflows/ci.yml` |
+| macOS / CPython 3.14 | **Tested — full 271-case suite passes** | GitHub Actions run #4, job `tests (py3.14, macos-14)` |
 | Windows | **Unsupported.** Requires `resource` rlimits + `os.setsid()`; fails with an explicit message naming WSL2/Linux/macOS | guard not executed on Windows |
 | PyPy / non-x86-64 | **Untested** | — |
 

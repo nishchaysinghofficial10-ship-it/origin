@@ -15,19 +15,39 @@ failure, fail-closed confinement setup handling, end-to-end missions, replay,
 portability, security, reliability, and bounded autonomy. Python 3.15 is a
 pre-release diagnostic environment and is not added to the supported matrix.
 
-## Hosted release gates
+## Hosted verification
 
-The release workflow must pass:
+GitHub Actions run #4 passed on candidate commit
+`2ddb481e9adcaede13cad08d8bb7f4f1dad0f6c9`:
 
-- Linux/Ubuntu 24.04 on CPython 3.10, 3.11, 3.12, 3.13, and 3.14.
-- macOS on stable CPython 3.14.
-- The portability/archive round-trip job.
-- A fresh end-to-end mission, fixture evidence, bounded autonomy, and
-  interruption/resume.
+https://github.com/nishchaysinghofficial10-ship-it/origin/actions/runs/31901690419
 
-The final run URL and commit are recorded here only after GitHub reports every
-job successful. Until then this document is release-candidate evidence, not a
-publication claim.
+- Linux/Ubuntu 24.04 on CPython 3.10, 3.11, 3.12, 3.13, and 3.14: **passed**.
+- macOS on stable CPython 3.14: **passed**.
+- Portability and archive round-trip: **passed**.
+- Fresh end-to-end mission, fixture evidence, bounded autonomy, and
+  interruption/resume: **passed**.
+
+All eight jobs completed successfully in 3m06s. The macOS job ran the same
+271-case suite as the Linux matrix.
+
+## Clean archive evidence
+
+`origin-v2.1.2-candidate.zip` was built with `git archive` from the candidate
+commit, extracted into an unrelated temporary directory, and checked there:
+
+```text
+archive_version 2.1.2
+PORTABILITY OK
+three shipped mission states: verified
+Ran 271 tests in 69.958s
+OK
+```
+
+Candidate archive SHA-256:
+`4d8c45df8c158745ef96d01a8af8154e17127a6ad5783cafe3011029d49291ad`.
+The final public archive is rebuilt from the documentation-only finalization
+commit and independently checked before upload.
 
 ## Remaining unverified capability
 

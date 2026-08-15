@@ -20,9 +20,9 @@ commit it describes.
 ### Verification
 - 271 tests pass locally on native macOS/arm64 under CPython 3.15.0rc1,
   including a real allocation bomb, fail-closed monitor failure, experiments,
-  replay, autonomy, and interruption recovery. The supported macOS 3.14 claim
-  remains gated on the hosted workflow; this pre-release interpreter is not
-  added to the support matrix.
+  replay, autonomy, and interruption recovery. GitHub Actions run #4 passes all
+  eight jobs, including stable macOS 3.14 and Linux 3.10–3.14. The pre-release
+  interpreter is diagnostic evidence and is not added to the support matrix.
 
 ## [2.1.1] — 2026-08-15 — verified public patch release
 
