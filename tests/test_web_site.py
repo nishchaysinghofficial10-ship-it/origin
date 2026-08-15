@@ -33,6 +33,7 @@ class SiteParser(HTMLParser):
 class TestPublicWebsite(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        (ROOT / "build").mkdir(parents=True, exist_ok=True)
         cls.tmp = tempfile.TemporaryDirectory(dir=ROOT / "build")
         cls.site = build(Path(cls.tmp.name) / "site")
         cls.html = (cls.site / "index.html").read_text(encoding="utf-8")
