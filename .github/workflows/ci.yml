@@ -172,13 +172,17 @@ jobs:
           assert ports[0].get("target") == 8080, ports
           assert str(ports[0].get("published")) == "8080", ports
           assert config["services"]["worker"].get("network_mode") == "none"
+          assert config["services"]["worker"]["healthcheck"]["test"][-1] == "--health-check"
+          assert config["services"]["backup"]["healthcheck"]["disable"] is True
           PY
           docker run --rm \
             --env ORIGIN_BETA_HOST=beta.example.test \
             --volume "$PWD/deploy/Caddyfile:/etc/caddy/Caddyfile:ro" \
             caddy:2.11.4-alpine caddy validate --config /etc/caddy/Caddyfile
       - name: Build the non-root beta container
-        run: docker build --tag origin-beta:ci .
+        run: >-
+          docker build --tag origin-beta:ci
+          --tag origin-beta:2.1.2-web-beta .
       - name: Smoke-test the containerized API boundary
         run: |
           set -euo pipefail
@@ -210,3 +214,27 @@ jobs:
             --archive /backup/ci-backup.tar.gz
           docker exec origin-beta-ci python -m origin_web.backup restore \
             --archive /backup/ci-backup.tar.gz --target /restore
+      - name: Smoke-test the isolated worker health boundary
+        run: |
+          set -euo pipefail
+          cleanup() {
+            docker compose --env-file deploy/production.env.example \
+              --file compose.production.yaml --file compose.funnel.yaml \
+              down >/dev/null 2>&1 || true
+          }
+          trap cleanup EXIT
+          docker compose --env-file deploy/production.env.example \
+            --file compose.production.yaml --file compose.funnel.yaml \
+            up --detach --no-build api worker
+          for attempt in {1..60}; do
+            API_HEALTH=$(docker inspect --format '{{.State.Health.Status}}' origin-beta-api-1)
+            WORKER_HEALTH=$(docker inspect --format '{{.State.Health.Status}}' origin-beta-worker-1)
+            if [ "$API_HEALTH" = healthy ] && [ "$WORKER_HEALTH" = healthy ]; then
+              break
+            fi
+            sleep 1
+          done
+          test "$(docker inspect --format '{{.State.Health.Status}}' origin-beta-api-1)" = healthy
+          test "$(docker inspect --format '{{.State.Health.Status}}' origin-beta-worker-1)" = healthy
+          test "$(docker inspect --format '{{.HostConfig.NetworkMode}}' origin-beta-worker-1)" = none
+          test "$(docker inspect --format '{{.Config.User}}' origin-beta-worker-1)" = origin

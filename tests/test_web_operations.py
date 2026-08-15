@@ -21,7 +21,7 @@ from origin_web.backup import (
 )
 from origin_web.config import WebConfig, token_digest
 from origin_web.store import Store
-from origin_web.worker import Worker
+from origin_web.worker import Worker, WorkerLease, worker_lease_healthy
 from tools.prepare_beta_deployment import (
     PreparationError,
     main as prepare_main,
@@ -191,6 +191,15 @@ class TestDeploymentPreparation(unittest.TestCase):
 
 
 class TestProductionDeploymentArtifacts(unittest.TestCase):
+    def test_worker_health_requires_a_live_exclusive_lease(self):
+        with tempfile.TemporaryDirectory() as td:
+            lease_path = Path(td) / "worker.lock"
+            self.assertFalse(worker_lease_healthy(lease_path))
+            with WorkerLease(lease_path):
+                self.assertTrue(worker_lease_healthy(lease_path))
+                self.assertEqual(0o600, stat.S_IMODE(lease_path.stat().st_mode))
+            self.assertFalse(worker_lease_healthy(lease_path))
+
     def test_production_stack_exposes_only_tls_proxy(self):
         compose = (ROOT / "compose.production.yaml").read_text()
         proxy, api = compose.split("\n  api:\n", 1)
@@ -203,8 +212,10 @@ class TestProductionDeploymentArtifacts(unittest.TestCase):
         self.assertIn('expose: ["8080"]', api)
         self.assertIn("network_mode: none", worker)
         self.assertNotIn("BETA_TOKEN", worker)
+        self.assertIn('origin_web.worker", "--health-check"', worker)
         self.assertIn("origin-beta-data:/data:ro", backup)
         self.assertIn("network_mode: none", backup)
+        self.assertIn("disable: true", backup)
 
         funnel = (ROOT / "compose.funnel.yaml").read_text()
         self.assertIn('"127.0.0.1:${ORIGIN_FUNNEL_LOCAL_PORT:-8080}:8080"',

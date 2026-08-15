@@ -49,6 +49,7 @@ class WorkerLease:
             self.file.close()
             self.file = None
             raise WorkerError("another ORIGIN beta worker holds the lease") from exc
+        os.chmod(self.path, 0o600)
         self.file.seek(0)
         self.file.truncate()
         self.file.write(json.dumps({"pid": os.getpid(), "host": socket.gethostname(),
@@ -62,6 +63,38 @@ class WorkerLease:
             fcntl.flock(self.file.fileno(), fcntl.LOCK_UN)
             self.file.close()
             self.file = None
+
+
+def worker_lease_healthy(path: Path) -> bool:
+    """Return true only while a live worker owns the exclusive OS lease."""
+    try:
+        stream = path.open("r+", encoding="utf-8")
+    except OSError:
+        return False
+    try:
+        try:
+            record = json.load(stream)
+        except (json.JSONDecodeError, OSError, TypeError):
+            return False
+        try:
+            fcntl.flock(stream.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            pass
+        else:
+            fcntl.flock(stream.fileno(), fcntl.LOCK_UN)
+            return False
+        pid = record.get("pid") if isinstance(record, dict) else None
+        if (not isinstance(pid, int) or pid <= 0 or
+                record.get("host") != socket.gethostname() or
+                not isinstance(record.get("acquired_at"), (int, float))):
+            return False
+        try:
+            os.kill(pid, 0)
+        except OSError:
+            return False
+        return True
+    finally:
+        stream.close()
 
 
 def scrubbed_worker_env() -> dict[str, str]:
@@ -283,7 +316,14 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--once", action="store_true",
                         help="process at most one queued mission and exit")
+    parser.add_argument("--health-check", action="store_true",
+                        help="exit successfully only while the worker lease is active")
     args = parser.parse_args(argv)
+    if args.once and args.health_check:
+        parser.error("--once and --health-check are mutually exclusive")
+    if args.health_check:
+        config = WebConfig.from_env(require_tokens=False)
+        return 0 if worker_lease_healthy(config.data_dir / "worker.lock") else 1
     try:
         return run_worker(once=args.once)
     except WorkerError as exc:
