@@ -49,10 +49,13 @@ documentation starts claiming kernel-grade isolation.
 ## 4. Untrusted code execution — PASS for the executed threat model
 - Only code generated from in-repo, audited domain templates is ever executed.
   LLM output is not code and is never written to a runner.
-- Confinement: `RLIMIT_CPU` (timeout + 10s grace), `RLIMIT_AS` (768 MB default),
-  `RLIMIT_FSIZE` (32 MB), `RLIMIT_NPROC`, `RLIMIT_CORE=0`, `os.setsid()`,
-  `python -I` (isolated mode), scrubbed env, cwd jailed to the experiment dir,
-  256 KB stdout/stderr caps, wall-clock timeout.
+- Confinement: `RLIMIT_CPU` (timeout + 10s grace), `RLIMIT_FSIZE` (32 MB),
+  `RLIMIT_NPROC`, `RLIMIT_CORE=0`, a new process session, `python -I` (isolated
+  mode), scrubbed env, experiment cwd, 256 KB stdout/stderr caps, and a
+  wall-clock timeout. Linux applies `RLIMIT_AS` (768 MB default). macOS cannot
+  enforce that resource: it uses a parent-side process-group RSS watchdog at
+  the same limit and kills the group if the limit is crossed or sampling is
+  unavailable. The exact active contract is stored in `confinement.json`.
   Tested: memory bomb is killed (`test_memory_limit_kills_allocation_bomb`),
   output flood truncated, timeout recorded without state corruption.
 - Policy rejection happens *before* spawn: an over-cap design is recorded as
@@ -74,6 +77,11 @@ documentation starts claiming kernel-grade isolation.
 4. **No tamper-evidence.** Anyone who can write to the project directory can
    rewrite `state.json`. `verify()` catches accidental corruption and naive
    event replay, not a determined forger.
+5. **macOS memory enforcement is sampled RSS, not an address-space rlimit.** A
+   very short allocation spike may occur between samples. The monitor covers
+   the complete process group, uses the OS `/bin/ps`, and fails closed if it
+   cannot obtain a valid sample. Linux retains the kernel-enforced hard
+   `RLIMIT_AS` boundary.
 
 ## 5. Checkpoint safety — PASS
 - Write path: rotate `state.json` → `state.json.bak`, write `state.json.tmp`,

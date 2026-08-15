@@ -1,17 +1,21 @@
-# ORIGIN v1.5 — Reproducibility
+# ORIGIN 2.1.2 — Reproducibility
 
 ## Environment — what was actually tested
 
 | Target | Status | Evidence |
 |---|---|---|
 | CPython 3.10.20 / 3.11.15 / 3.12.3 / 3.13.13 / 3.14.4, Linux x86-64 (Ubuntu 24.04) | **Tested — full suite passes** | `docs/verification/RELIABILITY_AND_PORTABILITY_REPORT.md` §2 |
-| macOS (any version) | **Untested.** POSIX-only code, expected to work — not verified | — |
+| macOS arm64 / CPython 3.15.0rc1 | **Locally tested — full 271-case suite passes.** This pre-release interpreter is diagnostic evidence, not a supported-version claim | native run, 2026-08-16 |
+| macOS / CPython 3.14 | **Release gate — hosted CI must pass before v2.1.2 publication** | `.github/workflows/ci.yml` |
 | Windows | **Unsupported.** Requires `resource` rlimits + `os.setsid()`; fails with an explicit message naming WSL2/Linux/macOS | guard not executed on Windows |
 | PyPy / non-x86-64 | **Untested** | — |
 
 - **Zero third-party dependencies.** No `pip install` is required, for running
   or for testing.
-- Experiment confinement requires POSIX.
+- Experiment confinement requires POSIX. Linux uses `RLIMIT_AS`; macOS uses a
+  fail-closed sampled process-group RSS watchdog because Darwin exposes
+  `RLIMIT_AS` as the non-enforceable `RLIMIT_RSS` alias. Each experiment records
+  the active mechanism and limits in `confinement.json`.
 
 Reproduce the matrix yourself (any interpreter manager works; this is what the
 verification run used):
@@ -26,8 +30,8 @@ done
 
 ## From clone to dossier
 ```bash
-unzip origin-v1.4.zip && cd origin-project
-python -m unittest discover -s tests -v          # 186 tests, ~65 s
+unzip origin-v2.1.2.zip && cd origin-project
+python -m unittest discover -s tests -v          # 271 tests
 python -m origin init "demo question" --dir runs/demo --profile fast
 python -m origin run --dir runs/demo
 python -m origin status --dir runs/demo

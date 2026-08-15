@@ -57,17 +57,23 @@ class ExperimentEngine:
         rec.status = "running"
         self.state.log_event("experiment_started", f"{rec.id}: {title}", experiment=rec.id)
 
+        timeout_s = design.get("timeout_s", 600)
+        confinement = sandbox.confinement_profile(timeout_s)
+        rec.summary["confinement"] = confinement
+        confinement_path = exp_dir / "confinement.json"
+        confinement_path.write_text(json.dumps(confinement, indent=2))
+
         t0 = time.perf_counter()
         try:
-            timeout_s = design.get("timeout_s", 600)
-            proc = subprocess.run(
+            proc = sandbox.run_confined(
                 [sys.executable, "-I", runner.name],
-                cwd=str(exp_dir), capture_output=True, text=True,
-                timeout=timeout_s,
+                cwd=str(exp_dir), timeout_s=timeout_s,
                 env=sandbox.scrubbed_env(str(exp_dir)),
-                preexec_fn=sandbox.make_preexec(timeout_s),
             )
             rec.duration_s = time.perf_counter() - t0
+            confinement["observed_peak_rss_bytes"] = proc.peak_rss_bytes
+            confinement["termination_reason"] = proc.termination_reason
+            confinement_path.write_text(json.dumps(confinement, indent=2))
             (exp_dir / "stdout.log").write_text(
                 sandbox.truncate_output(proc.stdout) +
                 "\n--- stderr ---\n" + sandbox.truncate_output(proc.stderr))
@@ -82,11 +88,22 @@ class ExperimentEngine:
                     rec.error = result["error"]
                 else:
                     rec.status = "completed"
-                    rec.summary = {"measurements": len(result.get("rows", []))}
+                    rec.summary["measurements"] = len(result.get("rows", []))
         except subprocess.TimeoutExpired:
             rec.duration_s = time.perf_counter() - t0
             rec.status = "failed"
             rec.error = f"timeout after {design.get('timeout_s', 600)}s"
+            confinement["termination_reason"] = "wall_timeout"
+            confinement_path.write_text(json.dumps(confinement, indent=2))
+        except (OSError, ValueError, subprocess.SubprocessError) as exc:
+            # A confinement primitive that cannot be installed is a failed
+            # experiment, never permission to run the child without it.
+            rec.duration_s = time.perf_counter() - t0
+            rec.status = "failed"
+            rec.error = ("confinement setup failed closed: "
+                         f"{type(exc).__name__}: {exc}")
+            confinement["termination_reason"] = "confinement_setup_failed"
+            confinement_path.write_text(json.dumps(confinement, indent=2))
 
         rec.finished_at = time.time()
         self.state.budget.charge_experiment(rec.duration_s)

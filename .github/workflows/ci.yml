@@ -18,6 +18,9 @@ jobs:
       matrix:
         runner: [ubuntu-24.04]
         python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+        include:
+          - runner: macos-14
+            python-version: "3.14"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -27,7 +30,7 @@ jobs:
         run: |
           python -VV
           uname -a
-          nproc
+          python -c "import os; print('cpu_count', os.cpu_count())"
       - name: Confirm ORIGIN needs no third-party packages
         run: |
           pip list --format=freeze > /tmp/before.txt

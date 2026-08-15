@@ -1,4 +1,4 @@
-# ORIGIN 2.1.1
+# ORIGIN 2.1.2
 
 **A persistent computational research engine.** Give it a research question in a
 supported domain and a budget. It maintains competing hypotheses, turns them
@@ -50,7 +50,7 @@ design. Details: [`docs/reports/FLAGSHIP_EVALUATION.md`](docs/reports/FLAGSHIP_E
 ## Quick start
 
 ```bash
-unzip origin-v2.1.1.zip && cd origin-project     # or: git clone …
+unzip origin-v2.1.2.zip && cd origin-project     # or: git clone …
 python3 -m unittest discover -s tests
 
 python3 -m origin init "Which sorting strategy wins under which input regime?" \
@@ -60,11 +60,12 @@ python3 -m origin status --dir runs/demo
 python3 -m origin report --dir runs/demo         # the research dossier
 ```
 
-The repository contains 268 test cases. The complete suite passes on Ubuntu
-24.04 with CPython 3.10–3.14; the same hosted run also passed portability,
-archive round-trip, replay, a fresh end-to-end mission, bounded autonomy, and
-fixture evidence checks. See the
-[`v2.1.1 verification record`](docs/release/V2_1_1_VERIFICATION.md).
+The repository contains 271 test cases. The complete suite passes locally on
+native macOS/arm64 and in hosted Linux CI with CPython 3.10–3.14. The release
+workflow also checks macOS on stable CPython 3.14, portability, archive
+round-trip, replay, a fresh end-to-end mission, bounded autonomy, and fixture
+evidence. See the
+[`v2.1.2 verification record`](docs/release/V2_1_2_VERIFICATION.md).
 
 ## Supported domains
 
@@ -118,11 +119,13 @@ textbook-plausible hypotheses ORIGIN had proposed itself.
 
 ## Safety boundaries
 
-- **Experiments** run under user-space confinement: rlimits (CPU, memory, file
-  size, processes), `python -I`, a scrubbed environment carrying no credentials,
-  a cwd jail, output caps and a wall-clock timeout. Designs exceeding policy are
-  rejected *before* a process exists. This is **not** kernel-grade isolation and
-  is never described as such — see [`docs/SECURITY.md`](docs/SECURITY.md).
+- **Experiments** run under user-space confinement: CPU/file/process rlimits,
+  Linux `RLIMIT_AS` or a fail-closed macOS process-group RSS watchdog, `python
+  -I`, a scrubbed environment carrying no credentials, an experiment working
+  directory, output caps and a wall-clock timeout. Every experiment writes its
+  exact profile to `confinement.json`. Designs exceeding policy are rejected
+  *before* a process exists. This is **not** kernel-grade isolation — see
+  [`docs/SECURITY.md`](docs/SECURITY.md).
 - **LLM output** is parsed, schema-validated and mapped through a fixed domain
   vocabulary. There is no path from a provider response to a fact, an evidence
   item, or a knowledge-graph relation.
@@ -191,7 +194,7 @@ Verification reports (every number produced by a command at that commit):
 See [`CONTRIBUTING.md`](CONTRIBUTING.md), [`SECURITY.md`](SECURITY.md),
 [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md), [`CHANGELOG.md`](CHANGELOG.md), and
 the release evidence in
-[`docs/release/V2_1_1_RELEASE_CHECKLIST.md`](docs/release/V2_1_1_RELEASE_CHECKLIST.md).
+[`docs/release/V2_1_2_RELEASE_CHECKLIST.md`](docs/release/V2_1_2_RELEASE_CHECKLIST.md).
 
 The one rule: **no capability is complete without evidence.** A feature comes with a test; a claim comes with the
 command that produced it. Saying "unverified" is welcome — overclaiming is not,

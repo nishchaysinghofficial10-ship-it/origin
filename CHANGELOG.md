@@ -3,6 +3,27 @@
 All notable changes. Every number here was produced by a command run at the
 commit it describes.
 
+## [2.1.2] — 2026-08-16 — macOS confinement correction
+
+### Fixed
+- Replaced the unusable Darwin `RLIMIT_AS`/`RLIMIT_RSS` alias with a
+  parent-enforced process-group RSS watchdog. Over-limit children are killed;
+  an unavailable or malformed monitor fails closed instead of running without
+  a memory boundary. Linux retains its hard `RLIMIT_AS` limit.
+- Confinement setup errors now become durable failed experiment records rather
+  than escaping as opaque `SubprocessError` exceptions that abort a mission.
+- Every experiment records its platform-specific confinement contract and
+  observed termination reason in `confinement.json` and durable state.
+- The workflow now includes stable CPython 3.14 on macOS and uses a portable
+  CPU-count command instead of Linux-only `nproc`.
+
+### Verification
+- 271 tests pass locally on native macOS/arm64 under CPython 3.15.0rc1,
+  including a real allocation bomb, fail-closed monitor failure, experiments,
+  replay, autonomy, and interruption recovery. The supported macOS 3.14 claim
+  remains gated on the hosted workflow; this pre-release interpreter is not
+  added to the support matrix.
+
 ## [2.1.1] — 2026-08-15 — verified public patch release
 
 **268 tests**, Ubuntu 24.04, CPython 3.10–3.14. Hosted CI run #2 completed all

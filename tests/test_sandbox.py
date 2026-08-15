@@ -7,6 +7,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
@@ -59,14 +60,44 @@ class TestSandboxPolicy(unittest.TestCase):
 
     def test_memory_limit_kills_allocation_bomb(self):
         script = self.tmp / "bomb.py"
-        script.write_text("x = bytearray(2_000_000_000)\nprint('survived')\n")
-        proc = subprocess.run(
+        script.write_text(
+            "chunks = []\n"
+            "while True:\n"
+            "    chunks.append(bytearray(16_000_000))\n"
+            "print('survived')\n")
+        proc = sandbox.run_confined(
             [sys.executable, "-I", str(script)], cwd=str(self.tmp),
-            capture_output=True, text=True, timeout=30,
+            timeout_s=30,
             env=sandbox.scrubbed_env(str(self.tmp)),
-            preexec_fn=sandbox.make_preexec(10, {"mem_mb": 128}))
+            policy={"mem_mb": 128})
         self.assertNotEqual(proc.returncode, 0)
         self.assertNotIn("survived", proc.stdout)
+        if sys.platform == "darwin":
+            self.assertEqual(proc.termination_reason, "memory_limit_exceeded")
+
+    def test_confinement_profile_reports_the_real_platform_mechanism(self):
+        darwin = sandbox.confinement_profile(
+            10, {"mem_mb": 128}, platform_name="darwin")
+        linux = sandbox.confinement_profile(
+            10, {"mem_mb": 128}, platform_name="linux")
+        self.assertEqual(darwin["memory"]["mechanism"],
+                         "process_group_rss_watchdog")
+        self.assertTrue(darwin["memory"]["fail_closed"])
+        self.assertEqual(linux["memory"]["mechanism"], "RLIMIT_AS")
+        self.assertEqual(darwin["memory"]["limit_bytes"], 128 * 1024 * 1024)
+
+    def test_darwin_monitor_failure_kills_the_child_fail_closed(self):
+        script = self.tmp / "wait.py"
+        script.write_text("import time; time.sleep(10)\n")
+        with patch.object(sandbox, "_darwin_process_group_rss_bytes",
+                          return_value=None):
+            proc = sandbox._run_darwin_confined(
+                [sys.executable, "-I", str(script)], cwd=str(self.tmp),
+                timeout_s=5, env=sandbox.scrubbed_env(str(self.tmp)),
+                policy={"mem_mb": 128})
+        self.assertNotEqual(proc.returncode, 0)
+        self.assertEqual(proc.termination_reason, "rss_monitor_unavailable")
+        self.assertIn("failed closed", proc.stderr)
 
     def test_output_flood_is_truncated(self):
         flood = "A" * 5_000_000
@@ -103,10 +134,34 @@ class TestSandboxPolicy(unittest.TestCase):
         rec = eng.run(design, title="crash test")
         self.assertEqual(rec.status, "failed")
         self.assertIn("boom", rec.error)
+        profile_path = rec.path(self.st.root) / "confinement.json"
+        self.assertTrue(profile_path.exists())
+        profile = json.loads(profile_path.read_text())
+        expected = ("process_group_rss_watchdog" if sys.platform == "darwin"
+                    else "RLIMIT_AS")
+        self.assertEqual(profile["memory"]["mechanism"], expected)
+        self.assertIn("confinement", rec.summary)
         self.st.save()
         st2 = ResearchState.load(self.st.root)
         self.assertEqual(st2.verify(), [])
         self.assertEqual(st2.experiments[rec.id].status, "failed")
+
+    def test_confinement_setup_error_is_a_recorded_failure(self):
+        design = {"kind": "benchmark", "round": 1,
+                  "algorithms": ["insertion_sort"],
+                  "regimes": ["random"], "sizes": [8], "trials": 1,
+                  "seed": 1, "timeout_s": 30, "hypothesis_ids": []}
+        with patch.object(sandbox, "run_confined",
+                          side_effect=subprocess.SubprocessError("blocked")):
+            rec = self.eng.run(design, title="setup failure")
+        self.assertEqual(rec.status, "failed")
+        self.assertIn("confinement setup failed closed", rec.error)
+        profile = json.loads(
+            (rec.path(self.st.root) / "confinement.json").read_text())
+        self.assertEqual(profile["termination_reason"],
+                         "confinement_setup_failed")
+        self.st.save()
+        self.assertEqual(ResearchState.load(self.st.root).verify(), [])
 
 
 if __name__ == "__main__":

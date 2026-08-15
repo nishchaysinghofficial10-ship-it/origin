@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "origin-research"
-version = "2.1.1"
+version = "2.1.2"
 description = "ORIGIN - persistent computational research engine"
 requires-python = ">=3.10"
 license = { text = "MIT" }
@@ -16,6 +16,7 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
     "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
 ]
 
 [project.scripts]

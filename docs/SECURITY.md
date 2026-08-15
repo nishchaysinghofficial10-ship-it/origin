@@ -11,9 +11,12 @@ autonomy), `docs/security/THREAT_MODEL.md`,
   strings pass through a redactor.
 - **Research integrity**: LLM output and ingested documents are untrusted data.
   They can propose; they cannot become evidence, facts, or graph relations.
-- **Host resources**: experiment subprocesses run under CPU/memory/file-size/
-  process rlimits, a wall-clock timeout, output caps, and a scrubbed
-  environment. Designs exceeding policy are rejected before any process starts.
+- **Host resources**: experiment subprocesses use CPU/file/process rlimits and
+  a hard wall timeout. Linux enforces memory with `RLIMIT_AS`; macOS uses a
+  parent process-group RSS watchdog and kills the group if the limit is crossed
+  or monitoring becomes unavailable. Output is capped and the environment is
+  scrubbed. Each experiment stores the applied contract in `confinement.json`.
+  Designs exceeding policy are rejected before any process starts.
 - **State**: atomic checkpoint writes with backup rotation; corrupt checkpoints
   fail loudly instead of silently truncating history.
 
