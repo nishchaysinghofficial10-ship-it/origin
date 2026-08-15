@@ -1,8 +1,8 @@
-# ORIGIN 2.1.1rc1 — Release Candidate Notes
+# ORIGIN 2.1.1 — Release Notes
 
-This candidate reconciles the v2.1 implementation with truthful release
-material. It does not add a new research capability and it is not yet approved
-for public release.
+This patch release reconciles the v2.1 implementation with truthful release
+material, restores the public repository hierarchy, and adds executed hosted CI
+evidence. It does not claim a new research capability.
 
 ## Included capabilities
 
@@ -16,19 +16,21 @@ for public release.
 - Reproducibility checks that distinguish exact results from host-dependent
   timing claims.
 
-## What changed in this candidate
+## What changed
 
-- Version and archive instructions now consistently say `2.1.1rc1`.
-- The README distinguishes the 268 test-case inventory from a fresh passing
-  support-matrix result.
+- Version and archive instructions now consistently say `2.1.1`.
+- The README links the fresh passing 268-case support-matrix result.
 - Current release records document the outstanding verification work instead of
   reusing v2.0.0 evidence.
+- The GitHub repository has its intended folder structure and an executable CI
+  workflow rather than a flattened web upload.
 
-## Release blockers
+## Verification
 
-The Linux CPython 3.10–3.14 matrix, hosted CI run, and clean-archive candidate
-verification remain pending. See
-[`V2_1_1_FINAL_STATUS.md`](V2_1_1_FINAL_STATUS.md) for the current verdict.
+Hosted CI run #2 passed all seven jobs, including the full suite on Linux
+CPython 3.10–3.14, portability, replay, archive round-trip, and a clean
+end-to-end mission. See
+[`V2_1_1_VERIFICATION.md`](V2_1_1_VERIFICATION.md) for the evidence.
 
 ## Honest limitations
 

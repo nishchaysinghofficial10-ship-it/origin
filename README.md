@@ -1,4 +1,4 @@
-# ORIGIN 2.1.1rc1
+# ORIGIN 2.1.1
 
 **A persistent computational research engine.** Give it a research question in a
 supported domain and a budget. It maintains competing hypotheses, turns them
@@ -50,7 +50,7 @@ design. Details: [`docs/reports/FLAGSHIP_EVALUATION.md`](docs/reports/FLAGSHIP_E
 ## Quick start
 
 ```bash
-unzip origin-v2.1.1rc1.zip && cd origin-project  # or: git clone …
+unzip origin-v2.1.1.zip && cd origin-project     # or: git clone …
 python3 -m unittest discover -s tests
 
 python3 -m origin init "Which sorting strategy wins under which input regime?" \
@@ -60,10 +60,11 @@ python3 -m origin status --dir runs/demo
 python3 -m origin report --dir runs/demo         # the research dossier
 ```
 
-This is a release candidate. The repository contains 268 test cases, but this
-candidate is **not yet approved for public release**: the v2.1.1 supported-Linux
-matrix, hosted CI run, and live-provider check are recorded as outstanding in
-[`docs/release/V2_1_1_FINAL_STATUS.md`](docs/release/V2_1_1_FINAL_STATUS.md).
+The repository contains 268 test cases. The complete suite passes on Ubuntu
+24.04 with CPython 3.10–3.14; the same hosted run also passed portability,
+archive round-trip, replay, a fresh end-to-end mission, bounded autonomy, and
+fixture evidence checks. See the
+[`v2.1.1 verification record`](docs/release/V2_1_1_VERIFICATION.md).
 
 ## Supported domains
 
@@ -151,8 +152,6 @@ evaluation), `autonomy_demo`, `evidence_demo`, `demo_run`.
 
 ## Known limitations
 
-- **Release status:** v2.1.1rc1 is awaiting the verification gates above. The
-  historical v2.0 release record is not evidence for this candidate.
 - **Two domains only**, both computational and deterministic. Nothing here
   addresses wet-lab, medical, legal or financial research, and it must not be
   used for those.

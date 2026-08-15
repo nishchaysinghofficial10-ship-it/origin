@@ -1,4 +1,4 @@
-# ORIGIN 2.1.1rc1 — Verification Record
+# ORIGIN 2.1.1 — Verification Record
 
 Date: 2026-08-15
 
@@ -6,16 +6,31 @@ Date: 2026-08-15
 
 | Check | Command or method | Result |
 |---|---|---|
-| Package identity | inspect `pyproject.toml` and `origin/__init__.py` | both report `2.1.1rc1` |
+| Package identity | inspect `pyproject.toml` and `origin/__init__.py` | both report `2.1.1` |
 | Test inventory | count `def test_` methods under `tests/` | 268 test cases |
 | Portable artifacts | `python3 tools/check_artifacts_portable.py .` | `PORTABILITY OK` |
 | Autonomy example | `python3 -m origin verify --dir examples/autonomy_demo` | verified |
 | Graph example | `python3 -m origin verify --dir examples/graph_mission` | verified |
 | Flagship example | `python3 -m origin verify --dir examples/final_flagship_mission/origin_full` | verified |
-| Clean candidate archive | extract the candidate, import `origin`, repeat the portability and three artifact checks | import reports `2.1.1rc1`; all listed checks pass; no cache files found |
+| Clean release archive | extract the archive, import `origin`, repeat the portability and three artifact checks | import reports `2.1.1`; all listed checks pass; no cache files found |
 
 These checks demonstrate that the shipped state artifacts are internally
 consistent and portable. They do not replace a fresh execution of the suite.
+
+## Hosted CI verification
+
+- Workflow: `CI` run #2
+- Commit: `3ed48cc142788477755015c06f546fcda9c3973d`
+- Environment: Ubuntu 24.04
+- Duration: 4m35s
+- Result: **SUCCESS**
+
+https://github.com/nishchaysinghofficial10-ship-it/origin/actions/runs/31896862103
+
+Seven jobs completed successfully. Each Python matrix job's `Full test suite`
+step passed; the additional jobs passed a clean end-to-end mission, fixture web
+evidence, bounded autonomy, interrupt/resume, portability, relocated and archived
+artifacts, exact replay, and archive round-trip execution.
 
 ## Review-environment limitation
 
@@ -31,10 +46,9 @@ This is neither a supported-platform result nor a reason to weaken ORIGIN's
 confinement. It must not be reported as a Linux test failure or as macOS
 support.
 
-## Required supported-platform matrix
+## Supported-platform matrix
 
-Run this command from a clean extraction of this exact candidate on each listed
-Linux interpreter:
+The hosted workflow ran this command on each listed Linux interpreter:
 
 ```bash
 python3 -m unittest discover -s tests
@@ -42,15 +56,11 @@ python3 -m unittest discover -s tests
 
 | Platform | Required result | Status |
 |---|---|---|
-| Linux / CPython 3.10 | all 268 pass | pending |
-| Linux / CPython 3.11 | all 268 pass | pending |
-| Linux / CPython 3.12 | all 268 pass | pending |
-| Linux / CPython 3.13 | all 268 pass | pending |
-| Linux / CPython 3.14 | all 268 pass | pending |
-
-For every row, append the exact interpreter version, OS, command output,
-elapsed time, archive identifier, and CI URL where applicable. Do not replace a
-pending row with an assertion or an earlier 2.0.0 result.
+| Linux / CPython 3.10 | full 268-case suite | passed |
+| Linux / CPython 3.11 | full 268-case suite | passed |
+| Linux / CPython 3.12 | full 268-case suite | passed |
+| Linux / CPython 3.13 | full 268-case suite | passed |
+| Linux / CPython 3.14 | full 268-case suite | passed |
 
 ## Additional verification commands
 
@@ -63,8 +73,8 @@ python3 tools/autonomy_demo.py --dir runs/autonomy
 python3 tools/flagship_evaluation.py --dir runs/flagship
 ```
 
-The hosted workflow is defined in `.github/workflows/ci.yml`. It is not a green
-build until it has actually run for this candidate.
+The hosted workflow is defined in `.github/workflows/ci.yml`; the successful
+run and individual job results are public at the URL above.
 
 ## Optional capability checks
 

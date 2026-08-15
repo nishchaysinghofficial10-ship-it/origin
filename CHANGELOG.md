@@ -3,6 +3,28 @@
 All notable changes. Every number here was produced by a command run at the
 commit it describes.
 
+## [2.1.1] — 2026-08-15 — verified public patch release
+
+**268 tests**, Ubuntu 24.04, CPython 3.10–3.14. Hosted CI run #2 completed all
+seven jobs successfully in 4m35s:
+https://github.com/nishchaysinghofficial10-ship-it/origin/actions/runs/31896862103
+
+### Fixed and verified
+- Restored the repository's directory hierarchy after the first web upload
+  flattened package, test, documentation, example, tool, and workflow files.
+- Fixed invalid indentation in two CI workflow script blocks before any tests
+  had run; the corrected workflow is YAML-valid and executed successfully.
+- The hosted matrix passed the full suite on Python 3.10, 3.11, 3.12, 3.13,
+  and 3.14. Separate jobs passed the clean end-to-end mission and portability,
+  relocation, replay, archive round-trip, fixture evidence, bounded autonomy,
+  and interrupt/resume checks.
+- Public version, archive name, release records, and runtime metadata now agree
+  on `2.1.1`.
+
+### Deliberately retained limitations
+- Live Anthropic provider use remains `UNVERIFIED` until an operator records a
+  redacted live-check result. macOS remains untested; Windows is unsupported.
+
 ## [2.1.1rc1] — release-evidence reconciliation (not for public release)
 
 ### Changed
