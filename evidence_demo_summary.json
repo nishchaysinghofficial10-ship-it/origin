@@ -1,0 +1,68 @@
+{
+  "mode": "live",
+  "question": "What source-backed conditions are commonly associated with algorithmic performance tradeoffs, and which of those claims can ORIGIN test in its own controlled benchmark domain?",
+  "requests": 2,
+  "sources": [
+    "src_17018df8e4",
+    "src_32c45cedaa"
+  ],
+  "claims": 10,
+  "claim_statuses": [
+    "speculation"
+  ],
+  "conflicts": 0,
+  "testable_directions": [
+    {
+      "claim": "clm_d489588de1",
+      "maps_to": "TESTABLE: beats(hybrid_sort, merge_sort, nearly_sorted) \u2014 adaptive advantage on presorted runs"
+    },
+    {
+      "claim": "clm_5b231232f4",
+      "maps_to": "NOT MEASURABLE here: memory use is not instrumented"
+    },
+    {
+      "claim": "clm_cb1e8fa367",
+      "maps_to": "NOT MEASURABLE here: memory use is not instrumented"
+    },
+    {
+      "claim": "clm_8529c70fc7",
+      "maps_to": "NOT MEASURABLE here: memory use is not instrumented"
+    }
+  ],
+  "results": [
+    {
+      "ok": true,
+      "source": "src_17018df8e4",
+      "claims": [
+        "clm_d489588de1",
+        "clm_0c6ffe35fb",
+        "clm_5b231232f4",
+        "clm_cb1e8fa367",
+        "clm_8529c70fc7"
+      ],
+      "rejected": 0,
+      "conflicts": [],
+      "reliability": 0.45,
+      "content_hash": "674d514b968e2a9b",
+      "elapsed_s": 1.15
+    },
+    {
+      "ok": true,
+      "source": "src_32c45cedaa",
+      "claims": [
+        "clm_e6bbe45bb1",
+        "clm_4c61ec43a9",
+        "clm_3e714d60d6",
+        "clm_d56eda771a",
+        "clm_488f4d0cfc"
+      ],
+      "rejected": 0,
+      "conflicts": [],
+      "reliability": 0.45,
+      "content_hash": "69254a51e3b70df1",
+      "elapsed_s": 0.98
+    }
+  ],
+  "facts_created_from_web": 0,
+  "evidence_items_created_from_web": 0
+}

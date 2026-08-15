@@ -1,0 +1,5 @@
+Adaptive Sorting Notes
+
+Insertion sort is faster than merge sort on nearly-sorted input because the number of inversions is small and the work approaches linear.
+
+Merge sort is a stable comparison sort with guaranteed n log n behaviour on every input distribution.

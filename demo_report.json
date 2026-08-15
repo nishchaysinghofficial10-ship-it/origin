@@ -1,0 +1,140 @@
+{
+  "question": "Which sorting strategy wins under which input regime, and what does the published literature claim about those tradeoffs?",
+  "lifecycle_phase": "COMPLETED",
+  "mission_stop_reason": "no high-value next experiment remained",
+  "autonomy_stop_reason": "completed",
+  "work_items": [
+    {
+      "id": "wi_6663aba7ac",
+      "action": "plan_mission",
+      "status": "done",
+      "attempts": 1,
+      "reason": "mission has not been decomposed yet",
+      "last_error": ""
+    },
+    {
+      "id": "wi_8e67d39e85",
+      "action": "retrieve_source",
+      "status": "done",
+      "attempts": 1,
+      "reason": "an approved fixture source may contain claims worth testing in the benchmark domain",
+      "last_error": ""
+    },
+    {
+      "id": "wi_820586dc1e",
+      "action": "retrieve_source",
+      "status": "done",
+      "attempts": 3,
+      "reason": "a second approved source that is intermittently unavailable (planned retryable failure)",
+      "last_error": "RetrievalError: RetrievalError: TimeoutError fetching https://fixtures.invalid/intermittent: simulated transient failure"
+    },
+    {
+      "id": "wi_613291bd4a",
+      "action": "form_hypotheses",
+      "status": "done",
+      "attempts": 1,
+      "reason": "no hypotheses exist to test",
+      "last_error": ""
+    },
+    {
+      "id": "wi_d693324bfb",
+      "action": "run_experiment",
+      "status": "done",
+      "attempts": 1,
+      "reason": "hyp_2be7e87921 is proposed and untested (importance 0.9)",
+      "last_error": ""
+    },
+    {
+      "id": "wi_9fb30e31ec",
+      "action": "run_experiment",
+      "status": "done",
+      "attempts": 1,
+      "reason": "hyp_48de48fcea is proposed and untested (importance 1.0)",
+      "last_error": ""
+    },
+    {
+      "id": "wi_83c48e9ece",
+      "action": "run_experiment",
+      "status": "done",
+      "attempts": 1,
+      "reason": "hyp_db14df8458 is proposed and untested (importance 0.8)",
+      "last_error": ""
+    },
+    {
+      "id": "wi_45d227b127",
+      "action": "run_experiment",
+      "status": "done",
+      "attempts": 1,
+      "reason": "hyp_fc15d13b1b is proposed and untested (importance 1.0)",
+      "last_error": ""
+    },
+    {
+      "id": "wi_b6d51931b9",
+      "action": "run_experiment",
+      "status": "done",
+      "attempts": 1,
+      "reason": "hyp_5542e8d61c is proposed and untested (importance 1.2)",
+      "last_error": ""
+    },
+    {
+      "id": "wi_52d660cfb3",
+      "action": "generate_report",
+      "status": "queued",
+      "attempts": 0,
+      "reason": "mission has results worth reporting",
+      "last_error": ""
+    },
+    {
+      "id": "wi_d492012b03",
+      "action": "criticise",
+      "status": "queued",
+      "attempts": 0,
+      "reason": "supported conclusions need replication and falsification before acceptance (criticism cycle 1)",
+      "last_error": ""
+    }
+  ],
+  "queue_summary": {
+    "queued": 2,
+    "done": 9
+  },
+  "counters": {
+    "ticks": 11,
+    "actions_completed": 9,
+    "actions_failed": 2,
+    "consecutive_failures": 0,
+    "idle_ticks": 0,
+    "retrievals": 4,
+    "provider_calls": 0
+  },
+  "decision_records": 22,
+  "retries_observed": 2,
+  "budgets": {
+    "experiments": "2/8",
+    "compute_s": 0.1,
+    "provider_calls": 0,
+    "retrievals": 4
+  },
+  "evidence": {
+    "web_sources": 1,
+    "web_claims": 2,
+    "claim_statuses": [
+      "speculation"
+    ],
+    "evidence_items_from_experiments": 9,
+    "evidence_items_from_web": 0
+  },
+  "hypotheses": {
+    "hyp_48de48fcea": "weakened",
+    "hyp_fc15d13b1b": "rejected",
+    "hyp_2be7e87921": "weakened",
+    "hyp_db14df8458": "weakened",
+    "hyp_5542e8d61c": "weakened"
+  },
+  "experiments": 2,
+  "failures": 1,
+  "limitations": [
+    "Fixture-only: no network or provider call occurred.",
+    "Autonomy chose among permitted actions; it never created an action type, widened a limit, or accepted a web claim as evidence.",
+    "Time was injected, so backoff durations are demonstrated, not endured."
+  ]
+}
