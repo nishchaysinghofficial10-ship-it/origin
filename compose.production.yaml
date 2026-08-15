@@ -82,6 +82,12 @@ services:
       - origin-beta-data:/data
     environment:
       ORIGIN_WEB_ACCEPT_JOBS: ${ORIGIN_WEB_ACCEPT_JOBS:-1}
+    healthcheck:
+      test: ["CMD", "python", "-m", "origin_web.worker", "--health-check"]
+      interval: 30s
+      timeout: 3s
+      start_period: 10s
+      retries: 3
     cap_drop: [ALL]
     security_opt:
       - no-new-privileges:true
@@ -100,6 +106,8 @@ services:
     profiles: [ops]
     entrypoint: ["python", "-m", "origin_web.backup"]
     command: ["--help"]
+    healthcheck:
+      disable: true
     read_only: true
     network_mode: none
     tmpfs:
