@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import secrets
+import shutil
 import sqlite3
 import threading
 import time
@@ -423,9 +424,21 @@ class Store:
             "SELECT * FROM audit ORDER BY id DESC LIMIT ?", (limit,)).fetchall()
         return [dict(row) for row in rows]
 
-    def dump_health(self) -> dict[str, Any]:
+    def dump_health(self, now: float | None = None) -> dict[str, Any]:
         connection = self._connection()
         counts = {row["status"]: row["n"] for row in connection.execute(
             "SELECT status,count(*) AS n FROM missions GROUP BY status")}
+        oldest = connection.execute(
+            "SELECT MIN(updated_at) FROM missions WHERE status='queued'").fetchone()[0]
+        current = time.time() if now is None else now
+        oldest_queued_seconds = (0 if oldest is None else
+                                 max(0, int(current - float(oldest))))
+        storage = shutil.disk_usage(self.path.parent)
         return {"database": "ok", "queue": counts,
-                "accepting_jobs": self.accepting_jobs()}
+                "accepting_jobs": self.accepting_jobs(),
+                "failed_missions": counts.get("failed", 0),
+                "oldest_queued_seconds": oldest_queued_seconds,
+                "storage": {
+                    "free_bytes": storage.free,
+                    "total_bytes": storage.total,
+                }}

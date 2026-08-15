@@ -212,6 +212,25 @@ At minimum monitor:
 - Caddy certificate renewal and 4xx/5xx rates;
 - successful backup creation, digest verification, and periodic restore tests.
 
+Run the credential-safe one-shot monitor on the Docker host (it prints metrics,
+never the administrator credential):
+
+```bash
+python3 tools/monitor_beta.py \
+  --api-origin https://beta.example.com \
+  --admin-token-file deploy/secrets/admin_token.txt \
+  --require-intake-open
+```
+
+The command fails non-zero unless public health, authenticated database health,
+queue age, failed mission count, data-volume free space, API/worker container
+health, restart counts, and recent worker lease/traceback logs are all within
+their thresholds. Use `--max-queue-age`, `--max-failed`, `--min-free-bytes`,
+`--max-restarts`, and `--log-since` to set an explicit alert policy. Schedule
+this command with the host's protected operator scheduler; redirect output only
+to an operator-readable location because queue counts are private operational
+metadata. Use `--skip-docker` only for an off-host HTTPS probe.
+
 Compose rotates API, worker, and proxy logs at five 10 MiB files per service.
 Caddy logs method and path to stdout; tokens are accepted only in the
 Authorization header and are not placed in URLs or application logs.

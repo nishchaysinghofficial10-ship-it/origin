@@ -169,6 +169,22 @@ class TestInteractiveBetaAPI(unittest.TestCase):
         self.assertEqual(200, health_status)
         self.assertFalse(health["accepting_missions"])
 
+    def test_admin_health_exposes_private_operating_metrics(self):
+        self.create()
+        status, rejected, _ = self.request(
+            "GET", "/api/v1/admin/health", token=TOKEN)
+        self.assertEqual(403, status)
+        self.assertEqual("admin_required", rejected["error"]["code"])
+        status, health, _ = self.request(
+            "GET", "/api/v1/admin/health", token=ADMIN_TOKEN)
+        self.assertEqual(200, status)
+        self.assertEqual("ok", health["database"])
+        self.assertEqual(0, health["failed_missions"])
+        self.assertGreaterEqual(health["oldest_queued_seconds"], 0)
+        self.assertGreater(health["storage"]["free_bytes"], 0)
+        self.assertGreaterEqual(health["storage"]["total_bytes"],
+                                health["storage"]["free_bytes"])
+
     def test_paused_missions_cannot_bypass_active_limit_on_resume(self):
         _, first, _ = self.create()
         first_id = first["mission"]["id"]

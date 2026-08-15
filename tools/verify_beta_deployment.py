@@ -135,6 +135,18 @@ class DeploymentVerifier:
         admin = self.decoded(payload)
         if status != 200 or admin.get("database") != "ok" or "queue" not in admin:
             raise VerificationError("administrator health endpoint failed")
+        storage = admin.get("storage", {})
+        monitoring_values = (
+            admin.get("failed_missions"),
+            admin.get("oldest_queued_seconds"),
+            storage.get("free_bytes") if isinstance(storage, dict) else None,
+            storage.get("total_bytes") if isinstance(storage, dict) else None,
+        )
+        if not all(isinstance(value, int) and value >= 0
+                   for value in monitoring_values):
+            raise VerificationError(
+                "administrator health endpoint lacks operating metrics")
+        evidence["monitoring"] = "available"
         status, payload, _ = self.request("GET", "/api/v1/missions",
                                           token=self.beta_token)
         missions = self.decoded(payload)

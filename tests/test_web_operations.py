@@ -289,6 +289,7 @@ class TestRemoteDeploymentVerifier(unittest.TestCase):
     def test_read_only_and_mutating_acceptance_gates(self):
         evidence = self.verifier.verify_read_only()
         self.assertEqual("bounded", evidence["capabilities"])
+        self.assertEqual("available", evidence["monitoring"])
         self.assertEqual("closed", self.verifier.set_intake(False))
         self.assertEqual("open", self.verifier.set_intake(True))
         exercised = self.verifier.exercise(timeout=180)
