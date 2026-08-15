@@ -56,13 +56,7 @@ jobs:
       - name: Performance-reproducibility guarantees on the shipped flagship
         run: |
           set -euo pipefail
-          EXP=$(python - <<'PY'
-from origin.state import ResearchState
-st = ResearchState.load("examples/flagship_run")
-print(next(r.id for r in st.experiments.values()
-           if r.design.get("kind") == "sweep" and r.status == "completed"))
-PY
-)
+          EXP=$(python -c 'from origin.state import ResearchState; st = ResearchState.load("examples/flagship_run"); print(next(r.id for r in st.experiments.values() if r.design.get("kind") == "sweep" and r.status == "completed"))')
           echo "replaying $EXP — exact reproducibility is asserted, timing is not"
           python -m origin replay --dir examples/flagship_run --exp "$EXP"
 
@@ -71,12 +65,7 @@ PY
           set -euo pipefail
           cp -r examples/flagship_run "$RUNNER_TEMP/relocated_mission"
           python -m origin verify --dir "$RUNNER_TEMP/relocated_mission"
-          EXP=$(python - <<'PY'
-from origin.state import ResearchState
-st = ResearchState.load("examples/flagship_run")
-print(next(r.id for r in st.experiments.values() if r.status == "completed"))
-PY
-)
+          EXP=$(python -c 'from origin.state import ResearchState; st = ResearchState.load("examples/flagship_run"); print(next(r.id for r in st.experiments.values() if r.status == "completed"))')
           echo "replaying $EXP from the relocated copy"
           python -m origin replay --dir "$RUNNER_TEMP/relocated_mission" --exp "$EXP"
 
