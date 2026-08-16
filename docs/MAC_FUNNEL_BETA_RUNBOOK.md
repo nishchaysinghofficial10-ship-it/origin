@@ -92,16 +92,13 @@ python3 tools/live_general_research_check.py \
 ## 3. Validate and start only the loopback stack
 
 ```bash
-docker compose --env-file .env.production \
-  --file compose.production.yaml --file compose.funnel.yaml \
+python3 tools/compose_beta.py --funnel -- \
   config >/tmp/origin-funnel-compose.yaml
 
-docker compose --env-file .env.production \
-  --file compose.production.yaml --file compose.funnel.yaml \
+python3 tools/compose_beta.py --funnel -- \
   build api worker researcher backup
 
-docker compose --env-file .env.production \
-  --file compose.production.yaml --file compose.funnel.yaml \
+python3 tools/compose_beta.py --funnel -- \
   up --detach api worker researcher
 ```
 
@@ -109,8 +106,7 @@ Do not start `proxy` on this path; Tailscale supplies the public TLS boundary.
 Confirm that Docker publishes only loopback and intake is closed:
 
 ```bash
-docker compose --env-file .env.production \
-  --file compose.production.yaml --file compose.funnel.yaml ps
+python3 tools/compose_beta.py --funnel -- ps
 curl --fail --silent --show-error http://127.0.0.1:8080/api/v1/health
 ```
 
@@ -145,8 +141,7 @@ python3 tools/prepare_beta_deployment.py \
   --site-origin https://nishchaysinghofficial10-ship-it.github.io \
   --accept-jobs
 
-docker compose --env-file .env.production \
-  --file compose.production.yaml --file compose.funnel.yaml \
+python3 tools/compose_beta.py --funnel -- \
   up --detach api
 
 python3 tools/verify_beta_deployment.py \
@@ -200,9 +195,7 @@ python3 tools/verify_beta_deployment.py \
   --intake closed
 
 tailscale funnel --https=443 http://127.0.0.1:8080 off
-docker compose --env-file .env.production \
-  --file compose.production.yaml --file compose.funnel.yaml \
-  down
+python3 tools/compose_beta.py --funnel -- down
 ```
 
 Do not add `--volumes`; that would delete durable mission data. Reconnect the

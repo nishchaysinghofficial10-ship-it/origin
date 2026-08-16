@@ -59,7 +59,7 @@ knowledge-graph authority.
 | Paid missions globally / rolling 24h | 4 | 100 |
 | Provider requests per mission | 1 | 1 |
 | Web searches per provider turn | 3 | 5 |
-| Output tokens per provider turn | 3,200 | 8,192 |
+| Requested final-output token ceiling per provider turn | 3,200 | 8,192 |
 | Provider timeout per request | 120 s | 300 s |
 | Active missions per tester | 1 | 10 |
 
@@ -69,6 +69,11 @@ charged immediately before each paid network request. It survives crashes, so
 a repeatedly restarting service cannot silently retry beyond the mission cap.
 Reservations and actual provider/search/token usage appear only in the
 authenticated administrator health response.
+
+Anthropic's reported output-token usage can include tokens generated inside
+the server-side search loop, so it can exceed the requested final-output
+ceiling. ORIGIN records that actual usage rather than falsely clipping it. The
+hard paid-search limit is the tool's `max_uses` value.
 
 ## Topic safety policy
 
@@ -116,14 +121,17 @@ search is enabled for the Anthropic organization; this command must pass.
 Keep intake closed while replacing services:
 
 ```bash
-docker compose --env-file .env.production \
-  --file compose.production.yaml --file compose.funnel.yaml \
+python3 tools/compose_beta.py --funnel -- \
   build api worker researcher backup
 
-docker compose --env-file .env.production \
-  --file compose.production.yaml --file compose.funnel.yaml \
+python3 tools/compose_beta.py --funnel -- \
   up --detach --wait api worker researcher
 ```
+
+`compose_beta.py` validates all three mode-`0600` host secret files, passes
+their values only to the short-lived Compose client, and asks Compose to mount
+them as mode-`0400`, UID/GID-`10001` runtime files. The values are not placed in
+the service environment or rendered Compose configuration.
 
 Do not start the Caddy `proxy` when Tailscale Funnel already terminates HTTPS.
 The public API must remain bound to `127.0.0.1:8080`; only Funnel publishes it.
@@ -164,8 +172,8 @@ Emergency order:
 3. If credential exposure is suspected, delete/revoke the key in the Anthropic
    Console, replace the local secret using the hidden-input tool, and recreate
    only `researcher`.
-4. Preserve the data volume and logs for investigation. Never use
-   `docker compose down --volumes`.
+4. Preserve the data volume and logs for investigation. Never run
+   `python3 tools/compose_beta.py --funnel -- down --volumes`.
 
 ## Evidence required for completion
 

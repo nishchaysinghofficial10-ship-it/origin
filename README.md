@@ -108,7 +108,7 @@ interpretations, testable predictions, criticism/falsification attempts,
 calibrated conclusions, and limitations. The default production contract is:
 
 - at most one provider request and three searches per mission;
-- 3,200 output tokens per request;
+- a 3,200-token requested final-output ceiling per request;
 - two general missions per tester and four paid missions globally per rolling
   24 hours;
 - one active mission per tester;

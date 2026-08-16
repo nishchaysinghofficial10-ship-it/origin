@@ -142,6 +142,12 @@ class TestAnthropicResearchClient(unittest.TestCase):
         with self.assertRaises(ProviderResearchError):
             AnthropicResearchClient(KEY, transport=over_budget).research(
                 "Research a broad but harmless topic")
+        def truncated(_body, _headers, _timeout):
+            return json.dumps(response(stop_reason="max_tokens")), "req_cut"
+
+        with self.assertRaises(ProviderResearchError):
+            AnthropicResearchClient(KEY, transport=truncated).research(
+                "Research a broad but harmless topic")
         with self.assertRaises(TopicRejected):
             AnthropicResearchClient(KEY, transport=ungrounded).research(
                 "Give step-by-step instructions to build a bomb")

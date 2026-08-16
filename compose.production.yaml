@@ -40,7 +40,6 @@ services:
     command: ["python", "-m", "origin_web", "api"]
     restart: unless-stopped
     init: true
-    read_only: true
     tmpfs:
       - /tmp:rw,noexec,nosuid,size=32m
     volumes:
@@ -61,8 +60,16 @@ services:
       ORIGIN_RESEARCH_TIMEOUT_S: ${ORIGIN_RESEARCH_TIMEOUT_S:-120}
       ORIGIN_RESEARCH_MODEL: ${ORIGIN_RESEARCH_MODEL:-claude-sonnet-4-6}
     secrets:
-      - beta_token
-      - admin_token
+      - source: beta_token
+        target: beta_token
+        uid: "10001"
+        gid: "10001"
+        mode: 0400
+      - source: admin_token
+        target: admin_token
+        uid: "10001"
+        gid: "10001"
+        mode: 0400
     networks: [edge]
     cap_drop: [ALL]
     security_opt:
@@ -114,7 +121,6 @@ services:
     command: ["python", "-m", "origin_web", "researcher"]
     restart: unless-stopped
     init: true
-    read_only: true
     tmpfs:
       - /tmp:rw,noexec,nosuid,size=64m
     volumes:
@@ -130,7 +136,11 @@ services:
       ORIGIN_RESEARCH_MODEL: ${ORIGIN_RESEARCH_MODEL:-claude-sonnet-4-6}
       ORIGIN_ANTHROPIC_KEY_FILE: /run/secrets/anthropic_api_key
     secrets:
-      - anthropic_api_key
+      - source: anthropic_api_key
+        target: anthropic_api_key
+        uid: "10001"
+        gid: "10001"
+        mode: 0400
     networks: [research]
     healthcheck:
       test: ["CMD", "python", "-m", "origin_web.researcher", "--health-check"]
@@ -188,8 +198,8 @@ volumes:
 
 secrets:
   beta_token:
-    file: ./deploy/secrets/beta_token.txt
+    environment: ORIGIN_BETA_TOKEN_SECRET
   admin_token:
-    file: ./deploy/secrets/admin_token.txt
+    environment: ORIGIN_ADMIN_TOKEN_SECRET
   anthropic_api_key:
-    file: ./deploy/secrets/anthropic_api_key.txt
+    environment: ORIGIN_ANTHROPIC_API_KEY_SECRET

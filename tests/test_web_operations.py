@@ -233,6 +233,10 @@ class TestProductionDeploymentArtifacts(unittest.TestCase):
         self.assertNotIn('"8080:8080"', funnel)
         self.assertNotIn("worker:", funnel)
 
+        dockerfile = (ROOT / "Dockerfile").read_text()
+        self.assertIn("--uid 10001", dockerfile)
+        self.assertIn("--gid 10001", dockerfile)
+
     def test_caddy_boundary_has_https_security_and_health_policy(self):
         caddy = (ROOT / "deploy" / "Caddyfile").read_text()
         for expected in (
@@ -246,6 +250,11 @@ class TestProductionDeploymentArtifacts(unittest.TestCase):
         example = (ROOT / "deploy" / "production.env.example").read_text()
         self.assertNotIn("API_KEY", example)
         self.assertNotIn("sk-ant-", example)
+        compose = (ROOT / "compose.production.yaml").read_text()
+        self.assertIn("environment: ORIGIN_ANTHROPIC_API_KEY_SECRET", compose)
+        self.assertNotIn("file: ./deploy/secrets/anthropic_api_key.txt", compose)
+        bridge = (ROOT / "tools" / "compose_beta.py").read_text()
+        self.assertNotIn("shell=True", bridge)
         self.assertNotIn("PASSWORD", example)
         self.assertIn("ORIGIN_PUBLIC_SITE_ORIGIN=https://", example)
         self.assertIn("ORIGIN_WEB_GENERAL_RESEARCH=1", example)

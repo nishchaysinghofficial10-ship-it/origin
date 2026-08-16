@@ -215,7 +215,8 @@ class OriginHandler(BaseHTTPRequestHandler):
                 "model": self.server.config.research_model,
                 "missions_per_tester_per_day": self.server.config.general_missions_per_day,
                 "global_paid_missions_per_day": self.server.config.provider_missions_per_day,
-                "max_output_tokens": self.server.config.research_max_output_tokens,
+                "requested_max_output_tokens": (
+                    self.server.config.research_max_output_tokens),
             },
             "limitations": [
                 "general mode is a cited public-web synthesis, not experimental proof",

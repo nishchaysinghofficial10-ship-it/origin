@@ -7,7 +7,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     ORIGIN_WEB_HOST=0.0.0.0 \
     ORIGIN_WEB_PORT=8080
 
-RUN addgroup --system origin && adduser --system --ingroup origin --home /app origin
+RUN addgroup --system --gid 10001 origin \
+    && adduser --system --uid 10001 --ingroup origin --home /app origin
 WORKDIR /app
 
 COPY pyproject.toml LICENSE README.md ./
@@ -15,7 +16,9 @@ COPY origin ./origin
 COPY origin_web ./origin_web
 RUN python -m pip install --no-cache-dir .
 
-RUN mkdir -p /data /backup /restore && chown origin:origin /data /backup /restore
+RUN mkdir -p /data /backup /restore \
+    && chown origin:origin /data /backup /restore \
+    && chown root:root /app && chmod 0755 /app
 USER origin
 VOLUME ["/data"]
 EXPOSE 8080

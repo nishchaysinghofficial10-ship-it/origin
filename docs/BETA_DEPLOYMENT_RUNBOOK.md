@@ -61,13 +61,15 @@ The preparation command:
 Verify the rendered production configuration before starting anything:
 
 ```bash
-docker compose --env-file .env.production \
-  --file compose.production.yaml config >/tmp/origin-production-compose.yaml
-docker compose --env-file .env.production \
-  --file compose.production.yaml pull proxy
-docker compose --env-file .env.production \
-  --file compose.production.yaml build api worker researcher backup
+python3 tools/compose_beta.py -- config >/tmp/origin-production-compose.yaml
+python3 tools/compose_beta.py -- pull proxy
+python3 tools/compose_beta.py -- build api worker researcher backup
 ```
+
+The wrapper reads the three mode-`0600` host files without printing them and
+bridges their values into service-scoped, mode-`0400` Compose secrets owned by
+the fixed non-root container UID/GID `10001`. They are never service environment
+variables or part of the rendered Compose configuration.
 
 Only the Caddy proxy publishes host ports. The API is reachable only on the
 private Compose network. The computational worker has `network_mode: none`,
@@ -77,12 +79,9 @@ mounts the Anthropic secret, has outbound access and no inbound/published port.
 ## 2. Start with intake closed
 
 ```bash
-docker compose --env-file .env.production \
-  --file compose.production.yaml up --detach api worker researcher proxy
-docker compose --env-file .env.production \
-  --file compose.production.yaml ps
-docker compose --env-file .env.production \
-  --file compose.production.yaml logs --tail 100 api worker researcher proxy
+python3 tools/compose_beta.py -- up --detach api worker researcher proxy
+python3 tools/compose_beta.py -- ps
+python3 tools/compose_beta.py -- logs --tail 100 api worker researcher proxy
 ```
 
 Confirm DNS, TLS, and the deliberately closed public health response:
@@ -123,8 +122,7 @@ python3 tools/prepare_beta_deployment.py \
   --host beta.example.com \
   --site-origin https://nishchaysinghofficial10-ship-it.github.io \
   --accept-jobs
-docker compose --env-file .env.production \
-  --file compose.production.yaml up --detach api
+python3 tools/compose_beta.py -- up --detach api
 ```
 
 Run the mutating acceptance gate:
@@ -177,13 +175,10 @@ python3 tools/verify_beta_deployment.py \
   --beta-token-file deploy/secrets/beta_token.txt \
   --admin-token-file deploy/secrets/admin_token.txt \
   --intake closed
-docker compose --env-file .env.production \
-  --file compose.production.yaml stop worker researcher
-docker compose --env-file .env.production \
-  --file compose.production.yaml --profile ops run --rm backup create \
+python3 tools/compose_beta.py -- stop worker researcher
+python3 tools/compose_beta.py -- --profile ops run --rm backup create \
   --data-dir /data --out /backup/origin-beta-latest.tar.gz
-docker compose --env-file .env.production \
-  --file compose.production.yaml --profile ops run --rm backup verify \
+python3 tools/compose_beta.py -- --profile ops run --rm backup verify \
   --archive /backup/origin-beta-latest.tar.gz
 ```
 
@@ -263,7 +258,7 @@ Emergency response:
 ## Evidence required before declaring the beta live
 
 - Git commit deployed and corresponding green CI run URL.
-- `docker compose config` and Caddy validation succeeded at that commit.
+- wrapped `docker compose config` and Caddy validation succeeded at that commit.
 - Public TLS health response succeeded without overrides.
 - Read-only gate JSON recorded.
 - Mutating exercise JSON recorded, including completed and cancelled mission IDs.

@@ -147,21 +147,12 @@ def read_api_key(path: Path) -> str:
     """Read a non-public provider key from a private file."""
     path = Path(path)
     try:
-        details = path.stat()
-        mode = stat.S_IMODE(details.st_mode)
+        mode = stat.S_IMODE(path.stat().st_mode)
         key = path.read_text(encoding="utf-8").strip()
     except OSError as exc:
         raise GeneralResearchConfigError(
             "Anthropic API key file is missing or unreadable") from exc
-    runtime_secret = (
-        path == Path("/run/secrets/anthropic_api_key")
-        and not path.is_symlink()
-        and not mode & 0o022
-        and details.st_uid in (0, os.geteuid())
-    )
-    # Compose file-backed secrets are mounted read-only (commonly 0444) inside
-    # the single-purpose container even when the host source is mode 0600.
-    if os.name == "posix" and mode & 0o077 and not runtime_secret:
+    if os.name == "posix" and mode & 0o077:
         raise GeneralResearchConfigError(
             "Anthropic API key file must not be group/world accessible")
     if len(key) < 24 or any(character.isspace() for character in key):
@@ -203,11 +194,34 @@ REQUIRED DOSSIER STRUCTURE
 ## Conclusions with calibrated confidence
 ## Limitations and what would change the conclusion
 
-Use clear Markdown. Be concise but substantive. A citation-backed synthesis is
-not experimental proof; say this explicitly where it matters."""
+Use clear Markdown and every heading above. The entire dossier must be at most
+1,300 words so every section fits. Do not use Markdown tables: citation blocks
+can split table rows, so use compact bullets instead. A citation-backed
+synthesis is not experimental proof; say this explicitly where it matters."""
+
+
+_REQUIRED_HEADINGS = (
+    "executive summary",
+    "scope and research plan",
+    "evidence map",
+    "competing hypotheses or interpretations",
+    "testable predictions and possible analyses",
+    "criticism and falsification attempts",
+    "conclusions with calibrated confidence",
+    "limitations and what would change the conclusion",
+)
 
 
 Transport = Callable[[bytes, dict[str, str], float], tuple[str, str]]
+
+
+def _verified_ssl_context() -> ssl.SSLContext:
+    """Use Python's CA store, with the macOS system bundle as a safe fallback."""
+    context = ssl.create_default_context()
+    if (context.cert_store_stats().get("x509_ca", 0) == 0 and
+            Path("/etc/ssl/cert.pem").is_file()):
+        context = ssl.create_default_context(cafile="/etc/ssl/cert.pem")
+    return context
 
 
 class AnthropicResearchClient:
@@ -260,7 +274,7 @@ class AnthropicResearchClient:
                     method="POST")
                 with urllib.request.urlopen(
                         request, timeout=self.timeout_s,
-                        context=ssl.create_default_context()) as response:
+                        context=_verified_ssl_context()) as response:
                     raw_bytes = response.read(8_000_001)
                     if len(raw_bytes) > 8_000_000:
                         raise ProviderResearchError(
@@ -401,15 +415,26 @@ class AnthropicResearchClient:
                     "continuation_limit", "Anthropic research exceeded the continuation limit")
             messages.append({"role": "assistant", "content": response["content"]})
 
+        stop_reason = responses[-1].get("stop_reason")
+        if stop_reason != "end_turn":
+            category = ("incomplete_response" if stop_reason == "max_tokens"
+                        else "invalid_response")
+            raise ProviderResearchError(
+                category, "provider research did not finish a complete turn")
+
         rendered, sources = self._render(responses)
         totals = [0, 0, 0]
         for response in responses:
             for index, value in enumerate(self._usage(response)):
                 totals[index] += value
-        if totals[1] > self.max_output_tokens or totals[2] > self.max_searches:
+        # ``max_tokens`` bounds the requested final generation, while provider
+        # usage can also include output generated inside the server-tool loop.
+        # Web-search ``max_uses`` is the hard paid-search boundary and must be
+        # reflected faithfully in reported usage.
+        if totals[2] > self.max_searches:
             raise ProviderResearchError(
                 "provider_budget_violation",
-                "provider reported usage beyond the configured mission limit")
+                "provider reported searches beyond the configured mission limit")
         if totals[2] < 1 or len(sources) < 2:
             raise ProviderResearchError(
                 "ungrounded_response",
@@ -417,6 +442,13 @@ class AnthropicResearchClient:
         if len(rendered) < 300:
             raise ProviderResearchError(
                 "incomplete_response", "provider research dossier was incomplete")
+        lower_rendered = rendered.lower()
+        if any(not re.search(
+                rf"^#{{1,3}}\s+{re.escape(heading)}\s*$",
+                lower_rendered, re.MULTILINE) for heading in _REQUIRED_HEADINGS):
+            raise ProviderResearchError(
+                "incomplete_response",
+                "provider research dossier omitted a required section")
 
         generated = time.strftime("%Y-%m-%d %H:%M:%S UTC", time.gmtime())
         source_ledger = "\n".join(

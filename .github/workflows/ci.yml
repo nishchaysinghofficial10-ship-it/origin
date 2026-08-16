@@ -159,11 +159,12 @@ jobs:
           printf '%s\n' 'ci-admin-token-with-32-characters' > deploy/secrets/admin_token.txt
           printf '%s\n' 'ci-anthropic-key-placeholder-not-live' > deploy/secrets/anthropic_api_key.txt
           chmod 600 deploy/secrets/*.txt
-          docker compose --env-file deploy/production.env.example \
-            --file compose.production.yaml config >/tmp/origin-production-compose.yaml
-          docker compose --profile ops --env-file deploy/production.env.example \
-            --file compose.production.yaml --file compose.funnel.yaml \
-            config --format json >/tmp/origin-funnel-compose.json
+          python tools/compose_beta.py \
+            --env-file deploy/production.env.example -- \
+            config >/tmp/origin-production-compose.yaml
+          python tools/compose_beta.py \
+            --env-file deploy/production.env.example --funnel -- \
+            --profile ops config --format json >/tmp/origin-funnel-compose.json
           python - <<'PY'
           import json
           with open("/tmp/origin-funnel-compose.json", encoding="utf-8") as source:
@@ -230,13 +231,13 @@ jobs:
         run: |
           set -euo pipefail
           cleanup() {
-            docker compose --env-file deploy/production.env.example \
-              --file compose.production.yaml --file compose.funnel.yaml \
+            python tools/compose_beta.py \
+              --env-file deploy/production.env.example --funnel -- \
               down >/dev/null 2>&1 || true
           }
           trap cleanup EXIT
-          docker compose --env-file deploy/production.env.example \
-            --file compose.production.yaml --file compose.funnel.yaml \
+          python tools/compose_beta.py \
+            --env-file deploy/production.env.example --funnel -- \
             up --detach --no-build api worker researcher
           for attempt in {1..60}; do
             API_HEALTH=$(docker inspect --format '{{.State.Health.Status}}' origin-beta-api-1)
@@ -253,3 +254,8 @@ jobs:
           test "$(docker inspect --format '{{.HostConfig.NetworkMode}}' origin-beta-worker-1)" = none
           test "$(docker inspect --format '{{.Config.User}}' origin-beta-worker-1)" = origin
           test "$(docker inspect --format '{{.Config.User}}' origin-beta-researcher-1)" = origin
+          test "$(docker exec origin-beta-researcher-1 id -u)" = 10001
+          test "$(docker exec origin-beta-researcher-1 stat -c '%u:%g:%a' \
+            /run/secrets/anthropic_api_key)" = 10001:10001:400
+          test "$(docker exec origin-beta-researcher-1 stat -c '%u:%g:%a' /app)" = 0:0:755
+          test "$(docker exec origin-beta-api-1 stat -c '%u:%g:%a' /app)" = 0:0:755
