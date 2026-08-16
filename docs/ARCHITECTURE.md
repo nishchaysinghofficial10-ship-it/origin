@@ -3,6 +3,24 @@
 Zero third-party dependencies. Python 3.10+. Every layer below exists in code;
 absent capabilities are named in "Not built" at the end.
 
+The v2.1.2 computational core below remains unchanged by the optional web beta.
+The beta adds a separate service layer:
+
+```text
+origin_web/api.py ........ authenticated validation + durable queue only
+origin_web/worker.py ..... algobench/graphbench; network disabled; no secrets
+origin_web/researcher.py . general/web_research; provider key; outbound only
+origin_web/general_research.py ... topic policy, Anthropic web search,
+                                  citation-preserving dossier renderer
+origin_web/store.py ...... owner isolation, quotas, paid-attempt ledger, audit
+```
+
+The API never invokes research synchronously. Queue consumers filter by domain,
+so the networked researcher cannot claim a computational experiment and the
+offline worker cannot claim a general mission. Only the researcher mounts the
+Anthropic secret. General output is labeled sourced synthesis and does not
+enter `ResearchState`, `Evidence`, experimental claims, or the knowledge graph.
+
 ```
 Interfaces
   origin/cli.py ............ init | run | status | report | timeline | html
@@ -99,6 +117,8 @@ itself: `run_experiment` goes through `ExperimentEngine` (and therefore
 (and therefore the full retrieval policy), `form_hypotheses` and `criticise`
 through `ResearchController` steps.
 
-## Not built in v1.0 (deliberate, see DECISIONS.md)
-Live web acquisition; long-running daemon/scheduler; second research domain;
-kernel-grade sandbox; graph visualisation; API server.
+## Still not built
+
+Kernel-grade local experiment isolation; graph visualisation; distributed or
+multi-agent execution; physical/wet-lab/human-subject experiments; deterministic
+replay of live web/model output; unrestricted anonymous paid research.

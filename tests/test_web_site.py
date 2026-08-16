@@ -96,7 +96,8 @@ class TestPublicWebsite(unittest.TestCase):
         self.assertEqual(3, origin["replications"])
         self.assertEqual(2, origin["scoped_conclusions"])
         self.assertEqual([], origin["incorrect_candidates_reported_as_winners"])
-        for expected in ("316", "CI", "research domains", "Zero runtime dependencies"):
+        for expected in ("CI", "research modes", "General public-web research",
+                         "Zero runtime dependencies"):
             self.assertIn(expected, self.html)
 
     def test_build_metadata_names_exact_evidence_sources(self):

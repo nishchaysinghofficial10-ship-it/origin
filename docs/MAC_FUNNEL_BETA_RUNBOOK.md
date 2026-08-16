@@ -31,11 +31,14 @@ public HTTPS (*.ts.net)
 authenticated API ---- durable Docker volume
 
 network-disabled worker ---- same durable volume
+paid general researcher ---- same volume; outbound only; no published port
 ```
 
-The API is not published on the LAN or a wildcard host address. The worker
-keeps `network_mode: none`, receives no tester or administrator credential, and
-runs as the non-root image user. Only the API receives the two Docker secrets.
+The API is not published on the LAN or a wildcard host address. The
+computational worker keeps `network_mode: none`, receives no credential, and
+runs as the non-root image user. The researcher alone receives the Anthropic
+secret and outbound access; it has no published port. The API receives only the
+tester and administrator secrets.
 The public GitHub Pages bundle contains the API origin but never a token.
 
 ## 1. Install and sign in
@@ -78,6 +81,14 @@ The command writes `.env.production` and mode-0600 files under
 `deploy/secrets/`; it never prints a token. Do not copy either token into a URL,
 GitHub variable, issue, commit, log, or screenshot.
 
+Add and live-check the Anthropic key through hidden terminal input:
+
+```bash
+python3 tools/configure_anthropic_key.py
+python3 tools/live_general_research_check.py \
+  --key-file deploy/secrets/anthropic_api_key.txt
+```
+
 ## 3. Validate and start only the loopback stack
 
 ```bash
@@ -87,11 +98,11 @@ docker compose --env-file .env.production \
 
 docker compose --env-file .env.production \
   --file compose.production.yaml --file compose.funnel.yaml \
-  build api worker backup
+  build api worker researcher backup
 
 docker compose --env-file .env.production \
   --file compose.production.yaml --file compose.funnel.yaml \
-  up --detach api worker
+  up --detach api worker researcher
 ```
 
 Do not start `proxy` on this path; Tailscale supplies the public TLS boundary.
@@ -115,7 +126,8 @@ tailscale funnel status --json
 python3 tools/verify_beta_deployment.py \
   --api-origin "https://$ORIGIN_FUNNEL_HOST" \
   --beta-token-file deploy/secrets/beta_token.txt \
-  --admin-token-file deploy/secrets/admin_token.txt
+  --admin-token-file deploy/secrets/admin_token.txt \
+  --require-general
 ```
 
 The first Funnel command can open an approval page. Approve only the public
@@ -141,7 +153,8 @@ python3 tools/verify_beta_deployment.py \
   --api-origin "https://$ORIGIN_FUNNEL_HOST" \
   --beta-token-file deploy/secrets/beta_token.txt \
   --admin-token-file deploy/secrets/admin_token.txt \
-  --exercise
+  --exercise \
+  --require-general
 ```
 
 The exercise must create, pause, resume, and complete one real mission; validate
@@ -163,7 +176,8 @@ python3 tools/verify_beta_deployment.py \
   --api-origin "https://$ORIGIN_FUNNEL_HOST" \
   --site-url https://nishchaysinghofficial10-ship-it.github.io/origin \
   --beta-token-file deploy/secrets/beta_token.txt \
-  --admin-token-file deploy/secrets/admin_token.txt
+  --admin-token-file deploy/secrets/admin_token.txt \
+  --require-general
 ```
 
 Give a named tester only `deploy/secrets/beta_token.txt` through a separate
@@ -203,6 +217,8 @@ public site with an empty API origin if this Mac will remain offline.
 - mutating acceptance JSON with completed and cancelled mission IDs;
 - exact-origin public-site gate after Pages redeployment;
 - verified backup and separate-volume restoration;
+- paid live check and a completed citation-bearing general mission;
+- monitor evidence for the API, offline worker, and paid researcher;
 - a real named tester receives only the tester credential.
 
 Until all items exist, call this host-ready or staging—not live.

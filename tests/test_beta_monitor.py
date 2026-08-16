@@ -23,6 +23,13 @@ class TestBetaMonitor(unittest.TestCase):
                 "queue": {"completed": 2},
                 "failed_missions": 0,
                 "oldest_queued_seconds": 0,
+                "provider_usage": {
+                    "missions_reserved_24h": 1,
+                    "provider_calls_24h": 1,
+                    "input_tokens_24h": 100,
+                    "output_tokens_24h": 200,
+                    "web_searches_24h": 2,
+                },
                 "storage": {"free_bytes": 2_000_000_000,
                             "total_bytes": 4_000_000_000},
             },
@@ -32,8 +39,10 @@ class TestBetaMonitor(unittest.TestCase):
         public, admin = self.health()
         evidence = assess_remote(
             public, admin, max_queue_age=900, max_failed=0,
-            min_free_bytes=1_000_000, require_intake_open=True)
+            min_free_bytes=1_000_000, require_intake_open=True,
+            max_provider_missions=4)
         self.assertEqual(0, evidence["failed_missions"])
+        self.assertEqual(1, evidence["provider_usage"]["missions_reserved_24h"])
         for key, value in (
                 ("failed_missions", 1), ("oldest_queued_seconds", 901)):
             broken = dict(admin)

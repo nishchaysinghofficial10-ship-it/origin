@@ -6,6 +6,14 @@ autonomy), `docs/security/THREAT_MODEL.md`,
 `docs/security/LLM_THREAT_MODEL.md`. Executed attacks: `docs/red_team/` and
 `docs/verification/LLM_VERIFICATION_REPORT.md`.
 
+The interactive general-research service has an additional trust boundary,
+documented in `GENERAL_RESEARCH_BETA.md`: only the `researcher` container mounts
+the Anthropic key or has outbound network access. The API has no provider key;
+the computational worker remains `network_mode: none`. Paid attempts, searches,
+tokens and global daily reservations are durably bounded and monitored.
+The detailed attack table and residual risks are in
+`docs/security/GENERAL_RESEARCH_THREAT_MODEL.md`.
+
 ## What ORIGIN protects
 - **Secrets**: read from the environment only, never stored or logged; all log
   strings pass through a redactor.
@@ -43,5 +51,9 @@ guess whether it completed. See `docs/security/AUTONOMY_THREAT_MODEL.md`.
   thing ORIGIN executes.
 - Never paste secrets into mission questions or ingested documents — both are
   persisted in plain text inside the project directory.
+- Store the general provider key only with
+  `tools/configure_anthropic_key.py`. Production mounts the resulting mode-0600
+  file only into the researcher; it must never appear in an environment file,
+  shell-history argument, URL, mission record, dossier, or public bundle.
 - Do not use ORIGIN for medical, legal, financial, or safety-critical
   conclusions. It is a computational-experiment engine.

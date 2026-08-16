@@ -52,6 +52,14 @@ services:
       ORIGIN_WEB_ALLOWED_ORIGINS: ${ORIGIN_PUBLIC_SITE_ORIGIN:?set the exact HTTPS site origin}
       ORIGIN_WEB_PUBLIC_SITE_URL: ${ORIGIN_PUBLIC_SITE_ORIGIN:?set the exact HTTPS site origin}
       ORIGIN_WEB_ACCEPT_JOBS: ${ORIGIN_WEB_ACCEPT_JOBS:-1}
+      ORIGIN_WEB_GENERAL_RESEARCH: ${ORIGIN_WEB_GENERAL_RESEARCH:-0}
+      ORIGIN_GENERAL_MISSIONS_PER_DAY: ${ORIGIN_GENERAL_MISSIONS_PER_DAY:-2}
+      ORIGIN_PROVIDER_MISSIONS_PER_DAY: ${ORIGIN_PROVIDER_MISSIONS_PER_DAY:-4}
+      ORIGIN_PROVIDER_CALLS_PER_MISSION: ${ORIGIN_PROVIDER_CALLS_PER_MISSION:-1}
+      ORIGIN_WEB_SEARCHES_PER_MISSION: ${ORIGIN_WEB_SEARCHES_PER_MISSION:-3}
+      ORIGIN_RESEARCH_MAX_OUTPUT_TOKENS: ${ORIGIN_RESEARCH_MAX_OUTPUT_TOKENS:-3200}
+      ORIGIN_RESEARCH_TIMEOUT_S: ${ORIGIN_RESEARCH_TIMEOUT_S:-120}
+      ORIGIN_RESEARCH_MODEL: ${ORIGIN_RESEARCH_MODEL:-claude-sonnet-4-6}
     secrets:
       - beta_token
       - admin_token
@@ -100,6 +108,48 @@ services:
         max-size: 10m
         max-file: "5"
 
+  researcher:
+    image: origin-beta:2.1.2-web-beta
+    build: .
+    command: ["python", "-m", "origin_web", "researcher"]
+    restart: unless-stopped
+    init: true
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m
+    volumes:
+      - origin-beta-data:/data
+    environment:
+      ORIGIN_WEB_GENERAL_RESEARCH: ${ORIGIN_WEB_GENERAL_RESEARCH:-0}
+      ORIGIN_GENERAL_MISSIONS_PER_DAY: ${ORIGIN_GENERAL_MISSIONS_PER_DAY:-2}
+      ORIGIN_PROVIDER_MISSIONS_PER_DAY: ${ORIGIN_PROVIDER_MISSIONS_PER_DAY:-4}
+      ORIGIN_PROVIDER_CALLS_PER_MISSION: ${ORIGIN_PROVIDER_CALLS_PER_MISSION:-1}
+      ORIGIN_WEB_SEARCHES_PER_MISSION: ${ORIGIN_WEB_SEARCHES_PER_MISSION:-3}
+      ORIGIN_RESEARCH_MAX_OUTPUT_TOKENS: ${ORIGIN_RESEARCH_MAX_OUTPUT_TOKENS:-3200}
+      ORIGIN_RESEARCH_TIMEOUT_S: ${ORIGIN_RESEARCH_TIMEOUT_S:-120}
+      ORIGIN_RESEARCH_MODEL: ${ORIGIN_RESEARCH_MODEL:-claude-sonnet-4-6}
+      ORIGIN_ANTHROPIC_KEY_FILE: /run/secrets/anthropic_api_key
+    secrets:
+      - anthropic_api_key
+    networks: [research]
+    healthcheck:
+      test: ["CMD", "python", "-m", "origin_web.researcher", "--health-check"]
+      interval: 30s
+      timeout: 3s
+      start_period: 10s
+      retries: 3
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 64
+    mem_limit: 512m
+    cpus: 0.50
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "5"
+
   backup:
     image: origin-beta:2.1.2-web-beta
     build: .
@@ -124,6 +174,7 @@ services:
 
 networks:
   edge:
+  research:
 
 volumes:
   origin-beta-data:
@@ -140,3 +191,5 @@ secrets:
     file: ./deploy/secrets/beta_token.txt
   admin_token:
     file: ./deploy/secrets/admin_token.txt
+  anthropic_api_key:
+    file: ./deploy/secrets/anthropic_api_key.txt

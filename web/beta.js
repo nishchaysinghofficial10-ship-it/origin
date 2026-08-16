@@ -49,7 +49,9 @@
     document.querySelector("[data-beta-question]").textContent = current.question;
     document.querySelector("[data-beta-phase]").textContent = current.phase;
     document.querySelector("[data-beta-step]").textContent = String(current.step);
-    document.querySelector("[data-beta-experiments]").textContent = String(current.experiments_used);
+    const workUnits = current.domain === "general"
+      ? current.provider_calls_used : current.experiments_used;
+    document.querySelector("[data-beta-experiments]").textContent = String(workUnits || 0);
     document.querySelector("[data-beta-stop]").textContent = current.stop_reason || current.error || "Mission is active and durably checkpointed.";
     document.querySelectorAll("[data-beta-action]").forEach(button => {
       const action = button.dataset.betaAction;
@@ -106,7 +108,7 @@
       const response = await fetch(apiBase + "/api/v1/health");
       if (!response.ok) throw new Error("unavailable");
       const health = await response.json();
-      setConnection(health.accepting_missions ? "Private beta accepting missions" : "Private beta intake paused",
+      setConnection(health.accepting_missions ? "General research beta accepting missions" : "Research beta intake paused",
                     health.accepting_missions ? "online" : "paused");
       submit.disabled = !health.accepting_missions;
     } catch (_error) {
@@ -122,7 +124,7 @@
     accessToken = String(fields.get("token") || "");
     form.elements.token.value = "";
     submit.disabled = true;
-    setMessage("Validating and queueing the bounded mission…");
+    setMessage("Validating the topic and queueing the research mission…");
     try {
       const domain = String(fields.get("domain"));
       const payload = await api("/api/v1/missions", {
@@ -130,7 +132,8 @@
         body: {
           question: String(fields.get("question")),
           domain,
-          profile: domain === "graphbench" ? "graph_fast" : "fast"
+          profile: domain === "general" ? "web_research" :
+            (domain === "graphbench" ? "graph_fast" : "fast")
         }
       });
       render(payload.mission);
@@ -161,6 +164,16 @@
         setMessage(error.message, true);
       }
     });
+  });
+
+  form.elements.domain?.addEventListener("change", event => {
+    const examples = {
+      general: "What evidence supports and challenges four-day work weeks?",
+      algobench: "Which sorting strategy wins under which input regime at small sizes?",
+      graphbench: "Which shortest-path method wins on which graph topology?"
+    };
+    const next = examples[event.target.value];
+    if (next) form.elements.question.value = next;
   });
 
   window.addEventListener("pagehide", () => {

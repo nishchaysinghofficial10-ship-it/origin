@@ -157,6 +157,8 @@ jobs:
           mkdir -p deploy/secrets
           printf '%s\n' 'ci-beta-token-with-32-characters' > deploy/secrets/beta_token.txt
           printf '%s\n' 'ci-admin-token-with-32-characters' > deploy/secrets/admin_token.txt
+          printf '%s\n' 'ci-anthropic-key-placeholder-not-live' > deploy/secrets/anthropic_api_key.txt
+          chmod 600 deploy/secrets/*.txt
           docker compose --env-file deploy/production.env.example \
             --file compose.production.yaml config >/tmp/origin-production-compose.yaml
           docker compose --profile ops --env-file deploy/production.env.example \
@@ -173,6 +175,16 @@ jobs:
           assert str(ports[0].get("published")) == "8080", ports
           assert config["services"]["worker"].get("network_mode") == "none"
           assert config["services"]["worker"]["healthcheck"]["test"][-1] == "--health-check"
+          assert not config["services"]["researcher"].get("ports")
+          assert config["services"]["researcher"]["healthcheck"]["test"][-1] == "--health-check"
+          secret_sources = lambda service: {
+              item["source"] for item in config["services"][service].get("secrets", [])
+          }
+          assert "anthropic_api_key" in secret_sources("researcher")
+          assert "anthropic_api_key" not in secret_sources("api")
+          assert "anthropic_api_key" not in secret_sources("worker")
+          assert set(config["services"]["api"].get("networks", {})) == {"edge"}
+          assert set(config["services"]["researcher"].get("networks", {})) == {"research"}
           assert config["services"]["backup"]["healthcheck"]["disable"] is True
           PY
           docker run --rm \
@@ -225,16 +237,19 @@ jobs:
           trap cleanup EXIT
           docker compose --env-file deploy/production.env.example \
             --file compose.production.yaml --file compose.funnel.yaml \
-            up --detach --no-build api worker
+            up --detach --no-build api worker researcher
           for attempt in {1..60}; do
             API_HEALTH=$(docker inspect --format '{{.State.Health.Status}}' origin-beta-api-1)
             WORKER_HEALTH=$(docker inspect --format '{{.State.Health.Status}}' origin-beta-worker-1)
-            if [ "$API_HEALTH" = healthy ] && [ "$WORKER_HEALTH" = healthy ]; then
+            RESEARCHER_HEALTH=$(docker inspect --format '{{.State.Health.Status}}' origin-beta-researcher-1)
+            if [ "$API_HEALTH" = healthy ] && [ "$WORKER_HEALTH" = healthy ] && [ "$RESEARCHER_HEALTH" = healthy ]; then
               break
             fi
             sleep 1
           done
           test "$(docker inspect --format '{{.State.Health.Status}}' origin-beta-api-1)" = healthy
           test "$(docker inspect --format '{{.State.Health.Status}}' origin-beta-worker-1)" = healthy
+          test "$(docker inspect --format '{{.State.Health.Status}}' origin-beta-researcher-1)" = healthy
           test "$(docker inspect --format '{{.HostConfig.NetworkMode}}' origin-beta-worker-1)" = none
           test "$(docker inspect --format '{{.Config.User}}' origin-beta-worker-1)" = origin
+          test "$(docker inspect --format '{{.Config.User}}' origin-beta-researcher-1)" = origin

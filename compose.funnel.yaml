@@ -1,7 +1,9 @@
 name: origin-beta
 
 # No-domain beta overlay. Tailscale Funnel terminates public HTTPS on the host
-# and may reach only this loopback-bound API port. Start exactly `api worker`;
+# and may reach only this loopback-bound API port. Start exactly
+# `api worker researcher`; the researcher has outbound access but no published
+# port, while the computational worker remains network-disabled.
 # the Caddy service in compose.production.yaml is intentionally unused here.
 services:
   api:

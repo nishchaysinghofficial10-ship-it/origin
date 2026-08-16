@@ -204,15 +204,24 @@ class TestProductionDeploymentArtifacts(unittest.TestCase):
         compose = (ROOT / "compose.production.yaml").read_text()
         proxy, api = compose.split("\n  api:\n", 1)
         api, worker = api.split("\n  worker:\n", 1)
-        worker, backup = worker.split("\n  backup:\n", 1)
+        worker, researcher = worker.split("\n  researcher:\n", 1)
+        researcher, backup = researcher.split("\n  backup:\n", 1)
         self.assertIn('caddy:2.11.4-alpine', proxy)
         self.assertIn('"80:80"', proxy)
         self.assertIn('"443:443"', proxy)
         self.assertNotIn("ports:", api)
         self.assertIn('expose: ["8080"]', api)
+        self.assertIn("networks: [edge]", api)
         self.assertIn("network_mode: none", worker)
         self.assertNotIn("BETA_TOKEN", worker)
+        self.assertNotIn("ANTHROPIC", worker)
         self.assertIn('origin_web.worker", "--health-check"', worker)
+        self.assertNotIn("ports:", researcher)
+        self.assertIn("ORIGIN_ANTHROPIC_KEY_FILE", researcher)
+        self.assertIn("anthropic_api_key", researcher)
+        self.assertIn('origin_web.researcher", "--health-check"', researcher)
+        self.assertIn("networks: [research]", researcher)
+        self.assertNotIn("networks: [edge]", researcher)
         self.assertIn("origin-beta-data:/data:ro", backup)
         self.assertIn("network_mode: none", backup)
         self.assertIn("disable: true", backup)
@@ -235,9 +244,11 @@ class TestProductionDeploymentArtifacts(unittest.TestCase):
 
     def test_example_environment_contains_no_secret(self):
         example = (ROOT / "deploy" / "production.env.example").read_text()
-        self.assertNotIn("TOKEN", example)
+        self.assertNotIn("API_KEY", example)
+        self.assertNotIn("sk-ant-", example)
         self.assertNotIn("PASSWORD", example)
         self.assertIn("ORIGIN_PUBLIC_SITE_ORIGIN=https://", example)
+        self.assertIn("ORIGIN_WEB_GENERAL_RESEARCH=1", example)
 
 
 class TestRemoteDeploymentVerifier(unittest.TestCase):
@@ -250,7 +261,8 @@ class TestRemoteDeploymentVerifier(unittest.TestCase):
             admin_token_digests=frozenset({token_digest(ADMIN_TOKEN)}),
             host="127.0.0.1", port=0, requests_per_minute=500,
             missions_per_day=5, active_missions_per_principal=1,
-            mission_timeout_s=180, step_timeout_s=90)
+            mission_timeout_s=180, step_timeout_s=90,
+            general_research_enabled=True)
         self.config.prepare()
         self.store = Store(self.config.db_path)
         self.server = OriginHTTPServer(("127.0.0.1", 0), self.config, self.store)
@@ -275,7 +287,8 @@ class TestRemoteDeploymentVerifier(unittest.TestCase):
         self.worker_thread.start()
         self.verifier = DeploymentVerifier(
             f"http://127.0.0.1:{self.server.server_port}", TOKEN, ADMIN_TOKEN,
-            other_beta_token=OTHER_TOKEN, allow_http_local=True)
+            other_beta_token=OTHER_TOKEN, allow_http_local=True,
+            require_general=True)
 
     def tearDown(self):
         self.stop_worker.set()
@@ -289,6 +302,7 @@ class TestRemoteDeploymentVerifier(unittest.TestCase):
     def test_read_only_and_mutating_acceptance_gates(self):
         evidence = self.verifier.verify_read_only()
         self.assertEqual("bounded", evidence["capabilities"])
+        self.assertEqual("bounded", evidence["general_research"])
         self.assertEqual("available", evidence["monitoring"])
         self.assertEqual("closed", self.verifier.set_intake(False))
         self.assertEqual("open", self.verifier.set_intake(True))

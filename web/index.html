@@ -47,15 +47,15 @@
       <div class="hero-copy reveal">
         <p class="eyebrow"><span></span> Open-source computational research engine</p>
         <h1 id="hero-title">Evidence<br><em>before</em> answers.</h1>
-        <p class="hero-lede">ORIGIN turns a research question into competing hypotheses, machine-checkable predictions, confined experiments, criticism, replication, and a conclusion that says exactly where it applies.</p>
+        <p class="hero-lede">Enter a research topic. ORIGIN searches current public sources, preserves citations, compares competing hypotheses, proposes testable predictions, criticizes its conclusions, and returns an evidence-scoped dossier.</p>
         <div class="hero-actions">
           <a class="button button-primary" href="#flagship">Explore a real mission <span aria-hidden="true">↘</span></a>
           <a class="button button-quiet" href="https://github.com/nishchaysinghofficial10-ship-it/origin/releases/tag/v2.1.2">Download v2.1.2</a>
         </div>
         <ul class="proof-line" aria-label="Release verification summary">
-          <li><strong>316</strong> tests</li>
+          <li><strong>325</strong> tests</li>
           <li><strong>CI</strong> gated</li>
-          <li><strong>2</strong> research domains</li>
+          <li><strong>3</strong> research modes</li>
           <li><strong>0</strong> runtime dependencies</li>
         </ul>
       </div>
@@ -244,11 +244,11 @@
           <p>Trust starts by naming the edge of the evidence.</p>
         </div>
         <ul class="boundary-list reveal" data-delay="100">
-          <li><span>01</span><div><strong>Not a general autonomous scientist</strong><p>It runs registered computational domains: sorting and shortest-path benchmarks.</p></div></li>
+          <li><span>01</span><div><strong>Not an all-powerful autonomous scientist</strong><p>General mode performs cited public-web synthesis; only registered computational domains run locally verified experiments.</p></div></li>
           <li><span>02</span><div><strong>Not kernel-grade isolation</strong><p>Experiment confinement is user-space. A public worker requires an additional container boundary.</p></div></li>
-          <li><span>03</span><div><strong>Not a source-discovery engine</strong><p>It can retrieve approved HTTPS URLs; it does not search or crawl the web.</p></div></li>
-          <li><span>04</span><div><strong>Not live-provider verified</strong><p>The Anthropic transport remains unverified because no funded API key was available.</p></div></li>
-          <li><span>05</span><div><strong>Not a medical, legal, or financial tool</strong><p>Its evidence applies only to its explicitly supported computational domains.</p></div></li>
+          <li><span>03</span><div><strong>Not guaranteed truth</strong><p>Search results and model output remain untrusted. Citations make claims inspectable, but synthesis is not experimental proof.</p></div></li>
+          <li><span>04</span><div><strong>Not unlimited</strong><p>Every tester, paid provider request, search, output, and wall-clock duration has a hard operator-controlled limit.</p></div></li>
+          <li><span>05</span><div><strong>Not personalized professional advice</strong><p>Medical, legal, and financial topics receive general research context with explicit uncertainty—not individual instructions.</p></div></li>
         </ul>
       </div>
     </section>
@@ -257,9 +257,9 @@
       <div class="section-heading reveal">
         <div>
           <p class="eyebrow"><span></span> Controlled interactive beta</p>
-          <h2 id="beta-title">Run a bounded<br>research mission.</h2>
+          <h2 id="beta-title">Research almost<br>any public-web topic.</h2>
         </div>
-        <p>The private beta accepts only two registered computational domains. It has fixed budgets, zero provider calls, zero live retrievals, and a separate network-disabled worker.</p>
+        <p>General mode uses a separately isolated, tightly budgeted researcher for current sources and citations. Computational experiments still run in a different network-disabled worker. Unsafe operational requests are refused.</p>
       </div>
       <div class="beta-grid">
         <form class="beta-form reveal" data-beta-form>
@@ -268,12 +268,13 @@
           </div>
           <label>
             Research question
-            <textarea name="question" rows="4" minlength="12" maxlength="500" required>Which sorting strategy wins under which input regime at small sizes?</textarea>
+            <textarea name="question" rows="4" minlength="12" maxlength="500" required>What evidence supports and challenges four-day work weeks?</textarea>
           </label>
           <div class="form-split">
             <label>
-              Domain
+              Research mode
               <select name="domain">
+                <option value="general" selected>General public-web research</option>
                 <option value="algobench">Sorting strategies</option>
                 <option value="graphbench">Shortest paths</option>
               </select>
@@ -284,18 +285,18 @@
             </label>
           </div>
           <p class="form-privacy">The token stays in this browser tab’s memory, is sent only to the configured beta API, and is never stored by this site.</p>
-          <button class="button button-primary" type="submit" data-beta-submit>Queue bounded mission <span aria-hidden="true">→</span></button>
+          <button class="button button-primary" type="submit" data-beta-submit>Start research mission <span aria-hidden="true">→</span></button>
           <p class="beta-message" data-beta-message role="status" aria-live="polite"></p>
         </form>
         <div class="beta-result reveal" data-delay="100" data-beta-result>
           <div class="beta-result-empty" data-beta-empty>
-            <span>PRIVATE BETA / EXECUTION CONTRACT</span>
-            <h3>No unrestricted prompt-to-code path.</h3>
+            <span>PRIVATE BETA / PAID RESEARCH CONTRACT</span>
+            <h3>Broad topics, bounded cost, inspectable sources.</h3>
             <ul>
-              <li><b>12</b> maximum experiments</li>
-              <li><b>10 min</b> compute budget</li>
-              <li><b>0</b> provider calls</li>
-              <li><b>0</b> network retrievals</li>
+              <li><b>1</b> provider request maximum</li>
+              <li><b>3</b> web searches maximum</li>
+              <li><b>3.2k</b> output tokens per request</li>
+              <li><b>2/day</b> general missions per tester</li>
               <li><b>1</b> active mission per tester</li>
             </ul>
           </div>
@@ -305,7 +306,7 @@
             <div class="result-stats">
               <div><small>PHASE</small><b data-beta-phase>queued</b></div>
               <div><small>STEP</small><b data-beta-step>0</b></div>
-              <div><small>EXPERIMENTS</small><b data-beta-experiments>0</b></div>
+              <div><small>WORK UNITS</small><b data-beta-experiments>0</b></div>
             </div>
             <p data-beta-stop></p>
             <div class="result-actions">
@@ -324,7 +325,7 @@
       <div class="reveal">
         <p class="eyebrow"><span></span> Reproduce it yourself</p>
         <h2 id="launch-title">Don’t take ORIGIN’s<br>word for it.</h2>
-        <p>Clone the repository, run all 316 tests, replay a stored experiment, and verify the flagship mission against its durable artifacts.</p>
+        <p>Clone the repository, run all 325 tests, replay a stored experiment, and verify the flagship mission against its durable artifacts.</p>
         <div class="hero-actions">
           <a class="button button-primary" href="https://github.com/nishchaysinghofficial10-ship-it/origin">Open the repository <span aria-hidden="true">↗</span></a>
           <a class="button button-quiet" href="https://github.com/nishchaysinghofficial10-ship-it/origin/actions">View CI evidence</a>
@@ -337,7 +338,7 @@
 <b>$</b> cd origin
 <b>$</b> python3 -m unittest discover -s tests
 
-<span>Ran 316 tests</span>
+<span>Ran 325 tests</span>
 <strong>OK</strong></code></pre>
       </div>
     </section>

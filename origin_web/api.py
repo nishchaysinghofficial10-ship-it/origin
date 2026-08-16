@@ -21,6 +21,7 @@ from urllib.parse import urlsplit
 
 from . import __version__
 from .config import WebConfig
+from .general_research import TopicRejected, assess_topic
 from .store import Conflict, IntakeClosed, NotFound, QuotaExceeded, Store
 
 
@@ -31,8 +32,13 @@ MISSION_ROUTE_RE = re.compile(
 ALLOWED_PROFILES = {
     "algobench": ("fast",),
     "graphbench": ("graph_fast",),
+    "general": ("web_research",),
 }
-DEFAULT_PROFILES = {"algobench": "fast", "graphbench": "graph_fast"}
+DEFAULT_PROFILES = {
+    "algobench": "fast",
+    "graphbench": "graph_fast",
+    "general": "web_research",
+}
 
 
 class OriginHTTPServer(ThreadingHTTPServer):
@@ -184,24 +190,38 @@ class OriginHandler(BaseHTTPRequestHandler):
             "version": __version__,
             "status": "ok",
             "accepting_missions": accepting,
+            "general_research_enabled": self.server.config.general_research_enabled,
             "research_core": "2.1.2",
         })
 
     def _capabilities(self) -> None:
         self._json(HTTPStatus.OK, {
-            "mode": "controlled-beta",
+            "mode": "controlled-general-research-beta",
             "domains": {
                 "algobench": {"profiles": ["fast"]},
                 "graphbench": {"profiles": ["graph_fast"]},
+                **({"general": {"profiles": ["web_research"]}}
+                   if self.server.config.general_research_enabled else {}),
             },
-            "provider_calls": 0,
-            "network_retrievals": 0,
+            "provider_calls": (self.server.config.provider_calls_per_mission
+                               if self.server.config.general_research_enabled else 0),
+            "network_retrievals": (self.server.config.web_searches_per_mission
+                                   if self.server.config.general_research_enabled else 0),
             "max_question_chars": self.server.config.max_question_chars,
             "authentication_required": True,
+            "general_research": {
+                "enabled": self.server.config.general_research_enabled,
+                "profile": "web_research",
+                "model": self.server.config.research_model,
+                "missions_per_tester_per_day": self.server.config.general_missions_per_day,
+                "global_paid_missions_per_day": self.server.config.provider_missions_per_day,
+                "max_output_tokens": self.server.config.research_max_output_tokens,
+            },
             "limitations": [
-                "registered computational domains only",
+                "general mode is a cited public-web synthesis, not experimental proof",
                 "user-space experiment confinement inside a required container boundary",
-                "no medical, legal, financial, or wet-lab research",
+                "no dangerous operational assistance or personalized professional advice",
+                "no physical, wet-lab, human-subject, or real-world experiment execution",
             ],
         })
 
@@ -234,18 +254,34 @@ class OriginHandler(BaseHTTPRequestHandler):
             return
         if domain not in ALLOWED_PROFILES:
             self._error(HTTPStatus.BAD_REQUEST, "unsupported_domain",
-                        "domain must be algobench or graphbench")
+                        "domain must be general, algobench, or graphbench")
+            return
+        if domain == "general" and not config.general_research_enabled:
+            self._error(HTTPStatus.SERVICE_UNAVAILABLE,
+                        "general_research_unavailable",
+                        "general-topic research is not enabled on this deployment")
             return
         profile = payload.get("profile", DEFAULT_PROFILES[domain])
         if profile not in ALLOWED_PROFILES[domain]:
             self._error(HTTPStatus.BAD_REQUEST, "unsupported_profile",
                         f"profile must be one of: {', '.join(ALLOWED_PROFILES[domain])}")
             return
+        if domain == "general":
+            try:
+                assess_topic(question)
+            except TopicRejected as exc:
+                store.audit(principal, "create_mission", "topic_rejected",
+                            detail=f"category={exc.category}")
+                self._error(HTTPStatus.UNPROCESSABLE_ENTITY,
+                            "topic_not_supported", str(exc))
+                return
         try:
             mission = store.create_mission_limited(
                 principal, question, domain, profile,
                 active_limit=config.active_missions_per_principal,
-                daily_limit=config.missions_per_day)
+                daily_limit=(config.general_missions_per_day if domain == "general"
+                             else config.missions_per_day),
+                daily_domain=("general" if domain == "general" else None))
         except IntakeClosed as exc:
             store.audit(principal, "create_mission", "intake_closed")
             self._error(HTTPStatus.SERVICE_UNAVAILABLE, "intake_closed", str(exc))

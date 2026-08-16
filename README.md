@@ -1,20 +1,24 @@
 # ORIGIN 2.1.2
 
-**A persistent computational research engine.** Give it a research question in a
-supported domain and a budget. It maintains competing hypotheses, turns them
+**A persistent research engine with two evidence modes.** Give the verified
+computational core a question in a supported domain and a budget. It maintains competing hypotheses, turns them
 into machine-checkable predictions, runs reproducible experiments in a confined
 subprocess, analyses the results, attacks its own conclusions with independent
 replications and falsification probes, records every decision and confidence
 change, and stops with an explicit reason.
 
-Zero third-party dependencies. Python 3.10+. Everything it concludes is
-traceable to a stored experiment.
+Zero third-party runtime dependencies. Python 3.10+. Every computational
+conclusion is traceable to a stored experiment. The separately isolated general
+research beta accepts broad public-web topics and produces a current, cited
+synthesis whose dossier explicitly remains distinct from experimental proof.
 
 **Public evidence site:**
 [nishchaysinghofficial10-ship-it.github.io/origin](https://nishchaysinghofficial10-ship-it.github.io/origin/)
 — the site is generated from the exact flagship artifacts in this repository.
-The optional interactive service is a controlled, token-gated computational
-beta; it is not an open code-execution service.
+The optional interactive service is token-gated and cost-bounded. Its general
+researcher receives the paid provider secret and outbound network; the API does
+not. Its computational worker remains network-disabled and receives no secret.
+It is not an open code-execution service.
 
 Deployment paths: a persistent Linux host with Caddy is documented in
 [`docs/BETA_DEPLOYMENT_RUNBOOK.md`](docs/BETA_DEPLOYMENT_RUNBOOK.md). A
@@ -48,10 +52,9 @@ design. Details: [`docs/reports/FLAGSHIP_EVALUATION.md`](docs/reports/FLAGSHIP_E
 
 ## What ORIGIN is **not**
 
-- Not a general "autonomous scientist". It runs *computational* experiments in a
-  registered domain — currently sorting benchmarks and graph shortest paths.
-- Not a web researcher. It retrieves URLs you approve; it does not search,
-  crawl, or browse, and everything it retrieves is untrusted input.
+- Not an all-powerful "autonomous scientist". General mode performs cited
+  public-web synthesis; only registered sorting and shortest-path domains run
+  locally verified experiments.
 - Not an unrestricted code-execution agent. It executes only code generated from
   its own audited domain templates — never LLM-written or web-derived code.
 - Not an oracle. Generated prose is never evidence. A model may *propose*;
@@ -72,7 +75,8 @@ python3 -m origin status --dir runs/demo
 python3 -m origin report --dir runs/demo         # the research dossier
 ```
 
-The repository contains 311 test cases, including the public site and controlled
+The repository contains 325 test cases, including the public site, paid general
+research boundary, and controlled
 beta boundary. The complete suite passes locally on native macOS/arm64 and in
 hosted Linux CI with CPython 3.10–3.14. The release
 workflow also checks macOS on stable CPython 3.14, portability, archive
@@ -95,6 +99,24 @@ The second domain existed to test whether the core was genuinely
 domain-agnostic. It was — eleven core modules never name a domain, asserted by
 test — and it exposed two real architecture gaps, documented rather than hidden
 in [`docs/SECOND_DOMAIN.md`](docs/SECOND_DOMAIN.md).
+
+## General public-web research beta
+
+An authenticated user can select `general`, enter a broad topic, and receive a
+downloadable Markdown dossier containing a source ledger, competing
+interpretations, testable predictions, criticism/falsification attempts,
+calibrated conclusions, and limitations. The default production contract is:
+
+- at most one provider request and three searches per mission;
+- 3,200 output tokens per request;
+- two general missions per tester and four paid missions globally per rolling
+  24 hours;
+- one active mission per tester;
+- no local execution tool and no path from provider output to core Evidence;
+- refusal of clearly dangerous operational requests.
+
+Configuration, trust boundaries, citation handling, and exact operator commands
+are in [`docs/GENERAL_RESEARCH_BETA.md`](docs/GENERAL_RESEARCH_BETA.md).
 
 ## Commands
 
@@ -149,8 +171,11 @@ textbook-plausible hypotheses ORIGIN had proposed itself.
 - **Autonomy** chooses among already-permitted actions. It cannot create an
   action type, widen a limit, or use the network or a provider without a per-run
   flag. One mission has one writer; a stale lease is never stolen automatically.
-- **Credentials** live in environment variables only, and every logged string
-  passes a redactor.
+- **Credentials** are mounted only into the process that needs them. The general
+  Anthropic key comes from a mode-0600 host file and is mounted as a read-only
+  Docker secret visible to the researcher, never
+  the API or network-disabled experiment worker. Credential values are never
+  stored in mission state, metadata, dossiers, URLs, or logs.
 
 ## Reproduce the evidence
 
@@ -168,21 +193,23 @@ evaluation), `autonomy_demo`, `evidence_demo`, `demo_run`.
 
 ## Known limitations
 
-- **Two domains only**, both computational and deterministic. Nothing here
-  addresses wet-lab, medical, legal or financial research, and it must not be
-  used for those.
+- **Two experimentally verified domains only**, both computational and
+  deterministic. General mode can synthesize broader public-web topics but does
+  not execute wet-lab, physical, human-subject, medical, legal, or financial
+  actions and is not personalized professional advice.
 - **Timings are single-machine.** Only within-run rankings are meaningful, and
   only at tested sizes and trial counts. Relaxation counts do transfer.
 - **Confinement is user-space.** No network or filesystem namespacing.
-- **The live LLM path is UNVERIFIED** — no API key was available during
-  development, so the socket write has never executed. Everything around it is
-  tested through a stubbed transport.
+- **Paid general research requires explicit live acceptance.** A deployment is
+  not allowed to advertise this path until `tools/live_general_research_check.py`
+  and a real end-to-end public mission have succeeded with the operator's key.
 - **General-web retrieval is unverified**; the live path was proven only against
   an allow-listed host.
 - **Autonomy gives no exactly-once guarantee** for external actions: a crash
   mid-action is recorded as `interrupted` for operator review, never guessed.
-- **No daemon, no multi-agent coordination, no distributed execution, no source
-  discovery.** None are implemented and none are claimed.
+- **No multi-agent coordination or distributed execution.** The general
+  researcher is one exclusive queue consumer and the computational worker is a
+  second exclusive queue consumer; each handles only its own domains.
 
 ## Documentation
 
@@ -191,6 +218,7 @@ evaluation), `autonomy_demo`, `evidence_demo`, `demo_run`.
 [`docs/AUTONOMY.md`](docs/AUTONOMY.md) ·
 [`docs/SECOND_DOMAIN.md`](docs/SECOND_DOMAIN.md) ·
 [`docs/LLM_INTEGRATION.md`](docs/LLM_INTEGRATION.md) ·
+[`docs/GENERAL_RESEARCH_BETA.md`](docs/GENERAL_RESEARCH_BETA.md) ·
 [`docs/EVIDENCE_ACQUISITION.md`](docs/EVIDENCE_ACQUISITION.md) ·
 [`docs/OPERATIONS.md`](docs/OPERATIONS.md) ·
 [`docs/WEB_SERVICE.md`](docs/WEB_SERVICE.md) ·

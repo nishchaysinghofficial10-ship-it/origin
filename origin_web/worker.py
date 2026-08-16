@@ -278,17 +278,22 @@ class Worker:
     def run(self, *, once: bool = False) -> int:
         # Complete controls that survived a previous worker process before
         # returning ordinary interrupted work to the queue.
-        for mission in self.store.pending_control("cancel_requested"):
+        domains = ("algobench", "graphbench")
+        for mission in self.store.pending_control(
+                "cancel_requested", domains=domains):
             self._durable_cancel(mission, "cancel request recovered after worker restart")
-        for mission in self.store.pending_control("pause_requested"):
+        for mission in self.store.pending_control(
+                "pause_requested", domains=domains):
             self.store.worker_pause(mission["id"])
             self.store.audit(mission["owner_hash"], "worker_pause", "paused",
                              mission["id"], "pause recovered after worker restart")
-        recovered = self.store.recover_running("exclusive worker restarted")
+        recovered = self.store.recover_running(
+            "exclusive worker restarted", domains=("algobench", "graphbench"))
         if recovered:
             print(f"Recovered {recovered} interrupted mission(s) into the queue.")
         while True:
-            mission = self.store.claim_next(self.worker_id)
+            mission = self.store.claim_next(
+                self.worker_id, domains=("algobench", "graphbench"))
             if mission is None:
                 if once:
                     return 0

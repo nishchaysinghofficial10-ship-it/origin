@@ -26,6 +26,21 @@ def _positive_int(name: str, default: int, *, minimum: int = 1,
     return value
 
 
+def _enabled(name: str, default: bool = False) -> bool:
+    raw = os.environ.get(name, "1" if default else "0")
+    if raw not in ("0", "1"):
+        raise ConfigError(f"{name} must be 0 or 1")
+    return raw == "1"
+
+
+def _model_name() -> str:
+    value = os.environ.get("ORIGIN_RESEARCH_MODEL", "claude-sonnet-4-6").strip()
+    if not value or len(value) > 100 or not all(
+            character.isalnum() or character in "._-" for character in value):
+        raise ConfigError("ORIGIN_RESEARCH_MODEL is invalid")
+    return value
+
+
 def token_digest(token: str) -> str:
     return hashlib.sha256(token.encode("utf-8")).hexdigest()
 
@@ -105,6 +120,15 @@ class WebConfig:
     step_timeout_s: int = 180
     worker_poll_s: float = 1.0
     environment_accepts_jobs: bool = True
+    general_research_enabled: bool = False
+    general_missions_per_day: int = 2
+    provider_missions_per_day: int = 4
+    provider_calls_per_mission: int = 1
+    web_searches_per_mission: int = 3
+    research_max_output_tokens: int = 3_200
+    research_timeout_s: int = 120
+    research_model: str = "claude-sonnet-4-6"
+    anthropic_key_file: Path | None = None
     allow_insecure_local: bool = False
     public_site_url: str = "https://nishchaysinghofficial10-ship-it.github.io/origin"
     require_tokens: bool = True
@@ -116,6 +140,14 @@ class WebConfig:
         object.__setattr__(self, "data_dir", base)
         object.__setattr__(self, "db_path", base / "origin_web.sqlite3")
         object.__setattr__(self, "runs_dir", base / "missions")
+        if not 1 <= self.provider_calls_per_mission <= 1:
+            raise ConfigError("provider calls per mission must be exactly 1")
+        if not 1 <= self.web_searches_per_mission <= 5:
+            raise ConfigError("web searches per mission must be between 1 and 5")
+        if not 256 <= self.research_max_output_tokens <= 8_192:
+            raise ConfigError("research output-token limit is invalid")
+        if not 10 <= self.research_timeout_s <= 300:
+            raise ConfigError("research timeout is invalid")
         if self.require_tokens and not self.token_records and not (
                 self.allow_insecure_local and self.host in ("127.0.0.1", "::1", "localhost")):
             raise ConfigError(
@@ -174,6 +206,24 @@ class WebConfig:
                                          maximum=3_600),
             environment_accepts_jobs=(
                 os.environ.get("ORIGIN_WEB_ACCEPT_JOBS", "1") == "1"),
+            general_research_enabled=_enabled(
+                "ORIGIN_WEB_GENERAL_RESEARCH", False),
+            general_missions_per_day=_positive_int(
+                "ORIGIN_GENERAL_MISSIONS_PER_DAY", 2, maximum=20),
+            provider_missions_per_day=_positive_int(
+                "ORIGIN_PROVIDER_MISSIONS_PER_DAY", 4, maximum=100),
+            provider_calls_per_mission=_positive_int(
+                "ORIGIN_PROVIDER_CALLS_PER_MISSION", 1, maximum=1),
+            web_searches_per_mission=_positive_int(
+                "ORIGIN_WEB_SEARCHES_PER_MISSION", 3, maximum=5),
+            research_max_output_tokens=_positive_int(
+                "ORIGIN_RESEARCH_MAX_OUTPUT_TOKENS", 3_200,
+                minimum=256, maximum=8_192),
+            research_timeout_s=_positive_int(
+                "ORIGIN_RESEARCH_TIMEOUT_S", 120, minimum=10, maximum=300),
+            research_model=_model_name(),
+            anthropic_key_file=(Path(value) if (value := os.environ.get(
+                "ORIGIN_ANTHROPIC_KEY_FILE", "").strip()) else None),
             allow_insecure_local=(
                 os.environ.get("ORIGIN_WEB_ALLOW_INSECURE_LOCAL", "0") == "1"),
             public_site_url=os.environ.get(

@@ -1,9 +1,10 @@
 # Controlled beta production deployment runbook
 
-This is the exact single-host handoff for ORIGIN's interactive computational
-beta. It preserves the verified v2.1.2 core and adds three boundaries around
-it: an automatic-HTTPS proxy, an authenticated queue API, and a network-disabled
-exclusive worker.
+This is the exact single-host handoff for ORIGIN's interactive beta. It
+preserves the verified v2.1.2 core and separates four boundaries: an automatic-
+HTTPS proxy, an authenticated queue API, a network-disabled computational
+worker, and a separately secret-bearing, paid general researcher with no
+published port. General-mode details are in `GENERAL_RESEARCH_BETA.md`.
 
 The public evidence site does not need this server. It is already deployed at
 `https://nishchaysinghofficial10-ship-it.github.io/origin/`.
@@ -40,6 +41,15 @@ python3 tools/prepare_beta_deployment.py \
   --site-origin https://nishchaysinghofficial10-ship-it.github.io
 ```
 
+Privately add the Anthropic key; hidden input is required and the value is never
+printed:
+
+```bash
+python3 tools/configure_anthropic_key.py
+python3 tools/live_general_research_check.py \
+  --key-file deploy/secrets/anthropic_api_key.txt
+```
+
 The preparation command:
 
 - validates both origins;
@@ -56,22 +66,23 @@ docker compose --env-file .env.production \
 docker compose --env-file .env.production \
   --file compose.production.yaml pull proxy
 docker compose --env-file .env.production \
-  --file compose.production.yaml build api worker backup
+  --file compose.production.yaml build api worker researcher backup
 ```
 
 Only the Caddy proxy publishes host ports. The API is reachable only on the
-private Compose network. The worker has `network_mode: none`, receives neither
-credential, runs as a non-root user, and shares only the durable data volume.
+private Compose network. The computational worker has `network_mode: none`,
+receives no credential, and runs as a non-root user. The researcher alone
+mounts the Anthropic secret, has outbound access and no inbound/published port.
 
 ## 2. Start with intake closed
 
 ```bash
 docker compose --env-file .env.production \
-  --file compose.production.yaml up --detach api worker proxy
+  --file compose.production.yaml up --detach api worker researcher proxy
 docker compose --env-file .env.production \
   --file compose.production.yaml ps
 docker compose --env-file .env.production \
-  --file compose.production.yaml logs --tail 100 api worker proxy
+  --file compose.production.yaml logs --tail 100 api worker researcher proxy
 ```
 
 Confirm DNS, TLS, and the deliberately closed public health response:
@@ -89,13 +100,14 @@ or Caddy's certificate state must be fixed before proceeding.
 python3 tools/verify_beta_deployment.py \
   --api-origin https://beta.example.com \
   --beta-token-file deploy/secrets/beta_token.txt \
-  --admin-token-file deploy/secrets/admin_token.txt
+  --admin-token-file deploy/secrets/admin_token.txt \
+  --require-general
 ```
 
-This proves the public health response is bounded, provider and retrieval
-authority remain zero, unauthenticated access is rejected, a tester cannot use
+This proves public health remains bounded, paid provider/search authority is
+enabled but hard-capped, unauthenticated access is rejected, a tester cannot use
 administrator endpoints, and the durable queue is healthy. The command never
-prints either credential.
+prints a credential.
 
 If it fails, keep intake closed and inspect the request ID alongside container
 logs. Do not weaken authentication, CORS, TLS, or worker isolation to make the
@@ -166,7 +178,7 @@ python3 tools/verify_beta_deployment.py \
   --admin-token-file deploy/secrets/admin_token.txt \
   --intake closed
 docker compose --env-file .env.production \
-  --file compose.production.yaml stop worker
+  --file compose.production.yaml stop worker researcher
 docker compose --env-file .env.production \
   --file compose.production.yaml --profile ops run --rm backup create \
   --data-dir /data --out /backup/origin-beta-latest.tar.gz
@@ -198,7 +210,7 @@ API with intake closed, run the administrator health gate, then start the worker
 and repeat the full acceptance test. Roll back by pointing to the untouched old
 volume; never mix one database with another volume's mission directory.
 
-After a routine backup, restart the worker and reopen durable intake with the
+After a routine backup, restart both workers and reopen durable intake with the
 same verifier using `--intake open` only when maintenance is complete.
 
 ## 7. Monitor and respond
@@ -219,14 +231,16 @@ never the administrator credential):
 python3 tools/monitor_beta.py \
   --api-origin https://beta.example.com \
   --admin-token-file deploy/secrets/admin_token.txt \
-  --require-intake-open
+  --require-intake-open \
+  --require-researcher
 ```
 
 The command fails non-zero unless public health, authenticated database health,
-queue age, failed mission count, data-volume free space, API/worker container
-health, restart counts, and recent worker lease/traceback logs are all within
-their thresholds. Use `--max-queue-age`, `--max-failed`, `--min-free-bytes`,
-`--max-restarts`, and `--log-since` to set an explicit alert policy. Schedule
+queue age, failed mission count, data-volume free space, paid usage, API/worker/
+researcher container health, restart counts, and recent lease/traceback logs
+are all within their thresholds. Use `--max-queue-age`, `--max-failed`,
+`--min-free-bytes`, `--max-restarts`, `--max-provider-missions-24h`, and
+`--log-since` to set an explicit alert policy. Schedule
 this command with the host's protected operator scheduler; redirect output only
 to an operator-readable location because queue counts are private operational
 metadata. Use `--skip-docker` only for an off-host HTTPS probe.
@@ -240,7 +254,7 @@ Emergency response:
 1. Close durable intake through the administrator endpoint.
 2. Set `ORIGIN_WEB_ACCEPT_JOBS=0` in `.env.production` and recreate the API for a
    second independent kill switch.
-3. Stop the worker if an active mission must be interrupted.
+3. Stop `worker` and/or `researcher` if an active mission must be interrupted.
 4. Preserve logs and the data volume; do not delete evidence during triage.
 5. Rotate tester/admin credentials and recreate the API after any suspected
    credential exposure.
@@ -255,6 +269,8 @@ Emergency response:
 - Mutating exercise JSON recorded, including completed and cancelled mission IDs.
 - Site-connection gate succeeded after the Pages rebuild.
 - Backup manifest verification and separate-volume restoration succeeded.
+- Paid live check and a public-HTTPS general mission produced real citations.
+- General deployment and researcher monitor gates succeeded.
 - One real named tester received only the tester credential; the administrator
   credential remained operator-only.
 

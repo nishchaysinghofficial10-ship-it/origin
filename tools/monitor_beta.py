@@ -82,7 +82,8 @@ def _request_json(api_origin: str, path: str, *, token: str = "") -> dict[str, A
 
 def assess_remote(public: dict[str, Any], admin: dict[str, Any], *,
                   max_queue_age: int, max_failed: int,
-                  min_free_bytes: int, require_intake_open: bool) -> dict[str, Any]:
+                  min_free_bytes: int, require_intake_open: bool,
+                  max_provider_missions: int | None = None) -> dict[str, Any]:
     if public.get("status") != "ok":
         raise MonitorError("public health is not OK")
     if admin.get("database") != "ok":
@@ -107,7 +108,7 @@ def assess_remote(public: dict[str, Any], admin: dict[str, Any], *,
     if require_intake_open and not (public.get("accepting_missions") and
                                     admin.get("accepting_jobs")):
         raise MonitorError("mission intake is not open")
-    return {
+    evidence = {
         "status": public["status"],
         "accepting_missions": bool(public.get("accepting_missions")),
         "database": admin["database"],
@@ -116,6 +117,19 @@ def assess_remote(public: dict[str, Any], admin: dict[str, Any], *,
         "oldest_queued_seconds": queue_age,
         "storage": {"free_bytes": free_bytes, "total_bytes": total_bytes},
     }
+    if max_provider_missions is not None:
+        usage = admin.get("provider_usage")
+        if not isinstance(usage, dict):
+            raise MonitorError("administrator health lacks paid-provider metrics")
+        required = ("missions_reserved_24h", "provider_calls_24h",
+                    "input_tokens_24h", "output_tokens_24h", "web_searches_24h")
+        if not all(isinstance(usage.get(key), int) and usage[key] >= 0
+                   for key in required):
+            raise MonitorError("paid-provider metrics are invalid")
+        if usage["missions_reserved_24h"] > max_provider_missions:
+            raise MonitorError("paid-provider mission cap was exceeded")
+        evidence["provider_usage"] = {key: usage[key] for key in required}
+    return evidence
 
 
 Runner = Callable[..., subprocess.CompletedProcess[str]]
@@ -162,19 +176,22 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--admin-token-file", type=Path, required=True)
     parser.add_argument("--api-container", default="origin-beta-api-1")
     parser.add_argument("--worker-container", default="origin-beta-worker-1")
+    parser.add_argument("--researcher-container", default="origin-beta-researcher-1")
     parser.add_argument("--max-queue-age", type=int, default=900)
     parser.add_argument("--max-failed", type=int, default=0)
     parser.add_argument("--min-free-bytes", type=int, default=536_870_912)
     parser.add_argument("--max-restarts", type=int, default=0)
+    parser.add_argument("--max-provider-missions-24h", type=int, default=4)
     parser.add_argument("--log-since", default="15m")
     parser.add_argument("--require-intake-open", action="store_true")
     parser.add_argument("--skip-docker", action="store_true")
+    parser.add_argument("--require-researcher", action="store_true")
     parser.add_argument("--allow-http-local", action="store_true",
                         help=argparse.SUPPRESS)
     args = parser.parse_args(argv)
     try:
         if min(args.max_queue_age, args.max_failed, args.min_free_bytes,
-               args.max_restarts) < 0:
+               args.max_restarts, args.max_provider_missions_24h) < 0:
             raise MonitorError("monitor thresholds must be non-negative")
         api_origin = _origin(args.api_origin,
                              allow_http_local=args.allow_http_local)
@@ -187,7 +204,8 @@ def main(argv: list[str] | None = None) -> int:
             "remote": assess_remote(
                 public, admin, max_queue_age=args.max_queue_age,
                 max_failed=args.max_failed, min_free_bytes=args.min_free_bytes,
-                require_intake_open=args.require_intake_open),
+                require_intake_open=args.require_intake_open,
+                max_provider_missions=args.max_provider_missions_24h),
         }
         if not args.skip_docker:
             api = container_evidence(
@@ -204,6 +222,18 @@ def main(argv: list[str] | None = None) -> int:
                 "worker": worker,
                 "worker_lease_errors": lease_errors,
             }
+            if args.require_researcher:
+                researcher = container_evidence(
+                    args.researcher_container,
+                    max_restarts=args.max_restarts)
+                researcher_errors = worker_lease_errors(
+                    args.researcher_container, since=args.log_since)
+                if researcher_errors:
+                    raise MonitorError(
+                        f"researcher logged {researcher_errors} lease/traceback "
+                        f"error(s) since {args.log_since}")
+                evidence["containers"]["researcher"] = researcher
+                evidence["containers"]["researcher_lease_errors"] = researcher_errors
     except (OSError, urllib.error.URLError, MonitorError) as exc:
         print(f"BETA MONITOR FAILED: {exc}")
         return 2

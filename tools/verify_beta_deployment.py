@@ -49,7 +49,8 @@ def _token(path: Path) -> str:
 class DeploymentVerifier:
     def __init__(self, api_origin: str, beta_token: str, admin_token: str, *,
                  site_url: str = "", other_beta_token: str = "",
-                 allow_http_local: bool = False):
+                 allow_http_local: bool = False,
+                 require_general: bool = False):
         self.api = _origin(api_origin, allow_http_local=allow_http_local)
         self.site = (_origin(site_url, allow_http_local=allow_http_local,
                              allow_path=True) if site_url else "")
@@ -60,6 +61,7 @@ class DeploymentVerifier:
         self.beta_token = beta_token
         self.admin_token = admin_token
         self.other_beta_token = other_beta_token
+        self.require_general = require_general
         if len(beta_token) < 24 or len(admin_token) < 24:
             raise VerificationError("tester and administrator tokens must be at least 24 characters")
         if beta_token == admin_token:
@@ -118,8 +120,19 @@ class DeploymentVerifier:
 
         status, payload, _ = self.request("GET", "/api/v1/capabilities")
         capabilities = self.decoded(payload)
-        if (status != 200 or capabilities.get("provider_calls") != 0 or
-                capabilities.get("network_retrievals") != 0):
+        provider_calls = capabilities.get("provider_calls")
+        retrievals = capabilities.get("network_retrievals")
+        if self.require_general:
+            general = capabilities.get("general_research")
+            if (status != 200 or not isinstance(provider_calls, int) or
+                    not 1 <= provider_calls <= 2 or
+                    not isinstance(retrievals, int) or not 1 <= retrievals <= 5 or
+                    not isinstance(general, dict) or not general.get("enabled") or
+                    "general" not in capabilities.get("domains", {})):
+                raise VerificationError(
+                    "deployed general research capability is missing or unbounded")
+            evidence["general_research"] = "bounded"
+        elif (status != 200 or provider_calls != 0 or retrievals != 0):
             raise VerificationError("deployed capabilities exceed the beta contract")
         evidence["capabilities"] = "bounded"
 
@@ -276,6 +289,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--timeout", type=float, default=240)
     parser.add_argument("--allow-http-local", action="store_true",
                         help=argparse.SUPPRESS)
+    parser.add_argument("--require-general", action="store_true",
+                        help="require bounded, enabled general public-web research")
     args = parser.parse_args(argv)
     try:
         verifier = DeploymentVerifier(
@@ -283,7 +298,8 @@ def main(argv: list[str] | None = None) -> int:
             _token(args.admin_token_file), site_url=args.site_url,
             other_beta_token=(_token(args.other_beta_token_file)
                               if args.other_beta_token_file else ""),
-            allow_http_local=args.allow_http_local)
+            allow_http_local=args.allow_http_local,
+            require_general=args.require_general)
         evidence = verifier.verify_read_only()
         if args.intake:
             evidence["intake"] = verifier.set_intake(args.intake == "open")

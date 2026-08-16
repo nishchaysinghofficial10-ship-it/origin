@@ -117,7 +117,28 @@ class Store:
                 );
                 INSERT OR IGNORE INTO settings(key, value, updated_at)
                     VALUES ('accepting_jobs', '1', 0);
+                CREATE TABLE IF NOT EXISTS provider_usage (
+                    mission_id TEXT PRIMARY KEY,
+                    reserved_at REAL NOT NULL,
+                    completed_at REAL,
+                    model TEXT NOT NULL,
+                    status TEXT NOT NULL CHECK(status IN ('reserved','completed','failed')),
+                    provider_calls INTEGER NOT NULL DEFAULT 0,
+                    input_tokens INTEGER NOT NULL DEFAULT 0,
+                    output_tokens INTEGER NOT NULL DEFAULT 0,
+                    web_searches INTEGER NOT NULL DEFAULT 0,
+                    FOREIGN KEY(mission_id) REFERENCES missions(id)
+                );
+                CREATE INDEX IF NOT EXISTS idx_provider_usage_reserved
+                    ON provider_usage(reserved_at);
             """)
+            columns = {row[1] for row in connection.execute(
+                "PRAGMA table_info(missions)").fetchall()}
+            for name in ("provider_calls_used", "input_tokens", "output_tokens",
+                         "web_searches_used"):
+                if name not in columns:
+                    connection.execute(
+                        f"ALTER TABLE missions ADD COLUMN {name} INTEGER NOT NULL DEFAULT 0")
             connection.commit()
         finally:
             connection.close()
@@ -205,7 +226,8 @@ class Store:
 
     def create_mission_limited(self, owner_hash: str, question: str,
                                domain: str, profile: str, *,
-                               active_limit: int, daily_limit: int) -> dict[str, Any]:
+                               active_limit: int, daily_limit: int,
+                               daily_domain: str | None = None) -> dict[str, Any]:
         """Atomically enforce intake and quota limits while enqueueing."""
         mission_id = "msn_" + secrets.token_hex(8)
         now = time.time()
@@ -222,9 +244,15 @@ class Store:
                 f"({placeholders})", (owner_hash, *ACTIVE)).fetchone()[0]
             if active >= active_limit:
                 raise QuotaExceeded("active mission limit reached")
-            daily = connection.execute(
-                "SELECT count(*) FROM missions WHERE owner_hash=? AND created_at>=?",
-                (owner_hash, now - 86_400)).fetchone()[0]
+            if daily_domain is None:
+                daily = connection.execute(
+                    "SELECT count(*) FROM missions WHERE owner_hash=? AND created_at>=?",
+                    (owner_hash, now - 86_400)).fetchone()[0]
+            else:
+                daily = connection.execute(
+                    "SELECT count(*) FROM missions WHERE owner_hash=? AND domain=? "
+                    "AND created_at>=?",
+                    (owner_hash, daily_domain, now - 86_400)).fetchone()[0]
             if daily >= daily_limit:
                 raise QuotaExceeded("daily mission limit reached")
             connection.execute(
@@ -256,13 +284,20 @@ class Store:
             "LIMIT ?", (owner_hash, min(max(1, limit), 50))).fetchall()
         return [self._public(row) for row in rows]
 
-    def claim_next(self, worker_id: str) -> dict[str, Any] | None:
+    def claim_next(self, worker_id: str, *,
+                   domains: tuple[str, ...] | None = None) -> dict[str, Any] | None:
         connection = self._connection()
         connection.execute("BEGIN IMMEDIATE")
         try:
-            row = connection.execute(
-                "SELECT * FROM missions WHERE status='queued' "
-                "ORDER BY created_at LIMIT 1").fetchone()
+            if domains:
+                placeholders = ",".join("?" for _ in domains)
+                row = connection.execute(
+                    f"SELECT * FROM missions WHERE status='queued' AND domain IN "
+                    f"({placeholders}) ORDER BY created_at LIMIT 1", domains).fetchone()
+            else:
+                row = connection.execute(
+                    "SELECT * FROM missions WHERE status='queued' "
+                    "ORDER BY created_at LIMIT 1").fetchone()
             if row is None:
                 connection.commit()
                 return None
@@ -382,6 +417,114 @@ class Store:
              str(meta.get("stop_reason", ""))[:500],
              int(budget.get("experiments_used", 0)), time.time(), mission_id))
 
+    def update_general_progress(self, mission_id: str, *, step: int,
+                                phase: str, stop_reason: str = "",
+                                provider_calls: int = 0,
+                                input_tokens: int = 0,
+                                output_tokens: int = 0,
+                                web_searches: int = 0) -> None:
+        """Record bounded provider work without representing it as experiments."""
+        values = (step, phase[:80], stop_reason[:500], provider_calls,
+                  input_tokens, output_tokens, web_searches, time.time(), mission_id)
+        if any(not isinstance(value, int) or value < 0 for value in
+               (step, provider_calls, input_tokens, output_tokens, web_searches)):
+            raise ValueError("general research progress counters must be non-negative")
+        self._connection().execute(
+            "UPDATE missions SET step=?,phase=?,stop_reason=?,provider_calls_used=?,"
+            "input_tokens=?,output_tokens=?,web_searches_used=?,updated_at=? WHERE id=?",
+            values)
+
+    def reserve_provider_mission(self, mission_id: str, model: str,
+                                 daily_limit: int,
+                                 now: float | None = None) -> None:
+        """Atomically reserve one of the operator's global daily paid slots.
+
+        A reservation survives a crash so repeatedly recovering one mission can
+        never bypass the paid-usage limit.
+        """
+        if daily_limit < 1:
+            raise ValueError("provider daily limit must be positive")
+        current = time.time() if now is None else now
+        connection = self._connection()
+        connection.execute("BEGIN IMMEDIATE")
+        try:
+            existing = connection.execute(
+                "SELECT mission_id FROM provider_usage WHERE mission_id=?",
+                (mission_id,)).fetchone()
+            if existing is not None:
+                connection.commit()
+                return
+            used = connection.execute(
+                "SELECT count(*) FROM provider_usage WHERE reserved_at>=?",
+                (current - 86_400,)).fetchone()[0]
+            if used >= daily_limit:
+                raise QuotaExceeded("global paid-research daily limit reached")
+            connection.execute(
+                "INSERT INTO provider_usage(mission_id,reserved_at,model,status) "
+                "VALUES(?,?,?,'reserved')", (mission_id, current, model[:100]))
+            connection.commit()
+        except Exception:
+            connection.rollback()
+            raise
+
+    def finish_provider_usage(self, mission_id: str, *, status: str,
+                              provider_calls: int = 0,
+                              input_tokens: int = 0,
+                              output_tokens: int = 0,
+                              web_searches: int = 0) -> None:
+        if status not in ("completed", "failed"):
+            raise ValueError("provider usage status must be completed or failed")
+        values = (provider_calls, input_tokens, output_tokens, web_searches)
+        if any(not isinstance(value, int) or value < 0 for value in values):
+            raise ValueError("provider usage counters must be non-negative")
+        changed = self._connection().execute(
+            "UPDATE provider_usage SET completed_at=?,status=?,"
+            "provider_calls=MAX(provider_calls,?),"
+            "input_tokens=?,output_tokens=?,web_searches=? WHERE mission_id=?",
+            (time.time(), status, *values, mission_id)).rowcount
+        if changed != 1:
+            raise NotFound("provider usage reservation not found")
+
+    def charge_provider_attempt(self, mission_id: str, limit: int) -> int:
+        """Atomically charge a paid network attempt before it starts."""
+        if limit < 1:
+            raise ValueError("provider-call limit must be positive")
+        connection = self._connection()
+        connection.execute("BEGIN IMMEDIATE")
+        try:
+            row = connection.execute(
+                "SELECT provider_calls FROM provider_usage WHERE mission_id=?",
+                (mission_id,)).fetchone()
+            if row is None:
+                raise NotFound("provider usage reservation not found")
+            if int(row["provider_calls"]) >= limit:
+                raise QuotaExceeded("provider-call limit reached for this mission")
+            charged = int(row["provider_calls"]) + 1
+            connection.execute(
+                "UPDATE provider_usage SET provider_calls=? WHERE mission_id=?",
+                (charged, mission_id))
+            connection.commit()
+            return charged
+        except Exception:
+            connection.rollback()
+            raise
+
+    def provider_usage(self, now: float | None = None) -> dict[str, int]:
+        current = time.time() if now is None else now
+        row = self._connection().execute(
+            "SELECT count(*) AS missions,COALESCE(sum(provider_calls),0) AS calls,"
+            "COALESCE(sum(input_tokens),0) AS input_tokens,"
+            "COALESCE(sum(output_tokens),0) AS output_tokens,"
+            "COALESCE(sum(web_searches),0) AS searches "
+            "FROM provider_usage WHERE reserved_at>=?", (current - 86_400,)).fetchone()
+        return {
+            "missions_reserved_24h": int(row["missions"]),
+            "provider_calls_24h": int(row["calls"]),
+            "input_tokens_24h": int(row["input_tokens"]),
+            "output_tokens_24h": int(row["output_tokens"]),
+            "web_searches_24h": int(row["searches"]),
+        }
+
     def worker_pause(self, mission_id: str) -> None:
         self._connection().execute(
             "UPDATE missions SET status='paused',worker_id=NULL,updated_at=? "
@@ -398,11 +541,18 @@ class Store:
             (status, status, error.replace("\n", " ")[:500], stop_reason[:500],
              now, now, mission_id))
 
-    def recover_running(self, detail: str = "worker restarted") -> int:
+    def recover_running(self, detail: str = "worker restarted", *,
+                        domains: tuple[str, ...] | None = None) -> int:
         """Return abandoned work to the durable queue on worker startup."""
         now = time.time()
-        rows = self._connection().execute(
-            "SELECT id,owner_hash FROM missions WHERE status='running'").fetchall()
+        if domains:
+            placeholders = ",".join("?" for _ in domains)
+            rows = self._connection().execute(
+                f"SELECT id,owner_hash FROM missions WHERE status='running' "
+                f"AND domain IN ({placeholders})", domains).fetchall()
+        else:
+            rows = self._connection().execute(
+                "SELECT id,owner_hash FROM missions WHERE status='running'").fetchall()
         for row in rows:
             self._connection().execute(
                 "UPDATE missions SET status='queued',worker_id=NULL,error=?,"
@@ -411,12 +561,20 @@ class Store:
                        row["id"], detail)
         return len(rows)
 
-    def pending_control(self, status: str) -> list[dict[str, Any]]:
+    def pending_control(self, status: str, *,
+                        domains: tuple[str, ...] | None = None) -> list[dict[str, Any]]:
         if status not in ("pause_requested", "cancel_requested"):
             raise ValueError("unsupported pending control status")
-        rows = self._connection().execute(
-            "SELECT * FROM missions WHERE status=? ORDER BY updated_at",
-            (status,)).fetchall()
+        if domains:
+            placeholders = ",".join("?" for _ in domains)
+            rows = self._connection().execute(
+                f"SELECT * FROM missions WHERE status=? AND domain IN "
+                f"({placeholders}) ORDER BY updated_at",
+                (status, *domains)).fetchall()
+        else:
+            rows = self._connection().execute(
+                "SELECT * FROM missions WHERE status=? ORDER BY updated_at",
+                (status,)).fetchall()
         return [dict(row) for row in rows]
 
     def audit_rows(self, limit: int = 100) -> list[dict[str, Any]]:
@@ -438,6 +596,7 @@ class Store:
                 "accepting_jobs": self.accepting_jobs(),
                 "failed_missions": counts.get("failed", 0),
                 "oldest_queued_seconds": oldest_queued_seconds,
+                "provider_usage": self.provider_usage(current),
                 "storage": {
                     "free_bytes": storage.free,
                     "total_bytes": storage.total,
