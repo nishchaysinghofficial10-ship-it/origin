@@ -21,6 +21,14 @@ class VerificationError(RuntimeError):
     pass
 
 
+def _verified_ssl_context() -> ssl.SSLContext:
+    context = ssl.create_default_context()
+    if (context.cert_store_stats().get("x509_ca", 0) == 0 and
+            Path("/etc/ssl/cert.pem").is_file()):
+        context = ssl.create_default_context(cafile="/etc/ssl/cert.pem")
+    return context
+
+
 def _origin(value: str, *, allow_http_local: bool = False,
             allow_path: bool = False) -> str:
     value = value.strip().rstrip("/")
@@ -66,7 +74,7 @@ class DeploymentVerifier:
             raise VerificationError("tester and administrator tokens must be at least 24 characters")
         if beta_token == admin_token:
             raise VerificationError("tester and administrator tokens must be different")
-        self.context = ssl.create_default_context()
+        self.context = _verified_ssl_context()
 
     def request(self, method: str, path: str, *, token: str = "",
                 body: dict | None = None, origin: str = "") -> tuple[int, bytes, dict]:

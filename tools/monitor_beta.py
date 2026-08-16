@@ -27,6 +27,14 @@ class MonitorError(RuntimeError):
     pass
 
 
+def _verified_ssl_context() -> ssl.SSLContext:
+    context = ssl.create_default_context()
+    if (context.cert_store_stats().get("x509_ca", 0) == 0 and
+            Path("/etc/ssl/cert.pem").is_file()):
+        context = ssl.create_default_context(cafile="/etc/ssl/cert.pem")
+    return context
+
+
 def _origin(value: str, *, allow_http_local: bool = False) -> str:
     value = value.strip().rstrip("/")
     try:
@@ -61,7 +69,7 @@ def _request_json(api_origin: str, path: str, *, token: str = "") -> dict[str, A
     request = urllib.request.Request(api_origin + path, headers=headers)
     try:
         response = urllib.request.urlopen(
-            request, timeout=15, context=ssl.create_default_context())
+            request, timeout=15, context=_verified_ssl_context())
     except urllib.error.HTTPError as exc:
         raise MonitorError(f"{path} returned HTTP {exc.code}") from exc
     try:
