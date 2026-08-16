@@ -47,7 +47,8 @@ class TestPublicWebsite(unittest.TestCase):
     def test_build_contains_required_public_files(self):
         required = {
             "index.html", "404.html", "styles.css", "app.js", "robots.txt",
-            "site.webmanifest", ".nojekyll", "sitemap.xml",
+            "beta.js", "runtime-config.js", "site.webmanifest", ".nojekyll",
+            "sitemap.xml",
             "data/EVALUATION_RESULTS.json", "data/PREREGISTRATION.json",
             "data/flagship-state.json", "data/flagship-events.jsonl",
             "data/flagship-dossier.md", "data/flagship-timeline.md",
@@ -99,6 +100,35 @@ class TestPublicWebsite(unittest.TestCase):
         for expected in ("CI", "research modes", "General public-web research",
                          "Zero runtime dependencies"):
             self.assertIn(expected, self.html)
+
+    def test_research_workspace_has_guided_followups_and_live_evidence(self):
+        for expected in (
+            'data-intake-step="1"', 'data-intake-step="2"',
+            'data-intake-step="3"', 'name="goal"', 'name="timeframe"',
+            'name="scope"', 'name="priority"', 'data-research-brief',
+            'data-beta-activity', 'data-beta-calls', 'data-beta-searches',
+            'data-beta-input', 'data-beta-output', 'data-dossier-view',
+            'No simulated updates', 'General public-web research',
+        ):
+            with self.subTest(expected=expected):
+                self.assertIn(expected, self.html)
+        self.assertEqual(3, self.html.count('class="intake-step"'))
+        self.assertEqual(4, self.html.count("data-live-stage="))
+
+    def test_research_workspace_does_not_persist_secrets_or_render_raw_html(self):
+        javascript = (self.site / "beta.js").read_text(encoding="utf-8")
+        for forbidden in ("localStorage", "sessionStorage", ".innerHTML",
+                          "insertAdjacentHTML", "document.write", "setInterval"):
+            with self.subTest(forbidden=forbidden):
+                self.assertNotIn(forbidden, javascript)
+        for required in ("replaceChildren", "textContent", "aria-busy",
+                         "provider_calls_used", "web_searches_used",
+                         "input_tokens", "output_tokens", "referrerPolicy"):
+            with self.subTest(required=required):
+                self.assertIn(required, javascript)
+        app_javascript = (self.site / "app.js").read_text(encoding="utf-8")
+        self.assertIn("restoreHashPosition", app_javascript)
+        self.assertIn('scrollIntoView({block: "start"})', app_javascript)
 
     def test_build_metadata_names_exact_evidence_sources(self):
         meta = json.loads((self.site / "build-meta.json").read_text())

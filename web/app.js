@@ -346,10 +346,24 @@ function setupInteractions() {
   });
 }
 
+function restoreHashPosition() {
+  if (!window.location.hash) return;
+  let id;
+  try {
+    id = decodeURIComponent(window.location.hash.slice(1));
+  } catch (_error) {
+    return;
+  }
+  const target = document.getElementById(id);
+  if (!target) return;
+  requestAnimationFrame(() => target.scrollIntoView({block: "start"}));
+}
+
 setupNavigation();
 setupReveal();
 setupInteractions();
 renderConsole("overview");
 loadEvidence().catch(error => {
   console.warn("Using embedded verified snapshot because evidence files could not be loaded.", error);
-});
+}).finally(restoreHashPosition);
+window.addEventListener("load", restoreHashPosition, {once: true});

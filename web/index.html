@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="ORIGIN is a persistent computational research engine that tests competing hypotheses, reproduces experiments, and records every conclusion.">
+  <meta name="description" content="Enter a topic and follow ORIGIN as it searches current public sources, compares competing explanations, and builds a cited research dossier.">
   <meta name="theme-color" content="#07110f">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; form-action 'self'; object-src 'none'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'">
   <meta property="og:title" content="ORIGIN — Evidence before answers">
-  <meta property="og:description" content="A persistent computational research engine with reproducible experiments and scoped conclusions.">
+  <meta property="og:description" content="Research almost any safe public-web topic with live progress, competing perspectives, and inspectable citations.">
   <meta property="og:type" content="website">
   <title>ORIGIN — Evidence before answers</title>
   <link rel="icon" href="assets/origin-mark.svg" type="image/svg+xml">
@@ -34,7 +34,7 @@
       <a href="#flagship">Flagship mission</a>
       <a href="#architecture">Architecture</a>
       <a href="#boundaries">Boundaries</a>
-      <a href="#beta">Beta</a>
+      <a href="#beta">Research workspace</a>
       <a class="nav-cta" href="https://github.com/nishchaysinghofficial10-ship-it/origin">View source</a>
     </nav>
   </header>
@@ -49,8 +49,8 @@
         <h1 id="hero-title">Evidence<br><em>before</em> answers.</h1>
         <p class="hero-lede">Enter a research topic. ORIGIN searches current public sources, preserves citations, compares competing hypotheses, proposes testable predictions, criticizes its conclusions, and returns an evidence-scoped dossier.</p>
         <div class="hero-actions">
-          <a class="button button-primary" href="#flagship">Explore a real mission <span aria-hidden="true">↘</span></a>
-          <a class="button button-quiet" href="https://github.com/nishchaysinghofficial10-ship-it/origin/releases/tag/v2.1.2">Download v2.1.2</a>
+          <a class="button button-primary" href="#beta">Start a research mission <span aria-hidden="true">↓</span></a>
+          <a class="button button-quiet" href="#flagship">Explore a completed mission</a>
         </div>
         <ul class="proof-line" aria-label="Release verification summary">
           <li><strong>325</strong> tests</li>
@@ -254,68 +254,189 @@
     </section>
 
     <section class="beta section-pad" id="beta" aria-labelledby="beta-title">
-      <div class="section-heading reveal">
+      <div class="research-heading reveal">
         <div>
-          <p class="eyebrow"><span></span> Controlled interactive beta</p>
-          <h2 id="beta-title">Research almost<br>any public-web topic.</h2>
+          <p class="eyebrow"><span></span> Guided research workspace</p>
+          <h2 id="beta-title">Start with a topic.<br>Leave with evidence.</h2>
         </div>
-        <p>General mode uses a separately isolated, tightly budgeted researcher for current sources and citations. Computational experiments still run in a different network-disabled worker. Unsafe operational requests are refused.</p>
-      </div>
-      <div class="beta-grid">
-        <form class="beta-form reveal" data-beta-form>
+        <div class="research-heading-copy">
+          <p>Answer a few framing questions, then watch the real research state change as ORIGIN searches, synthesizes, criticizes, and prepares a cited dossier.</p>
           <div class="beta-state" data-beta-connection>
-            <span></span><strong>Checking beta availability</strong>
+            <span aria-hidden="true"></span><strong>Checking research service</strong>
           </div>
-          <label>
-            Research question
-            <textarea name="question" rows="4" minlength="12" maxlength="500" required>What evidence supports and challenges four-day work weeks?</textarea>
-          </label>
-          <div class="form-split">
-            <label>
-              Research mode
-              <select name="domain">
-                <option value="general" selected>General public-web research</option>
-                <option value="algobench">Sorting strategies</option>
-                <option value="graphbench">Shortest paths</option>
-              </select>
-            </label>
-            <label>
-              Private beta token
-              <input name="token" type="password" minlength="24" autocomplete="off" spellcheck="false" placeholder="Entered only for this tab" required>
-            </label>
+        </div>
+      </div>
+
+      <div class="research-shell reveal">
+        <aside class="research-rail" aria-label="Research mission stages">
+          <a class="studio-brand" href="#beta" aria-label="ORIGIN research workspace">
+            <img src="assets/origin-mark.svg" width="30" height="30" alt="">
+            <span>ORIGIN</span><small>RESEARCH</small>
+          </a>
+          <ol class="intake-progress">
+            <li data-intake-progress="1" aria-current="step"><span>1</span><div><b>Choose a topic</b><small>What should we investigate?</small></div></li>
+            <li data-intake-progress="2"><span>2</span><div><b>Refine the scope</b><small>What would make it useful?</small></div></li>
+            <li data-intake-progress="3"><span>3</span><div><b>Review &amp; launch</b><small>Confirm the research brief.</small></div></li>
+            <li data-intake-progress="4"><span>4</span><div><b>Follow the work</b><small>See verified live updates.</small></div></li>
+          </ol>
+          <div class="rail-contract">
+            <span>BOUNDED BY DESIGN</span>
+            <p>1 Claude request · up to 3 searches · 2 general missions per tester each day</p>
           </div>
-          <p class="form-privacy">The token stays in this browser tab’s memory, is sent only to the configured beta API, and is never stored by this site.</p>
-          <button class="button button-primary" type="submit" data-beta-submit>Start research mission <span aria-hidden="true">→</span></button>
-          <p class="beta-message" data-beta-message role="status" aria-live="polite"></p>
-        </form>
-        <div class="beta-result reveal" data-delay="100" data-beta-result>
-          <div class="beta-result-empty" data-beta-empty>
-            <span>PRIVATE BETA / PAID RESEARCH CONTRACT</span>
-            <h3>Broad topics, bounded cost, inspectable sources.</h3>
-            <ul>
-              <li><b>1</b> provider request maximum</li>
-              <li><b>3</b> web searches maximum</li>
-              <li><b>3.2k</b> requested final-output ceiling</li>
-              <li><b>2/day</b> general missions per tester</li>
-              <li><b>1</b> active mission per tester</li>
-            </ul>
-          </div>
-          <div class="beta-result-live" data-beta-live hidden>
-            <div class="result-head"><span data-beta-id>MISSION</span><strong data-beta-status>QUEUED</strong></div>
-            <h3 data-beta-question></h3>
-            <div class="result-stats">
-              <div><small>PHASE</small><b data-beta-phase>queued</b></div>
-              <div><small>STEP</small><b data-beta-step>0</b></div>
-              <div><small>WORK UNITS</small><b data-beta-experiments>0</b></div>
+        </aside>
+
+        <div class="research-stage">
+          <form class="beta-form" data-beta-form novalidate>
+            <fieldset class="intake-step" data-intake-step="1">
+              <legend class="sr-only">Choose a research topic</legend>
+              <p class="step-kicker">STEP 1 OF 3</p>
+              <h3 tabindex="-1">What should ORIGIN investigate?</h3>
+              <p class="step-intro">Ask a question, compare an idea, explore a controversy, or investigate a decision. Keep it focused enough to research from public sources.</p>
+              <label class="field-label" for="research-topic">Your research topic</label>
+              <div class="topic-field">
+                <textarea id="research-topic" name="topic" rows="5" minlength="12" maxlength="180" required placeholder="Example: What evidence supports and challenges four-day work weeks?"></textarea>
+                <span><b data-topic-count>0</b>/180</span>
+              </div>
+              <div class="topic-examples" aria-label="Example research topics">
+                <span>Try an example</span>
+                <button type="button" data-topic-example="What evidence supports and challenges congestion pricing in major cities?">Congestion pricing</button>
+                <button type="button" data-topic-example="How does remote work affect productivity, wellbeing, and collaboration?">Remote work</button>
+                <button type="button" data-topic-example="What are the strongest arguments for and against nuclear power expansion?">Nuclear power</button>
+              </div>
+              <details class="advanced-mode">
+                <summary>Advanced: choose a computational demo</summary>
+                <label class="field-label" for="research-domain">Research mode</label>
+                <select id="research-domain" name="domain">
+                  <option value="general" selected>General public-web research</option>
+                  <option value="algobench">Sorting strategy experiment</option>
+                  <option value="graphbench">Shortest-path experiment</option>
+                </select>
+              </details>
+              <div class="step-actions">
+                <button class="button button-primary" type="button" data-intake-next>Continue <span aria-hidden="true">→</span></button>
+              </div>
+            </fieldset>
+
+            <fieldset class="intake-step" data-intake-step="2" hidden>
+              <legend class="sr-only">Refine the research scope</legend>
+              <p class="step-kicker">STEP 2 OF 3 · FOLLOW-UP QUESTIONS</p>
+              <h3 tabindex="-1">What would make this research useful?</h3>
+              <p class="step-intro">These answers become part of the research brief. They help ORIGIN avoid a generic response.</p>
+              <div class="followup-grid">
+                <label class="field-label" for="research-goal">What is your main goal?
+                  <select id="research-goal" name="goal" required>
+                    <option value="">Select a goal</option>
+                    <option value="understand the overall evidence">Understand the overall evidence</option>
+                    <option value="compare competing viewpoints or options">Compare viewpoints or options</option>
+                    <option value="support an informed decision">Support an informed decision</option>
+                    <option value="identify gaps, risks, and opportunities">Find gaps, risks, and opportunities</option>
+                  </select>
+                </label>
+                <label class="field-label" for="research-timeframe">What time horizon matters?
+                  <select id="research-timeframe" name="timeframe" required>
+                    <option value="">Select a timeframe</option>
+                    <option value="prioritize the most recent five years">Recent evidence (last 5 years)</option>
+                    <option value="include both recent evidence and longer-term history">Recent + historical context</option>
+                    <option value="focus on future implications and emerging evidence">Future implications</option>
+                    <option value="use any timeframe relevant to the question">No fixed timeframe</option>
+                  </select>
+                </label>
+              </div>
+              <label class="field-label" for="research-scope">Which people, place, industry, or situation should it focus on?
+                <input id="research-scope" name="scope" type="text" minlength="2" maxlength="60" required placeholder="Example: India, college students, or a global comparison">
+              </label>
+              <fieldset class="evidence-priorities">
+                <legend>Which evidence should ORIGIN prioritize?</legend>
+                <label><input type="checkbox" name="priority" value="research studies" checked><span><b>Research studies</b><small>Published and empirical evidence</small></span></label>
+                <label><input type="checkbox" name="priority" value="official data and policy sources" checked><span><b>Official sources</b><small>Public data, policy, and institutions</small></span></label>
+                <label><input type="checkbox" name="priority" value="real-world cases"><span><b>Real-world cases</b><small>Examples and implementation outcomes</small></span></label>
+                <label><input type="checkbox" name="priority" value="strong opposing evidence" checked><span><b>Opposing evidence</b><small>Criticism and evidence against the claim</small></span></label>
+              </fieldset>
+              <div class="step-actions split-actions">
+                <button class="button button-back" type="button" data-intake-back>← Back</button>
+                <button class="button button-primary" type="button" data-intake-next>Review brief <span aria-hidden="true">→</span></button>
+              </div>
+            </fieldset>
+
+            <fieldset class="intake-step" data-intake-step="3" hidden>
+              <legend class="sr-only">Review and launch the research mission</legend>
+              <p class="step-kicker">STEP 3 OF 3</p>
+              <h3 tabindex="-1">Review your research brief.</h3>
+              <p class="step-intro">ORIGIN will use this complete brief for one bounded research mission.</p>
+              <div class="brief-preview">
+                <span>RESEARCH BRIEF</span>
+                <p data-research-brief></p>
+              </div>
+              <label class="field-label" for="research-token">Private beta access token
+                <input id="research-token" name="token" type="password" minlength="24" autocomplete="off" spellcheck="false" placeholder="Paste your beta token" required>
+              </label>
+              <p class="form-privacy"><span aria-hidden="true">◇</span> The token stays only in this tab’s memory, is sent to the configured ORIGIN API, and is never stored by this website.</p>
+              <div class="launch-summary" aria-label="Mission limits">
+                <div><b>1</b><span>provider request maximum</span></div>
+                <div><b>3</b><span>web searches maximum</span></div>
+                <div><b>2/day</b><span>general missions per tester</span></div>
+              </div>
+              <div class="step-actions split-actions">
+                <button class="button button-back" type="button" data-intake-back>← Edit answers</button>
+                <button class="button button-primary" type="submit" data-beta-submit>Launch research <span aria-hidden="true">→</span></button>
+              </div>
+            </fieldset>
+            <p class="beta-message" data-beta-message role="status" aria-live="polite"></p>
+          </form>
+
+          <section class="beta-result" data-beta-result aria-labelledby="workspace-title">
+            <div class="beta-result-empty" data-beta-empty>
+              <div class="workspace-orbit" aria-hidden="true"><i></i><i></i><i></i><span>ORIGIN</span></div>
+              <p class="step-kicker">YOUR RESEARCH WORKSPACE</p>
+              <h3 id="workspace-title">A transparent path from question to cited dossier.</h3>
+              <ol class="preview-pipeline">
+                <li><span>01</span><div><b>Frame the question</b><small>Your follow-up answers define the scope.</small></div></li>
+                <li><span>02</span><div><b>Search current sources</b><small>Up to three bounded public-web searches.</small></div></li>
+                <li><span>03</span><div><b>Compare and criticize</b><small>Competing interpretations and falsification attempts.</small></div></li>
+                <li><span>04</span><div><b>Deliver the dossier</b><small>Readable conclusions, limits, and source ledger.</small></div></li>
+              </ol>
+              <p class="workspace-note">Once launched, this panel shows only states reported by the live ORIGIN service—never a simulated progress bar.</p>
             </div>
-            <p data-beta-stop></p>
-            <div class="result-actions">
-              <button type="button" data-beta-action="pause">Pause</button>
-              <button type="button" data-beta-action="resume">Resume</button>
-              <button type="button" data-beta-action="cancel">Cancel</button>
-              <a href="#beta" data-beta-dossier hidden>Open dossier</a>
+
+            <div class="beta-result-live" data-beta-live hidden aria-live="polite">
+              <div class="result-head">
+                <div><span data-beta-id>MISSION</span><small>Private research session</small></div>
+                <div class="live-indicator"><i aria-hidden="true"></i><strong data-beta-status>QUEUED</strong><small data-beta-updated>Connecting…</small></div>
+              </div>
+              <h3 data-beta-question></h3>
+              <ol class="live-pipeline" aria-label="Live mission progress">
+                <li data-live-stage="accepted"><i></i><span>Brief accepted</span></li>
+                <li data-live-stage="queued"><i></i><span>Researcher assigned</span></li>
+                <li data-live-stage="research"><i></i><span>Search &amp; synthesis</span></li>
+                <li data-live-stage="dossier"><i></i><span>Cited dossier</span></li>
+              </ol>
+              <div class="current-activity">
+                <div class="activity-pulse" aria-hidden="true"><i></i><i></i><i></i></div>
+                <div><small>CURRENT ACTIVITY · REAL API STATE</small><b data-beta-phase>Queued for research</b><p data-beta-stop>Your mission is waiting for the bounded research worker.</p></div>
+              </div>
+              <div class="result-stats">
+                <div><small data-beta-calls-label>CLAUDE REQUESTS</small><b data-beta-calls>0</b></div>
+                <div><small data-beta-searches-label>WEB SEARCHES</small><b data-beta-searches>0 / 3</b></div>
+                <div><small data-beta-input-label>INPUT TOKENS</small><b data-beta-input>0</b></div>
+                <div><small data-beta-output-label>OUTPUT TOKENS</small><b data-beta-output>0</b></div>
+              </div>
+              <div class="activity-log-wrap">
+                <div class="activity-log-head"><span>LIVE ACTIVITY</span><small>No simulated updates</small></div>
+                <ol class="activity-log" data-beta-activity></ol>
+              </div>
+              <div class="result-actions">
+                <button type="button" data-beta-action="pause">Pause</button>
+                <button type="button" data-beta-action="resume">Resume</button>
+                <button type="button" data-beta-action="cancel">Cancel</button>
+                <button type="button" data-new-mission>New research</button>
+              </div>
+              <div class="dossier-panel" data-dossier-panel hidden>
+                <div class="dossier-panel-head"><div><span>RESEARCH COMPLETE</span><h4>Your cited dossier</h4></div><button type="button" data-dossier-download>Download .md</button></div>
+                <div class="dossier-view" data-dossier-view tabindex="0"></div>
+                <p data-dossier-message></p>
+              </div>
             </div>
-          </div>
+          </section>
         </div>
       </div>
     </section>
