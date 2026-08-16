@@ -26,7 +26,7 @@ public HTTPS (*.ts.net)
         |
   Tailscale Funnel
         |
-127.0.0.1:8080 only
+127.0.0.1:8080 only ---- public workspace files
         |
 authenticated API ---- durable Docker volume
 
@@ -39,7 +39,12 @@ computational worker keeps `network_mode: none`, receives no credential, and
 runs as the non-root image user. The researcher alone receives the Anthropic
 secret and outbound access; it has no published port. The API receives only the
 tester and administrator secrets.
-The public GitHub Pages bundle contains the API origin but never a token.
+The API image also contains the dependency-free public workspace, so browser
+requests to the workspace and API share one origin. This avoids modern browser
+local-network restrictions on a GitHub Pages page calling a `*.ts.net` address
+cross-origin. The GitHub Pages bundle contains only the public Funnel origin and
+hands research visitors to that same-origin workspace; neither bundle contains
+a token.
 
 ## 1. Install and sign in
 
@@ -174,6 +179,22 @@ python3 tools/verify_beta_deployment.py \
   --admin-token-file deploy/secrets/admin_token.txt \
   --require-general
 ```
+
+Also verify the same-origin workspace served by the API image:
+
+```bash
+python3 tools/verify_beta_deployment.py \
+  --api-origin "https://$ORIGIN_FUNNEL_HOST" \
+  --site-url "https://$ORIGIN_FUNNEL_HOST" \
+  --beta-token-file deploy/secrets/beta_token.txt \
+  --admin-token-file deploy/secrets/admin_token.txt \
+  --require-general
+```
+
+The second gate must report `site_connection: same-origin`. Opening the public
+GitHub Pages URL with `#beta` should move the browser to
+`https://$ORIGIN_FUNNEL_HOST/#beta`, where the live connection indicator must
+read `Live research service ready` without requesting local-network permission.
 
 Give a named tester only `deploy/secrets/beta_token.txt` through a separate
 secure channel. Keep `admin_token.txt` operator-only.

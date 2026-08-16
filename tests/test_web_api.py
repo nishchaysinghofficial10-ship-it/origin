@@ -21,8 +21,13 @@ ADMIN_TOKEN = "admin-only-token-with-enough-entropy-654321"
 class TestInteractiveBetaAPI(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
+        self.site = Path(self.tmp.name) / "site"
+        self.site.mkdir()
+        (self.site / "index.html").write_text("<!doctype html><title>ORIGIN</title>")
+        (self.site / "404.html").write_text("<!doctype html><title>Not found</title>")
+        (self.site / "app.js").write_text('"use strict";')
         self.config = WebConfig(
-            data_dir=Path(self.tmp.name),
+            data_dir=Path(self.tmp.name) / "data",
             token_records={token_digest(TOKEN): "tester",
                            token_digest(OTHER_TOKEN): "other"},
             admin_token_digests=frozenset({token_digest(ADMIN_TOKEN)}),
@@ -34,6 +39,7 @@ class TestInteractiveBetaAPI(unittest.TestCase):
             active_missions_per_principal=1,
             general_research_enabled=True,
             general_missions_per_day=2,
+            site_dir=self.site,
         )
         self.config.prepare()
         self.store = Store(self.config.db_path)
@@ -93,6 +99,28 @@ class TestInteractiveBetaAPI(unittest.TestCase):
         self.assertEqual(3, capabilities["network_retrievals"])
         self.assertTrue(capabilities["general_research"]["enabled"])
         self.assertIn("general", capabilities["domains"])
+
+    def test_public_site_is_same_origin_and_confined_to_its_directory(self):
+        status, body, headers = self.request("GET", "/")
+        self.assertEqual(200, status)
+        self.assertIn(b"<title>ORIGIN</title>", body)
+        self.assertIn("connect-src 'self'", headers["Content-Security-Policy"])
+        self.assertNotIn("default-src 'none'", headers["Content-Security-Policy"])
+        self.assertIn("max-age=31536000", headers["Strict-Transport-Security"])
+
+        status, body, headers = self.request("HEAD", "/app.js")
+        self.assertEqual(200, status)
+        self.assertEqual(b"", body)
+        self.assertIn("javascript", headers["Content-Type"])
+
+        status, body, _ = self.request(
+            "GET", "/%2e%2e/data/origin_web.sqlite3")
+        self.assertEqual(404, status)
+        self.assertIn(b"Not found", body)
+
+        status, payload, _ = self.request("POST", "/", body={})
+        self.assertEqual(405, status)
+        self.assertEqual("method_not_allowed", payload["error"]["code"])
 
     def test_general_topic_is_accepted_but_unsafe_operations_are_rejected(self):
         status, payload, _ = self.create(
@@ -394,6 +422,13 @@ class TestWebConfig(unittest.TestCase):
                     WebConfig(data_dir=Path(td), token_records={},
                               require_tokens=False,
                               allowed_origins=(origin,))
+
+    def test_static_site_directory_must_exist(self):
+        with tempfile.TemporaryDirectory() as td:
+            with self.assertRaises(ConfigError):
+                WebConfig(data_dir=Path(td), token_records={},
+                          require_tokens=False,
+                          site_dir=Path(td) / "missing")
 
 
 if __name__ == "__main__":

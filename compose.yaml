@@ -14,6 +14,7 @@ services:
     environment:
       ORIGIN_WEB_BETA_TOKEN_FILE: /run/secrets/beta_token
       ORIGIN_WEB_ADMIN_TOKEN_FILE: /run/secrets/admin_token
+      ORIGIN_WEB_SITE_DIR: /app/public
       ORIGIN_WEB_ALLOWED_ORIGINS: ${ORIGIN_WEB_ALLOWED_ORIGINS:-http://127.0.0.1:4173}
       ORIGIN_WEB_PUBLIC_SITE_URL: ${ORIGIN_WEB_PUBLIC_SITE_URL:-http://127.0.0.1:4173}
       ORIGIN_WEB_ACCEPT_JOBS: ${ORIGIN_WEB_ACCEPT_JOBS:-1}

@@ -176,10 +176,14 @@ class DeploymentVerifier:
         evidence["authentication"] = "isolated"
 
         if self.site_origin:
-            status, _, cors = self.request("GET", "/api/v1/health",
-                                           origin=self.site_origin)
-            if status != 200 or cors.get("Access-Control-Allow-Origin") != self.site_origin:
-                raise VerificationError("configured public-site CORS origin is not allowed")
+            same_origin = self.site_origin == self.api
+            if not same_origin:
+                status, _, cors = self.request("GET", "/api/v1/health",
+                                               origin=self.site_origin)
+                if (status != 200 or
+                        cors.get("Access-Control-Allow-Origin") != self.site_origin):
+                    raise VerificationError(
+                        "configured public-site CORS origin is not allowed")
             _, _, rejected = self.request("GET", "/api/v1/health",
                                           origin="https://untrusted.invalid")
             if rejected.get("Access-Control-Allow-Origin"):
@@ -190,9 +194,12 @@ class DeploymentVerifier:
             with urllib.request.urlopen(site_request, timeout=15,
                                         context=self.context) as response:
                 runtime = response.read(100_000).decode("utf-8")
-            if json.dumps(self.api) not in runtime or "Bearer " in runtime:
+            connected = ('sameOrigin: true' in runtime if same_origin
+                         else json.dumps(self.api) in runtime)
+            if not connected or "Bearer " in runtime:
                 raise VerificationError("public site is not safely connected to this API")
-            evidence["site_connection"] = "exact-origin"
+            evidence["site_connection"] = ("same-origin" if same_origin
+                                           else "exact-origin")
         return evidence
 
     def _mission(self, mission_id: str) -> dict:

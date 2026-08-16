@@ -236,6 +236,8 @@ class TestProductionDeploymentArtifacts(unittest.TestCase):
         dockerfile = (ROOT / "Dockerfile").read_text()
         self.assertIn("--uid 10001", dockerfile)
         self.assertIn("--gid 10001", dockerfile)
+        self.assertIn("--same-origin-api", dockerfile)
+        self.assertIn("ORIGIN_WEB_SITE_DIR=/app/public", dockerfile)
 
     def test_caddy_boundary_has_https_security_and_health_policy(self):
         caddy = (ROOT / "deploy" / "Caddyfile").read_text()
@@ -263,15 +265,21 @@ class TestProductionDeploymentArtifacts(unittest.TestCase):
 class TestRemoteDeploymentVerifier(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
+        root = Path(self.tmp.name)
+        site = root / "site"
+        site.mkdir()
+        (site / "runtime-config.js").write_text(
+            "window.ORIGIN_BETA = Object.freeze({apiBase: \"\", sameOrigin: true});\n")
+        (site / "404.html").write_text("not found\n")
         self.config = WebConfig(
-            data_dir=Path(self.tmp.name),
+            data_dir=root / "data",
             token_records={token_digest(TOKEN): "tester",
                            token_digest(OTHER_TOKEN): "other"},
             admin_token_digests=frozenset({token_digest(ADMIN_TOKEN)}),
             host="127.0.0.1", port=0, requests_per_minute=500,
             missions_per_day=5, active_missions_per_principal=1,
             mission_timeout_s=180, step_timeout_s=90,
-            general_research_enabled=True)
+            general_research_enabled=True, site_dir=site)
         self.config.prepare()
         self.store = Store(self.config.db_path)
         self.server = OriginHTTPServer(("127.0.0.1", 0), self.config, self.store)
@@ -294,8 +302,9 @@ class TestRemoteDeploymentVerifier(unittest.TestCase):
 
         self.worker_thread = threading.Thread(target=run_worker, daemon=True)
         self.worker_thread.start()
+        self.base = f"http://127.0.0.1:{self.server.server_port}"
         self.verifier = DeploymentVerifier(
-            f"http://127.0.0.1:{self.server.server_port}", TOKEN, ADMIN_TOKEN,
+            self.base, TOKEN, ADMIN_TOKEN,
             other_beta_token=OTHER_TOKEN, allow_http_local=True,
             require_general=True)
 
@@ -326,6 +335,14 @@ class TestRemoteDeploymentVerifier(unittest.TestCase):
             DeploymentVerifier("http://beta.example.com", TOKEN, ADMIN_TOKEN)
         with self.assertRaises(VerificationError):
             DeploymentVerifier("https://beta.example.com", TOKEN, TOKEN)
+
+    def test_same_origin_site_connection_is_verified_without_cors(self):
+        verifier = DeploymentVerifier(
+            self.base, TOKEN, ADMIN_TOKEN, site_url=self.base,
+            other_beta_token=OTHER_TOKEN, allow_http_local=True,
+            require_general=True)
+        evidence = verifier.verify_read_only()
+        self.assertEqual("same-origin", evidence["site_connection"])
 
 
 if __name__ == "__main__":

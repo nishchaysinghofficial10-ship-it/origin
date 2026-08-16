@@ -145,6 +145,17 @@ class TestPublicWebsite(unittest.TestCase):
             with self.subTest(bad=bad), self.assertRaises(ValueError):
                 api_origin(bad)
 
+    def test_same_origin_api_build_is_explicit_and_self_contained(self):
+        site = build(Path(self.tmp.name) / "same-origin", same_origin_api=True)
+        runtime = (site / "runtime-config.js").read_text(encoding="utf-8")
+        meta = json.loads((site / "build-meta.json").read_text())
+        self.assertIn('apiBase: "", sameOrigin: true', runtime)
+        self.assertTrue(meta["interactive_beta_connected"])
+        self.assertEqual("same-origin", meta["interactive_beta_origin"])
+        with self.assertRaises(ValueError):
+            build(Path(self.tmp.name) / "invalid", "https://api.example.test",
+                  same_origin_api=True)
+
 
 if __name__ == "__main__":
     unittest.main()

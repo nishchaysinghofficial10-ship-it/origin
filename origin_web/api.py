@@ -9,6 +9,7 @@ from __future__ import annotations
 import hashlib
 import hmac
 import json
+import mimetypes
 import re
 import secrets
 import sys
@@ -17,7 +18,7 @@ from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any
-from urllib.parse import urlsplit
+from urllib.parse import unquote, urlsplit
 
 from . import __version__
 from .config import WebConfig
@@ -79,6 +80,7 @@ class OriginHandler(BaseHTTPRequestHandler):
         self.send_header("Content-Length", str(length))
         self.send_header("X-Content-Type-Options", "nosniff")
         self.send_header("X-Frame-Options", "DENY")
+        self.send_header("Strict-Transport-Security", "max-age=31536000; includeSubDomains")
         self.send_header("Referrer-Policy", "no-referrer")
         self.send_header("Permissions-Policy", "camera=(), microphone=(), geolocation=()")
         self.send_header("Content-Security-Policy", "default-src 'none'; frame-ancestors 'none'")
@@ -95,6 +97,59 @@ class OriginHandler(BaseHTTPRequestHandler):
         self.end_headers()
         if self.command != "HEAD":
             self.wfile.write(body)
+
+    def _send_site_bytes(self, status: int, body: bytes, content_type: str) -> None:
+        self.send_response(status)
+        self.send_header("Content-Type", content_type)
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("X-Content-Type-Options", "nosniff")
+        self.send_header("X-Frame-Options", "DENY")
+        self.send_header("Strict-Transport-Security", "max-age=31536000; includeSubDomains")
+        self.send_header("Referrer-Policy", "no-referrer")
+        self.send_header("Permissions-Policy", "camera=(), microphone=(), geolocation=()")
+        self.send_header(
+            "Content-Security-Policy",
+            "default-src 'self'; base-uri 'none'; form-action 'self'; "
+            "object-src 'none'; frame-ancestors 'none'; img-src 'self' data:; "
+            "style-src 'self'; script-src 'self'; connect-src 'self'",
+        )
+        self.send_header("Cache-Control", "no-cache")
+        self.send_header("X-Request-ID", self.request_id)
+        self.end_headers()
+        if self.command != "HEAD":
+            self.wfile.write(body)
+
+    def _serve_site(self, path: str) -> None:
+        site_dir = self.server.config.site_dir
+        if site_dir is None:
+            self._error(HTTPStatus.NOT_FOUND, "not_found", "endpoint not found")
+            return
+        try:
+            decoded = unquote(path, errors="strict")
+        except (UnicodeDecodeError, ValueError):
+            decoded = ""
+        relative = "index.html" if decoded == "/" else decoded.lstrip("/")
+        candidate = (site_dir / relative).resolve()
+        if (not relative or "\x00" in relative or
+                (candidate != site_dir and site_dir not in candidate.parents) or
+                not candidate.is_file()):
+            candidate = (site_dir / "404.html").resolve()
+            status = HTTPStatus.NOT_FOUND
+        else:
+            status = HTTPStatus.OK
+        if candidate != site_dir and site_dir not in candidate.parents:
+            self._error(HTTPStatus.NOT_FOUND, "not_found", "site file not found")
+            return
+        try:
+            body = candidate.read_bytes()
+        except OSError:
+            self._error(HTTPStatus.NOT_FOUND, "not_found", "site file not found")
+            return
+        content_type = mimetypes.guess_type(candidate.name)[0] or "application/octet-stream"
+        if content_type.startswith("text/") or content_type in (
+                "application/javascript", "application/json", "image/svg+xml"):
+            content_type += "; charset=utf-8"
+        self._send_site_bytes(status, body, content_type)
 
     def _json(self, status: int, payload: dict[str, Any]) -> None:
         body = (json.dumps(payload, separators=(",", ":"), ensure_ascii=False)
@@ -408,6 +463,14 @@ class OriginHandler(BaseHTTPRequestHandler):
     def _dispatch(self) -> None:
         self.request_id = "req_" + secrets.token_hex(6)
         path, query = self._request_parts()
+        if (self.server.config.site_dir is not None and
+                not path.startswith("/api/") and path != "/api"):
+            if self.command in ("GET", "HEAD"):
+                self._serve_site(path)
+            else:
+                self._error(HTTPStatus.METHOD_NOT_ALLOWED, "method_not_allowed",
+                            "public site files support only GET and HEAD")
+            return
         if query:
             self._error(HTTPStatus.BAD_REQUEST, "query_not_supported",
                         "query parameters are not accepted")

@@ -66,9 +66,11 @@ def api_origin(api_base: str) -> str:
     return value
 
 
-def build(output: Path, api_base: str = "") -> Path:
+def build(output: Path, api_base: str = "", *, same_origin_api: bool = False) -> Path:
     output = safe_output(output)
     api_base = api_origin(api_base)
+    if api_base and same_origin_api:
+        raise ValueError("choose either an API origin or same-origin API mode")
     if output.exists():
         shutil.rmtree(output)
     shutil.copytree(WEB, output)
@@ -83,7 +85,8 @@ def build(output: Path, api_base: str = "") -> Path:
     runtime = ("'use strict';\n\n"
                "// Public endpoint configuration only. No token belongs here.\n"
                "window.ORIGIN_BETA = Object.freeze({apiBase: "
-               + json.dumps(api_base) + "});\n")
+               + json.dumps(api_base) + ", sameOrigin: "
+               + json.dumps(same_origin_api) + "});\n")
     (output / "runtime-config.js").write_text(runtime, encoding="utf-8")
     if api_base:
         index = output / "index.html"
@@ -105,8 +108,8 @@ def build(output: Path, api_base: str = "") -> Path:
         "source_commit": git_commit(),
         "evidence_files": sorted(EVIDENCE_FILES.values()),
         "claims_source": "versioned repository artifacts",
-        "interactive_beta_connected": bool(api_base),
-        "interactive_beta_origin": api_base,
+        "interactive_beta_connected": bool(api_base or same_origin_api),
+        "interactive_beta_origin": "same-origin" if same_origin_api else api_base,
     }
     (output / "build-meta.json").write_text(
         json.dumps(meta, indent=2) + "\n", encoding="utf-8")
@@ -118,8 +121,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--out", type=Path, default=DEFAULT_OUT)
     parser.add_argument("--api-base", default="",
                         help="optional public HTTPS origin for the controlled beta API")
+    parser.add_argument("--same-origin-api", action="store_true",
+                        help="connect the site to an API served from the same origin")
     args = parser.parse_args(argv)
-    built = build(args.out, args.api_base)
+    built = build(args.out, args.api_base, same_origin_api=args.same_origin_api)
     print(f"Built ORIGIN website: {built}")
     print(f"Evidence files: {len(EVIDENCE_FILES)}")
     return 0

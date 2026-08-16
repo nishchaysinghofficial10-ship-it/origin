@@ -1,3 +1,11 @@
+FROM python:3.14-slim AS site-builder
+
+WORKDIR /source
+COPY web ./web
+COPY tools/build_web.py ./tools/build_web.py
+COPY examples/final_flagship_mission ./examples/final_flagship_mission
+RUN python tools/build_web.py --out build/web --same-origin-api
+
 FROM python:3.14-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
@@ -5,7 +13,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONHASHSEED=0 \
     ORIGIN_WEB_DATA_DIR=/data \
     ORIGIN_WEB_HOST=0.0.0.0 \
-    ORIGIN_WEB_PORT=8080
+    ORIGIN_WEB_PORT=8080 \
+    ORIGIN_WEB_SITE_DIR=/app/public
 
 RUN addgroup --system --gid 10001 origin \
     && adduser --system --uid 10001 --ingroup origin --home /app origin
@@ -14,6 +23,7 @@ WORKDIR /app
 COPY pyproject.toml LICENSE README.md ./
 COPY origin ./origin
 COPY origin_web ./origin_web
+COPY --from=site-builder /source/build/web ./public
 RUN python -m pip install --no-cache-dir .
 
 RUN mkdir -p /data /backup /restore \

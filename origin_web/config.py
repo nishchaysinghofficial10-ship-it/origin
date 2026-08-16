@@ -131,6 +131,7 @@ class WebConfig:
     anthropic_key_file: Path | None = None
     allow_insecure_local: bool = False
     public_site_url: str = "https://nishchaysinghofficial10-ship-it.github.io/origin"
+    site_dir: Path | None = None
     require_tokens: bool = True
     db_path: Path = field(init=False)
     runs_dir: Path = field(init=False)
@@ -140,6 +141,11 @@ class WebConfig:
         object.__setattr__(self, "data_dir", base)
         object.__setattr__(self, "db_path", base / "origin_web.sqlite3")
         object.__setattr__(self, "runs_dir", base / "missions")
+        if self.site_dir is not None:
+            site_dir = self.site_dir.resolve()
+            if not site_dir.is_dir():
+                raise ConfigError("ORIGIN_WEB_SITE_DIR must be an existing directory")
+            object.__setattr__(self, "site_dir", site_dir)
         if not 1 <= self.provider_calls_per_mission <= 1:
             raise ConfigError("provider calls per mission must be exactly 1")
         if not 1 <= self.web_searches_per_mission <= 5:
@@ -230,6 +236,8 @@ class WebConfig:
                 "ORIGIN_WEB_PUBLIC_SITE_URL",
                 "https://nishchaysinghofficial10-ship-it.github.io/origin"
             ).rstrip("/"),
+            site_dir=(Path(value) if (value := os.environ.get(
+                "ORIGIN_WEB_SITE_DIR", "").strip()) else None),
             require_tokens=require_tokens,
         )
 

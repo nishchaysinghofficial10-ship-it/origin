@@ -4,7 +4,9 @@
   const form = document.querySelector("[data-beta-form]");
   if (!form) return;
 
-  const apiBase = String(window.ORIGIN_BETA?.apiBase || "").replace(/\/$/, "");
+  const configuredApiBase = String(window.ORIGIN_BETA?.apiBase || "").replace(/\/$/, "");
+  const sameOriginApi = window.ORIGIN_BETA?.sameOrigin === true;
+  const apiBase = sameOriginApi ? window.location.origin : configuredApiBase;
   const connection = document.querySelector("[data-beta-connection]");
   const submit = document.querySelector("[data-beta-submit]");
   const message = document.querySelector("[data-beta-message]");
@@ -388,6 +390,33 @@
     }
   }
 
+  function handOffToSameOriginWorkspace() {
+    if (sameOriginApi || !configuredApiBase || configuredApiBase === window.location.origin) {
+      return false;
+    }
+    let target;
+    try {
+      target = new URL(configuredApiBase);
+    } catch (_error) {
+      return false;
+    }
+    if (!target.hostname.endsWith(".ts.net")) return false;
+    target.pathname = "/";
+    target.search = "";
+    target.hash = "beta";
+    document.querySelectorAll('a[href="#beta"]').forEach(link => {
+      link.href = target.href;
+    });
+    if (window.location.hash === "#beta") {
+      setConnection("Opening the secure research workspace…", "paused");
+      submit.disabled = true;
+      setMessage("Moving this session to the same secure address as the research service.");
+      window.location.replace(target.href);
+      return true;
+    }
+    return false;
+  }
+
   function resetWorkspace() {
     stopPolling();
     accessToken = "";
@@ -511,5 +540,5 @@
   });
 
   showIntakeStep(1, false);
-  checkAvailability();
+  if (!handOffToSameOriginWorkspace()) checkAvailability();
 })();
